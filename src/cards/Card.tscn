@@ -1,0 +1,342 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://src/cards/Card.gd" type="Script" id=1]
+[ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=2]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
+[ext_resource path="res://resources/cards/Sword.tres" type="Resource" id=4]
+[ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 17.5, 22 )
+
+[sub_resource type="Animation" id=10]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("BaseCard:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FlippedCard:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "flip"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("BaseCard:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FlippedCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FlippedCard:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "flip_discard"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("BaseCard:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FlippedCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FlippedCard:rect_position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "flip_spawn"
+length = 0.8
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("FlippedCard:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.35, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.45 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BaseCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.55 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+
+[node name="Card" type="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -141.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 32, 32 )
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+script = ExtResource( 1 )
+card = ExtResource( 4 )
+
+[node name="BaseCard" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.5
+margin_top = -22.0
+margin_right = 17.5
+margin_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 18, 22 )
+texture = ExtResource( 2 )
+
+[node name="Title" type="Label" parent="BaseCard"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -10.0
+margin_top = 1.0
+margin_right = 10.0
+margin_bottom = 8.0
+grow_horizontal = 2
+mouse_filter = 1
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Sword"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Damage" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = -12.5
+margin_right = -2.0
+margin_bottom = -5.5
+custom_constants/separation = 1
+
+[node name="Shield" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = -4.5
+margin_right = -2.0
+margin_bottom = 2.5
+custom_constants/separation = 1
+
+[node name="Gold" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = 3.5
+margin_right = -2.0
+margin_bottom = 10.5
+custom_constants/separation = 1
+
+[node name="Effects" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = 11.5
+margin_right = -2.0
+margin_bottom = 18.5
+custom_constants/separation = 1
+
+[node name="FlippedCard" type="TextureRect" parent="."]
+visible = false
+margin_right = 35.0
+margin_bottom = 44.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 18, 22 )
+texture = ExtResource( 5 )
+
+[node name="CountLabel" type="Label" parent="."]
+visible = false
+margin_left = 10.0
+margin_top = 9.5
+margin_right = 14.0
+margin_bottom = 16.5
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "4"
+
+[node name="CardArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardArea"]
+position = Vector2( 17.5, 22 )
+shape = SubResource( 8 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "RESET"
+anims/RESET = SubResource( 10 )
+anims/flip = SubResource( 11 )
+anims/flip_discard = SubResource( 9 )
+anims/flip_spawn = SubResource( 12 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="SpawnStartYPosition" type="Position2D" parent="."]
+position = Vector2( 90, 160 )
+
+[node name="SpawnEndYPosition" type="Position2D" parent="."]
+position = Vector2( 90, 86 )
+
+[node name="DiscardEndYPosition" type="Position2D" parent="."]
+position = Vector2( 91, -38 )
+
+[connection signal="button_down" from="." to="." method="_on_Card_button_down"]
+[connection signal="button_up" from="." to="." method="_on_Card_button_up"]
+[connection signal="pressed" from="." to="." method="_on_Card_pressed"]
+[connection signal="mouse_entered" from="BaseCard/Title" to="." method="_on_Title_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Title" to="." method="_on_Title_mouse_exited"]
+[connection signal="area_entered" from="CardArea" to="." method="_on_CardArea_area_entered"]
+[connection signal="area_exited" from="CardArea" to="." method="_on_CardArea_area_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

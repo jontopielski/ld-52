@@ -1,0 +1,280 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://fonts/3x7.tres" type="DynamicFont" id=1]
+[ext_resource path="res://sprites/effects/Slash.png" type="Texture" id=2]
+[ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=3]
+[ext_resource path="res://resources/enemies/Skeleton.tres" type="Resource" id=4]
+[ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=5]
+[ext_resource path="res://audio/sfx/battle/attack_enemy.wav" type="AudioStream" id=6]
+[ext_resource path="res://src/cards/Enemy.gd" type="Script" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 17.5, 22 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ null, SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), null ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Slash:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FlippedCard:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("BaseCard:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "die"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("BaseCard:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.3, 0.35, 0.5, 0.55, 0.7, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 0 ), Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Slash:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "flip_spawn"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("FlippedCard:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.35, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.45 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BaseCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.55 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "take_damage"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Slash:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.2, 0.25, 0.3, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("BaseCard:rect_position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 0 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Enemy" type="Control"]
+margin_right = 36.0
+margin_bottom = 45.0
+script = ExtResource( 10 )
+enemy = ExtResource( 4 )
+
+[node name="BaseCard" type="TextureRect" parent="."]
+margin_right = 35.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 18, 22 )
+texture = ExtResource( 5 )
+
+[node name="Title" type="Label" parent="BaseCard"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -15.5
+margin_top = 1.0
+margin_right = 16.5
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Skeleton"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Damage" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = -12.0
+margin_right = -2.0
+margin_bottom = -5.0
+custom_constants/separation = 1
+
+[node name="Health" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = -4.0
+margin_right = -2.0
+margin_bottom = 3.0
+custom_constants/separation = 1
+
+[node name="FlippedCard" type="TextureRect" parent="."]
+visible = false
+margin_right = 37.0
+margin_bottom = 46.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 18, 22 )
+texture = ExtResource( 3 )
+
+[node name="CountLabel" type="Label" parent="."]
+visible = false
+margin_left = 10.0
+margin_top = 9.5
+margin_right = 14.0
+margin_bottom = 16.5
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "4"
+
+[node name="EnemyArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyArea"]
+position = Vector2( 17.5, 22 )
+shape = SubResource( 1 )
+
+[node name="Slash" type="AnimatedSprite" parent="."]
+position = Vector2( 20, 23 )
+frames = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 8 )
+anims/die = SubResource( 10 )
+anims/flip_spawn = SubResource( 9 )
+anims/take_damage = SubResource( 7 )
+
+[node name="SpawnStartYPosition" type="Position2D" parent="."]
+position = Vector2( 90, -50 )
+
+[node name="SpawnEndYPosition" type="Position2D" parent="."]
+position = Vector2( 90, 14 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="TakeDamage" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "SFX"
+
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_exited"]

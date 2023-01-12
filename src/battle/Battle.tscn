@@ -1,0 +1,534 @@
+[gd_scene load_steps=38 format=2]
+
+[ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/battle/Battle.gd" type="Script" id=2]
+[ext_resource path="res://sprites/ui/DeckCards.png" type="Texture" id=3]
+[ext_resource path="res://sprites/ui/DiscardCards.png" type="Texture" id=4]
+[ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/icons/Deck.tres" type="Resource" id=6]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=7]
+[ext_resource path="res://resources/icons/Discard.tres" type="Resource" id=8]
+[ext_resource path="res://resources/map_nodes/Cemetery.tres" type="Resource" id=9]
+[ext_resource path="res://resources/icons/Shield.tres" type="Resource" id=10]
+[ext_resource path="res://sprites/symbols/Shield.png" type="Texture" id=11]
+[ext_resource path="res://fonts/3x7.tres" type="DynamicFont" id=12]
+[ext_resource path="res://sprites/symbols/Health.png" type="Texture" id=13]
+[ext_resource path="res://resources/icons/Health.tres" type="Resource" id=14]
+[ext_resource path="res://sprites/characters/player/PlayerIdle.png" type="Texture" id=15]
+[ext_resource path="res://sprites/characters/player/PlayerWalk.png" type="Texture" id=16]
+[ext_resource path="res://src/ui/SettingsButton.tscn" type="PackedScene" id=17]
+[ext_resource path="res://sprites/characters/player/PlayerDeath.png" type="Texture" id=18]
+[ext_resource path="res://audio/sfx/battle/deal_card.wav" type="AudioStream" id=19]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=15]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/inverted = false
+
+[sub_resource type="ShaderMaterial" id=16]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/inverted = true
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = SubResource( 13 )
+shader_param/inverted = true
+
+[sub_resource type="ShaderMaterial" id=12]
+resource_local_to_scene = true
+shader = SubResource( 13 )
+shader_param/inverted = true
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+expand_margin_left = 1.0
+expand_margin_right = 1.0
+
+[sub_resource type="StyleBoxFlat" id=14]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=25]
+content_margin_left = 3.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Animation" id=18]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Enemies:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "attack_player"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Enemies:rect_position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 16 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ ExtResource( 15 ) ]
+}
+
+[sub_resource type="Animation" id=26]
+resource_name = "death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 18 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:frame")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.6, 1.1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=20]
+resource_name = "idle"
+length = 0.6
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 15 ) ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "walk"
+length = 0.4
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 16 ) ]
+}
+
+[node name="Battle" type="Control" groups=["Battle"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+map_node = ExtResource( 9 )
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Enemies" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1232.0
+margin_bottom = 1008.0
+mouse_filter = 2
+
+[node name="PlayerCards" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="ShieldHealth" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -7.0
+margin_top = 80.0
+margin_right = 6.0
+margin_bottom = 98.0
+
+[node name="Shield" type="HBoxContainer" parent="ShieldHealth"]
+margin_right = 13.0
+margin_bottom = 7.0
+custom_constants/separation = 2
+
+[node name="Icon" parent="ShieldHealth/Shield" instance=ExtResource( 5 )]
+material = SubResource( 15 )
+margin_right = 7.0
+margin_bottom = 7.0
+texture = ExtResource( 11 )
+icon = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="ShieldHealth/Shield"]
+margin_left = 9.0
+margin_right = 13.0
+margin_bottom = 7.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 12 )
+text = "1"
+
+[node name="Health" type="HBoxContainer" parent="ShieldHealth"]
+margin_top = 11.0
+margin_right = 13.0
+margin_bottom = 18.0
+custom_constants/separation = 2
+
+[node name="Icon" parent="ShieldHealth/Health" instance=ExtResource( 5 )]
+material = SubResource( 15 )
+margin_right = 7.0
+margin_bottom = 7.0
+texture = ExtResource( 13 )
+icon = ExtResource( 14 )
+
+[node name="Label" type="Label" parent="ShieldHealth/Health"]
+margin_left = 9.0
+margin_right = 13.0
+margin_bottom = 7.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 12 )
+text = "3"
+
+[node name="Player" type="Sprite" parent="."]
+position = Vector2( 88, 178 )
+texture = ExtResource( 15 )
+hframes = 4
+
+[node name="Terminal" parent="." instance=ExtResource( 1 )]
+
+[node name="TopBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+margin_bottom = 9.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+anchor_right = 1.0
+margin_left = 1.0
+margin_right = -47.0
+margin_bottom = 9.0
+custom_constants/separation = 0
+
+[node name="Health" type="HBoxContainer" parent="TopBar/HBox"]
+margin_right = 20.0
+margin_bottom = 9.0
+custom_constants/separation = 1
+
+[node name="Icon" parent="TopBar/HBox/Health" instance=ExtResource( 5 )]
+material = SubResource( 16 )
+margin_right = 7.0
+margin_bottom = 9.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+stretch_mode = 4
+icon = ExtResource( 14 )
+inverted = true
+
+[node name="Count" type="Label" parent="TopBar/HBox/Health"]
+margin_left = 8.0
+margin_top = 1.0
+margin_right = 20.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "5/5"
+
+[node name="Buffer" type="Control" parent="TopBar/HBox"]
+margin_left = 20.0
+margin_right = 104.0
+margin_bottom = 9.0
+size_flags_horizontal = 3
+
+[node name="Deck" type="HBoxContainer" parent="TopBar/HBox"]
+margin_left = 104.0
+margin_right = 115.0
+margin_bottom = 9.0
+custom_constants/separation = 0
+
+[node name="Icon" parent="TopBar/HBox/Deck" instance=ExtResource( 5 )]
+material = SubResource( 11 )
+margin_right = 7.0
+margin_bottom = 9.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+stretch_mode = 4
+icon = ExtResource( 6 )
+inverted = true
+
+[node name="Count" type="Label" parent="TopBar/HBox/Deck"]
+margin_left = 7.0
+margin_top = 1.0
+margin_right = 11.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "8"
+
+[node name="TinyBuffer" type="Control" parent="TopBar/HBox"]
+margin_left = 115.0
+margin_right = 116.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 1, 0 )
+
+[node name="Discard" type="HBoxContainer" parent="TopBar/HBox"]
+margin_left = 116.0
+margin_right = 128.0
+margin_bottom = 9.0
+custom_constants/separation = 1
+
+[node name="Icon" parent="TopBar/HBox/Discard" instance=ExtResource( 5 )]
+material = SubResource( 12 )
+margin_right = 7.0
+margin_bottom = 9.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+stretch_mode = 4
+icon = ExtResource( 8 )
+inverted = true
+
+[node name="Count" type="Label" parent="TopBar/HBox/Discard"]
+margin_left = 8.0
+margin_top = 1.0
+margin_right = 12.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "0"
+
+[node name="SettingsButton" parent="TopBar" instance=ExtResource( 17 )]
+
+[node name="EndTurnButton" type="Button" parent="TopBar"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -46.0
+margin_right = -10.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 7 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/focus = SubResource( 10 )
+custom_styles/disabled = SubResource( 14 )
+custom_styles/normal = SubResource( 14 )
+text = "END TURN"
+
+[node name="ContinueButton" type="Button" parent="TopBar"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -46.0
+margin_right = -10.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 7 )
+custom_styles/hover = SubResource( 22 )
+custom_styles/pressed = SubResource( 25 )
+custom_styles/focus = SubResource( 10 )
+custom_styles/disabled = SubResource( 24 )
+custom_styles/normal = SubResource( 24 )
+enabled_focus_mode = 0
+text = "CONTINUE"
+
+[node name="Explosions" type="Node2D" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="ShieldHealthStart" type="Position2D" parent="."]
+position = Vector2( 81, 194 )
+
+[node name="ShieldHealthEnd" type="Position2D" parent="."]
+position = Vector2( 81, 86 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 18 )
+anims/attack_player = SubResource( 17 )
+
+[node name="PlayerAnimation" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/RESET = SubResource( 19 )
+anims/death = SubResource( 26 )
+anims/idle = SubResource( 20 )
+anims/walk = SubResource( 21 )
+
+[node name="GameOver" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -18.0
+margin_top = -3.0
+margin_right = 19.0
+margin_bottom = 2.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 7 )
+text = "Game Over"
+uppercase = true
+
+[node name="DealCard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 19 )
+bus = "SFX"
+
+[connection signal="child_exiting_tree" from="Enemies" to="." method="_on_Enemies_child_exiting_tree"]
+[connection signal="mouse_entered" from="TopBar/HBox/Health" to="." method="_on_Health_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/Health" to="." method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="TopBar/HBox/Deck" to="." method="_on_Deck_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/Deck" to="." method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="TopBar/HBox/Discard" to="." method="_on_Discard_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/Discard" to="." method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="TopBar/EndTurnButton" to="." method="_on_EndTurnButton_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/EndTurnButton" to="." method="_on_Icon_mouse_exited"]
+[connection signal="pressed" from="TopBar/EndTurnButton" to="." method="_on_EndTurnButton_pressed"]
+[connection signal="pressed" from="TopBar/ContinueButton" to="." method="_on_ContinueButton_pressed"]

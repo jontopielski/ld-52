@@ -1,0 +1,355 @@
+[gd_scene load_steps=39 format=2]
+
+[ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/map/Map.gd" type="Script" id=2]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
+[ext_resource path="res://sprites/map/ui/Arrow.png" type="Texture" id=4]
+[ext_resource path="res://sprites/characters/player/PlayerIdle.png" type="Texture" id=5]
+[ext_resource path="res://sprites/characters/player/PlayerWalk.png" type="Texture" id=6]
+[ext_resource path="res://src/cards/CardDisplay.tscn" type="PackedScene" id=7]
+[ext_resource path="res://sprites/map/ui/AlphabeticSortButton_0.png" type="Texture" id=8]
+[ext_resource path="res://sprites/map/ui/AlphabeticSortButton_1.png" type="Texture" id=9]
+[ext_resource path="res://sprites/map/ui/AlphabeticSortButton_2.png" type="Texture" id=10]
+[ext_resource path="res://sprites/map/ui/GoldSort_0.png" type="Texture" id=11]
+[ext_resource path="res://sprites/map/ui/GoldSort_1.png" type="Texture" id=12]
+[ext_resource path="res://sprites/map/ui/GoldSort_2.png" type="Texture" id=13]
+[ext_resource path="res://sprites/map/ui/DamageSort_1.png" type="Texture" id=14]
+[ext_resource path="res://sprites/map/ui/DamageSort_0.png" type="Texture" id=15]
+[ext_resource path="res://sprites/map/ui/DamageSort_2.png" type="Texture" id=16]
+[ext_resource path="res://src/map/Shop.tscn" type="PackedScene" id=17]
+[ext_resource path="res://resources/map_nodes/Cemetery.tres" type="Resource" id=18]
+[ext_resource path="res://resources/map_nodes/Forest.tres" type="Resource" id=19]
+[ext_resource path="res://resources/map_nodes/Church.tres" type="Resource" id=20]
+[ext_resource path="res://resources/map_nodes/Grotto.tres" type="Resource" id=21]
+[ext_resource path="res://resources/map_nodes/Lake.tres" type="Resource" id=22]
+[ext_resource path="res://resources/map_nodes/Manor.tres" type="Resource" id=23]
+[ext_resource path="res://resources/map_nodes/Pillars.tres" type="Resource" id=24]
+[ext_resource path="res://src/ui/SettingsButton.tscn" type="PackedScene" id=25]
+[ext_resource path="res://audio/sfx/settings/open_settings.wav" type="AudioStream" id=26]
+[ext_resource path="res://audio/sfx/map/continue_map_02.wav" type="AudioStream" id=27]
+[ext_resource path="res://audio/sfx/settings/close_settings.wav" type="AudioStream" id=29]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 2.0
+content_margin_right = 1.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+expand_margin_left = 1.0
+expand_margin_right = 1.0
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ ExtResource( 5 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle"
+length = 0.6
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 5 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "walk"
+length = 0.4
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Player:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Player:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 6 ) ]
+}
+
+[sub_resource type="StyleBoxFlat" id=10]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[node name="Map" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+test_map_nodes = [ ExtResource( 18 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ]
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Terminal" parent="." instance=ExtResource( 1 )]
+
+[node name="PolygonPath" type="Polygon2D" parent="."]
+position = Vector2( 0, -16 )
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 33, 69, 53, 48, 85, 42, 114, 46, 138, 60, 124, 80, 91, 86, 57, 82 )
+
+[node name="Path" type="Line2D" parent="."]
+width = 4.0
+default_color = Color( 0, 0, 0, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+sharp_limit = 5.0
+round_precision = 15
+__meta__ = {
+"_editor_description_": "	"
+}
+
+[node name="Arrow" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -39.0
+margin_right = 16.0
+margin_bottom = -3.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+
+[node name="MapNodes" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Player" type="Sprite" parent="."]
+position = Vector2( 153, 42 )
+texture = ExtResource( 5 )
+hframes = 4
+
+[node name="TopBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+margin_bottom = 9.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ContinueButton" type="Button" parent="TopBar"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -45.0
+margin_right = -10.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+enabled_focus_mode = 0
+text = "CONTINUE"
+
+[node name="SettingsButton" parent="TopBar" instance=ExtResource( 25 )]
+
+[node name="Shop" parent="." instance=ExtResource( 17 )]
+
+[node name="CardDisplay" parent="." instance=ExtResource( 7 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/RESET = SubResource( 6 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 8 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="ShopButton" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -176.0
+margin_right = -155.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 9 )
+enabled_focus_mode = 0
+text = "SHOP"
+
+[node name="AlphaSort" type="TextureButton" parent="."]
+margin_left = 21.0
+margin_right = 30.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 10 )
+texture_hover = ExtResource( 9 )
+
+[node name="GoldSort" type="TextureButton" parent="."]
+margin_left = 30.0
+margin_right = 39.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 13 )
+texture_hover = ExtResource( 12 )
+
+[node name="DamageSort" type="TextureButton" parent="."]
+margin_left = 39.0
+margin_right = 48.0
+margin_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 15 )
+texture_pressed = ExtResource( 16 )
+texture_hover = ExtResource( 14 )
+
+[node name="Continue" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 27 )
+bus = "SFX"
+
+[node name="Open" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 26 )
+bus = "SFX"
+
+[node name="Close" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 29 )
+bus = "SFX"
+
+[connection signal="mouse_entered" from="TopBar/ContinueButton" to="." method="_on_ContinueButton_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/ContinueButton" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="TopBar/ContinueButton" to="." method="_on_ContinueButton_pressed"]
+[connection signal="mouse_entered" from="ShopButton" to="." method="_on_ShopButton_mouse_entered"]
+[connection signal="mouse_exited" from="ShopButton" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="ShopButton" to="." method="_on_ShopButton_pressed"]
+[connection signal="mouse_entered" from="AlphaSort" to="." method="_on_AlphaSort_mouse_entered"]
+[connection signal="mouse_exited" from="AlphaSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="AlphaSort" to="." method="_on_AlphaSort_pressed"]
+[connection signal="mouse_entered" from="GoldSort" to="." method="_on_GoldSort_mouse_entered"]
+[connection signal="mouse_exited" from="GoldSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="GoldSort" to="." method="_on_GoldSort_pressed"]
+[connection signal="mouse_entered" from="DamageSort" to="." method="_on_DamageSort_mouse_entered"]
+[connection signal="mouse_exited" from="DamageSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="DamageSort" to="." method="_on_DamageSort_pressed"]

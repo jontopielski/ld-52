@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/inverted = true

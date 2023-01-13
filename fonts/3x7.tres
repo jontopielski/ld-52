@@ -2,7 +2,7 @@
 
 [sub_resource type="DynamicFontData" id=1]
 antialiased = false
-font_path = "res://fonts/Font_3x7.ttf"
+font_path = "res://fonts/Font3x7.ttf"
 
 [resource]
 extra_spacing_top = -4

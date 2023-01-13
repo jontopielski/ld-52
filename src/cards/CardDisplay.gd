@@ -2,7 +2,7 @@ extends Control
 
 const MapCard = preload("res://src/cards/MapCard.tscn")
 const CARD_WIDTH = 35.0
-const STARTING_Y_POSITION = 88
+const STARTING_Y_POSITION = 89
 
 func _ready():
 	load_cards()

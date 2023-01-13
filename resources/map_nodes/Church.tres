@@ -9,6 +9,6 @@ name = "Church"
 description = ""
 node_type = 0
 texture = ExtResource( 2 )
-cost = 2
+cost = 4
 enemies = [  ]
 spawn_rates = [  ]

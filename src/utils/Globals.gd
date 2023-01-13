@@ -28,6 +28,18 @@ func _process(delta):
 		image.flip_y()
 		image.save_png("C:\\Users\\jonto\\Desktop\\Game_Screenshot_%s.png" % str(randi() % 1000))
 
+func get_card_symbol():
+	return "`"
+
+func get_map_node_symbol():
+	return "}"
+
+func get_reroll_symbol():
+	return "|"
+
+func get_relic_symbol():
+	return "~"
+
 func get_randomized_item_from_list(items):
 	var items_by_rarity = {
 		Enums.Rarity.COMMON: get_all_items_with_rarity(items, Enums.Rarity.COMMON),

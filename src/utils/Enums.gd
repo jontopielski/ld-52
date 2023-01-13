@@ -14,3 +14,10 @@ enum Rarity {
 	VERY_RARE,
 	ULTRA_RARE
 }
+
+enum ItemType {
+	NONE,
+	CARD,
+	MAP_NODE,
+	RELIC
+}

@@ -4,13 +4,18 @@ extends TextureRect
 export(Resource) var icon = null setget set_icon
 export(bool) var inverted = false setget set_inverted
 
-var is_using_manual_mouse_entered = false
+var is_using_manual_mouse_entered = false setget set_is_using_manual_mouse_entered
 var is_manual_hovering = false
 
 func set_icon(_icon):
 	icon = _icon
 	if Engine.editor_hint:
 		render_current_icon()
+
+func set_is_using_manual_mouse_entered(_is_using_manual_mouse_entered):
+	is_using_manual_mouse_entered = _is_using_manual_mouse_entered
+	if is_using_manual_mouse_entered:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func set_inverted(_inverted):
 	inverted = _inverted

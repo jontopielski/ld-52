@@ -1,10 +1,5 @@
 extends Button
 
-const Icon = preload("res://src/cards/Icon.tscn")
-const Damage = preload("res://resources/icons/Damage.tres")
-const Shield = preload("res://resources/icons/Shield.tres")
-const Gold = preload("res://resources/icons/Gold.tres")
-
 export(Resource) var card = null setget set_card
 
 var PLACEMENT_OFFSET = Vector2(0, 9)
@@ -18,48 +13,16 @@ var is_queued_for_deletion = false
 
 func set_card(_card):
 	card = _card
-	render_current_card()
+	if card and get_node("BaseCard/CardStats"):
+		$BaseCard/CardStats.set_card(card)
 
 func spawn_in_from_x_pos(x_pos):
-	render_current_card()
+	$BaseCard/CardStats.set_card(card)
 	rect_position = Vector2(x_pos, $SpawnStartYPosition.position.y)
 	$AnimationPlayer.play("flip_spawn")
 	var TWEEN_TIME = .35
 	$Tween.interpolate_property(self, "rect_position", rect_position, Vector2(rect_position.x, $SpawnEndYPosition.position.y), TWEEN_TIME, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
-
-func clear_existing_icons():
-	for child in $BaseCard/Damage.get_children():
-		child.queue_free()
-	for child in $BaseCard/Shield.get_children():
-		child.queue_free()
-	for child in $BaseCard/Gold.get_children():
-		child.queue_free()
-
-func render_current_card():
-	if !card or !find_node("BaseCard"):
-		return
-	clear_existing_icons()
-	$BaseCard/Title.text = card.name
-	add_icon_for_amount(Damage, $BaseCard/Damage, card.damage)
-	add_icon_for_amount(Shield, $BaseCard/Shield, card.shield)
-	add_icon_for_amount(Gold, $BaseCard/Gold, card.gold)
-
-func add_icon_for_amount(icon_rsc, cntl_node, amount):
-	if amount > 4:
-		var next_icon = Icon.instance()
-		next_icon.set_icon(icon_rsc)
-		cntl_node.add_child(next_icon)
-		
-		var count_label = $CountLabel.duplicate()
-		cntl_node.add_child(count_label)
-		count_label.text = str(amount)
-		count_label.show()
-	else:
-		for i in range(0, amount):
-			var next_icon = Icon.instance()
-			next_icon.set_icon(icon_rsc)
-			cntl_node.add_child(next_icon)
 
 func _process(delta):
 	if pressed:

@@ -9,6 +9,6 @@ name = "Forest"
 description = ""
 node_type = 0
 texture = ExtResource( 2 )
-cost = 2
+cost = 3
 enemies = [  ]
 spawn_rates = [  ]

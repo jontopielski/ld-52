@@ -6,6 +6,7 @@ const Card = preload("res://src/cards/Card.tscn")
 const Enemy = preload("res://src/cards/Enemy.tscn")
 
 export(Resource) var map_node = null setget set_map_node
+export(int) var enemy_count = 1
 
 var INITIAL_HAND_SIZE = 4
 var CARD_WIDTH = 36
@@ -43,10 +44,12 @@ func spawn_explosion_at_pos(pos):
 	next_explosion.position = pos
 
 func spawn_enemies():
-	var next_enemy = Enemy.instance()
-	next_enemy.set_enemy(map_node.enemies.front())
-	$Enemies.add_child(next_enemy)
-	next_enemy.spawn_in_from_x_pos(70)
+	for i in range(0, enemy_count):
+		var next_enemy = Enemy.instance()
+		next_enemy.set_enemy(map_node.enemies.front())
+		$Enemies.add_child(next_enemy)
+		var extra_space_at_end = (get_viewport_rect().size.x / enemy_count) - CARD_WIDTH
+		next_enemy.spawn_in_from_x_pos(4 + (extra_space_at_end / 2.0) + ((get_viewport_rect().size.x - 8) / enemy_count) * i)
 
 func setup_player_deck():
 	randomize()
@@ -60,8 +63,9 @@ func update_ui():
 	$ShieldHealth/Health/Label.text = str(Globals.current_health)
 
 func enemy_queued_for_death(enemy):
-	if $Enemies.get_child_count() == 1 and $Enemies.get_child(0) == enemy:
-		$TopBar/EndTurnButton.disabled = true
+	enemy_count -= 1
+	if enemy_count == 0:
+		$TopBar/EndTurnButton.hide()
 
 func deal_player_hand():
 	for i in range(0, INITIAL_HAND_SIZE):
@@ -100,6 +104,7 @@ func discard_card(card):
 	update_ui()
 
 func _on_EndTurnButton_pressed():
+	$EndTurn.play()
 	$TopBar/EndTurnButton.hide()
 	get_tree().call_group("Terminal", "clear_terminal_text")
 	for card in $PlayerCards.get_children():
@@ -114,9 +119,13 @@ func _on_EndTurnButton_pressed():
 	$Tween.start()
 	yield($Tween, "tween_all_completed")
 	yield(get_tree().create_timer(0.45), "timeout")
-	$AnimationPlayer.play("attack_player")
+	for enemy in $Enemies.get_children():
+		if enemy.health > 0:
+			enemy.attack_player()
+	yield(get_tree().create_timer(0.15), "timeout")
 	var enemy_damage = get_total_enemy_damage()
 	if enemy_damage <= total_shield:
+		$BlockShield.play()
 		total_shield -= enemy_damage
 		$ShieldHealth/Shield/Label.text = str(total_shield)
 		yield(get_tree().create_timer(0.55), "timeout")
@@ -125,6 +134,10 @@ func _on_EndTurnButton_pressed():
 		enemy_damage -= total_shield
 		Globals.current_health = max(0, Globals.current_health - enemy_damage)
 		update_ui()
+		if Globals.current_health == 0:
+			$Die.play()
+		else:
+			$TakeDamage.play()
 		yield(get_tree().create_timer(0.85), "timeout")
 	if Globals.current_health == 0:
 		$PlayerAnimation.stop()
@@ -144,7 +157,8 @@ func _on_EndTurnButton_pressed():
 func get_total_enemy_damage():
 	var total_damage = 0
 	for enemy in $Enemies.get_children():
-		total_damage += enemy.damage
+		if enemy.health > 0:
+			total_damage += enemy.damage
 	return total_damage
 
 func get_total_player_shield():
@@ -172,8 +186,7 @@ func _on_ContinueButton_pressed():
 
 func _on_Enemies_child_exiting_tree(node):
 	if $Enemies.get_child_count() == 1:
-		$TopBar/EndTurnButton.hide()
-		$TopBar/ContinueButton.show()
+		pass
 
 func _on_Deck_mouse_entered():
 	$TopBar/HBox/Deck/Icon._on_Icon_mouse_entered()

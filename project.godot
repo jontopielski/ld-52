@@ -20,6 +20,8 @@ IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resol
 Enums="*res://src/utils/Enums.gd"
 Globals="*res://src/utils/Globals.tscn"
 SettingsMenu="*res://src/menus/SettingsMenu.tscn"
+CursorManager="*res://src/ui/CursorManager.tscn"
+PaletteManager="*res://src/ui/PaletteManager.tscn"
 
 [display]
 

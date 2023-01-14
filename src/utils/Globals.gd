@@ -13,11 +13,18 @@ const RARITY_PROBABILITIES = {
 }
 
 export(Array, Resource) var deck = []
+export(Array, Resource) var test_deck = []
 
 export(Resource) var current_map_node = null
+var current_node_queue_resources = []
+var node_queue_positions = []
 
 export(int) var max_health = 5
 export(int) var current_health = 5
+
+func _ready():
+	if !test_deck.empty():
+		deck = test_deck
 
 func _process(delta):
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_reset"):

@@ -2,6 +2,8 @@ extends CanvasLayer
 
 export(bool) var hide_menu_at_start = true
 
+var use_white_cursor = true
+
 func _ready():
 	if hide_menu_at_start:
 		get_tree().paused = false
@@ -44,8 +46,17 @@ func _on_FullscreenBox_toggled(button_pressed):
 	$Menu/BlackBox.hide()
 
 func _on_SFXSlider_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), -pow(1.55, 10 - value))
 	$SFXBeep.pitch_scale = 1.0 + (value / 10.0)
 	$SFXBeep.play()
-
+	
 func _on_PaletteSlider_value_changed(value):
 	$Beep.play()
+	PaletteManager.set_palette(int(value) / 2)
+
+func _on_MusicSlider_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -pow(1.55, 10 - value))
+
+func _on_WhiteCursorBox_toggled(button_pressed):
+	use_white_cursor = button_pressed
+	CursorManager.update_all_cursors()

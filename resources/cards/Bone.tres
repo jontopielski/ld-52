@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 name = "Bone"
-description = "either a human leg or a troll pinky"
+description = ""
 rarity = 1
 cost = 1
 damage = 1

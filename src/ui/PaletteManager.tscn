@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/ui/PaletteManager.gd" type="Script" id=1]
+[ext_resource path="res://sprites/ui/CRT_Texture.png" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 ColorOne : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 ColorTwo : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+
+void fragment() {
+	vec4 current_color = vec4(texture(SCREEN_TEXTURE, SCREEN_UV));
+	float rgb_avg = (current_color.r + current_color.g + current_color.b) / 3.0;
+	COLOR = mix(ColorOne, ColorTwo, float(int(rgb_avg < 0.5)));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/ColorOne = Color( 1, 1, 1, 1 )
+shader_param/ColorTwo = Color( 0, 0, 0, 1 )
+
+[node name="PaletteManager" type="CanvasLayer"]
+layer = 5
+script = ExtResource( 1 )
+whites = [ Color( 0.94902, 0, 0, 1 ), Color( 0.309804, 0.560784, 0.901961, 1 ), Color( 0.721569, 0.458824, 0.921569, 1 ), Color( 1, 0.65098, 0.85098, 1 ), Color( 0.960784, 0.960784, 0.721569, 1 ), Color( 1, 1, 1, 1 ) ]
+blacks = [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ) ]
+
+[node name="Shader" type="ColorRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="CRT" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+stretch_mode = 2

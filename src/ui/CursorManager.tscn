@@ -1,0 +1,15 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/ui/CursorManager.gd" type="Script" id=1]
+[ext_resource path="res://sprites/cursors/Arrow.png" type="Texture" id=2]
+[ext_resource path="res://sprites/cursors/PointingHand.png" type="Texture" id=3]
+[ext_resource path="res://sprites/cursors/PointingHandPressed.png" type="Texture" id=4]
+[ext_resource path="res://sprites/cursors/Glass.png" type="Texture" id=5]
+
+[node name="CursorManager" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 1 )
+arrow = ExtResource( 2 )
+pointing_hand = ExtResource( 3 )
+pointing_hand_pressed = ExtResource( 4 )
+glass = ExtResource( 5 )

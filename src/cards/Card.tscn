@@ -200,7 +200,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 0.55 ),
+"times": PoolRealArray( 0, 0.4, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
@@ -279,6 +279,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "4"
 
 [node name="CardArea" type="Area2D" parent="."]
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardArea"]
 position = Vector2( 17.5, 22 )
@@ -297,7 +298,7 @@ anims/flip_spawn = SubResource( 12 )
 position = Vector2( 90, 160 )
 
 [node name="SpawnEndYPosition" type="Position2D" parent="."]
-position = Vector2( 90, 86 )
+position = Vector2( 91, 86 )
 
 [node name="DiscardEndYPosition" type="Position2D" parent="."]
 position = Vector2( 91, -38 )
@@ -307,7 +308,5 @@ position = Vector2( 91, -38 )
 [connection signal="pressed" from="." to="." method="_on_Card_pressed"]
 [connection signal="mouse_entered" from="BaseCard/Title" to="." method="_on_Title_mouse_entered"]
 [connection signal="mouse_exited" from="BaseCard/Title" to="." method="_on_Title_mouse_exited"]
-[connection signal="area_entered" from="CardArea" to="." method="_on_CardArea_area_entered"]
-[connection signal="area_exited" from="CardArea" to="." method="_on_CardArea_area_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

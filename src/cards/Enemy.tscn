@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://fonts/3x7.tres" type="DynamicFont" id=1]
 [ext_resource path="res://sprites/effects/Slash.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://resources/enemies/Skeleton.tres" type="Resource" id=4]
 [ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=5]
 [ext_resource path="res://audio/sfx/battle/attack_enemy.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/sfx/battle/enemy_die_damp.wav" type="AudioStream" id=7]
 [ext_resource path="res://src/cards/Enemy.gd" type="Script" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -88,10 +89,11 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id=10]
 resource_name = "die"
+length = 0.6
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("BaseCard:rect_position")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -103,7 +105,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Slash:frame")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -112,6 +114,58 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "flip_over"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("FlippedCard:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 1 ), Vector2( 0, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BaseCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 0, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Slash:frame")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -148,7 +202,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 0.55 ),
+"times": PoolRealArray( 0, 0.4, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
@@ -184,8 +238,8 @@ tracks/1/keys = {
 }
 
 [node name="Enemy" type="Control"]
-margin_right = 36.0
-margin_bottom = 45.0
+margin_right = 35.0
+margin_bottom = 44.0
 script = ExtResource( 10 )
 enemy = ExtResource( 4 )
 
@@ -231,8 +285,8 @@ custom_constants/separation = 1
 
 [node name="FlippedCard" type="TextureRect" parent="."]
 visible = false
-margin_right = 37.0
-margin_bottom = 46.0
+margin_right = 35.0
+margin_bottom = 44.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 18, 22 )
 texture = ExtResource( 3 )
@@ -247,6 +301,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "4"
 
 [node name="EnemyArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyArea"]
 position = Vector2( 17.5, 22 )
@@ -256,17 +312,18 @@ shape = SubResource( 1 )
 position = Vector2( 20, 23 )
 frames = SubResource( 6 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 8 )
-anims/die = SubResource( 10 )
-anims/flip_spawn = SubResource( 9 )
-anims/take_damage = SubResource( 7 )
-
 [node name="SpawnStartYPosition" type="Position2D" parent="."]
 position = Vector2( 90, -50 )
 
 [node name="SpawnEndYPosition" type="Position2D" parent="."]
 position = Vector2( 90, 14 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 8 )
+anims/die = SubResource( 10 )
+anims/flip_over = SubResource( 11 )
+anims/flip_spawn = SubResource( 9 )
+anims/take_damage = SubResource( 7 )
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -274,7 +331,21 @@ position = Vector2( 90, 14 )
 stream = ExtResource( 6 )
 bus = "SFX"
 
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_exited"]
+[node name="Die" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "SFX"
+
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon4" to="BaseCard/Damage/Icon4" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon4" to="BaseCard/Damage/Icon4" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon5" to="BaseCard/Damage/Icon5" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon5" to="BaseCard/Damage/Icon5" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon6" to="BaseCard/Damage/Icon6" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon6" to="BaseCard/Damage/Icon6" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon6" to="BaseCard/Health/Icon6" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon6" to="BaseCard/Health/Icon6" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon7" to="BaseCard/Health/Icon7" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon7" to="BaseCard/Health/Icon7" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon8" to="BaseCard/Health/Icon8" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon8" to="BaseCard/Health/Icon8" method="_on_Icon_mouse_exited"]

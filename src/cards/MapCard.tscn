@@ -206,7 +206,6 @@ tracks/2/keys = {
 margin_right = 35.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 32, 32 )
-mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/focus = SubResource( 5 )

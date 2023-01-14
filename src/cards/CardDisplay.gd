@@ -9,7 +9,7 @@ func _ready():
 
 func load_cards():
 	var edge_space = get_edge_space()
-	var card_offset_x = (get_viewport_rect().size.x - (edge_space * 2) - CARD_WIDTH) / (len(Globals.deck) - 1)
+	var card_offset_x = (get_viewport_rect().size.x - (edge_space * 2) - CARD_WIDTH) / max(1, (len(Globals.deck) - 1))
 	var deck_sorted = Globals.deck.duplicate()
 	deck_sorted.sort_custom(SortNameAscending, "sort_ascending")
 	for i in range(0, len(deck_sorted)):

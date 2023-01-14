@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=1]
 [ext_resource path="res://sprites/ui/Dither.png" type="Texture" id=2]
@@ -13,14 +13,6 @@
 [ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=11]
 [ext_resource path="res://sprites/ui/ShopPreviewBorder.png" type="Texture" id=12]
 [ext_resource path="res://src/stacked/StackedSprite.tscn" type="PackedScene" id=13]
-
-[sub_resource type="StyleBoxFlat" id=11]
-bg_color = Color( 1, 1, 1, 1 )
-border_width_left = 1
-border_width_top = 9
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 1, 1, 1, 1 )
@@ -46,31 +38,20 @@ margin_top = 9.0
 margin_bottom = -9.0
 script = ExtResource( 3 )
 example_items = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 6 ), ExtResource( 8 ) ]
+STARTING_TABS = 5
 
 [node name="Dither" type="TextureRect" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
 stretch_mode = 2
 
-[node name="Panel" type="Panel" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -53.0
-custom_styles/panel = SubResource( 11 )
-
-[node name="Label" type="Label" parent="Panel"]
-anchor_right = 1.0
-margin_bottom = 9.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = ExtResource( 1 )
-text = "Shop"
-align = 1
-valign = 1
-uppercase = true
+[node name="Border" type="ColorRect" parent="."]
+margin_left = 4.0
+margin_top = 12.0
+margin_right = 172.0
+margin_bottom = 71.0
 
 [node name="Content" type="Panel" parent="."]
 margin_left = 5.0

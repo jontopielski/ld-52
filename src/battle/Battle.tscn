@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/battle/Battle.gd" type="Script" id=2]
@@ -19,8 +19,11 @@
 [ext_resource path="res://src/ui/SettingsButton.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprites/characters/player/PlayerDeath.png" type="Texture" id=18]
 [ext_resource path="res://audio/sfx/battle/deal_card.wav" type="AudioStream" id=19]
+[ext_resource path="res://audio/sfx/battle/block_shield.wav" type="AudioStream" id=20]
+[ext_resource path="res://audio/sfx/battle/end_turn.wav" type="AudioStream" id=21]
+[ext_resource path="res://audio/sfx/battle/die.wav" type="AudioStream" id=22]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=11]
 code = "shader_type canvas_item;
 
 uniform bool inverted = false;
@@ -32,12 +35,22 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=15]
 resource_local_to_scene = true
-shader = SubResource( 1 )
+shader = SubResource( 11 )
 shader_param/inverted = false
+
+[sub_resource type="Shader" id=27]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
 
 [sub_resource type="ShaderMaterial" id=16]
 resource_local_to_scene = true
-shader = SubResource( 1 )
+shader = SubResource( 27 )
 shader_param/inverted = true
 
 [sub_resource type="Shader" id=13]
@@ -50,7 +63,7 @@ void fragment() {
 	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
 }"
 
-[sub_resource type="ShaderMaterial" id=11]
+[sub_resource type="ShaderMaterial" id=28]
 resource_local_to_scene = true
 shader = SubResource( 13 )
 shader_param/inverted = true
@@ -129,23 +142,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=17]
-resource_name = "attack_player"
-length = 0.3
-step = 0.05
-tracks/0/type = "value"
-tracks/0/path = NodePath("Enemies:rect_position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 16 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=19]
@@ -268,16 +264,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
 map_node = ExtResource( 9 )
+enemy_count = 3
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Enemies" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 1232.0
-margin_bottom = 1008.0
+margin_right = 176.0
+margin_bottom = 144.0
 mouse_filter = 2
 
 [node name="PlayerCards" type="Control" parent="."]
@@ -391,7 +386,7 @@ margin_bottom = 9.0
 custom_constants/separation = 0
 
 [node name="Icon" parent="TopBar/HBox/Deck" instance=ExtResource( 5 )]
-material = SubResource( 11 )
+material = SubResource( 28 )
 margin_right = 7.0
 margin_bottom = 9.0
 mouse_filter = 2
@@ -493,7 +488,6 @@ position = Vector2( 81, 86 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 18 )
-anims/attack_player = SubResource( 17 )
 
 [node name="PlayerAnimation" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -519,6 +513,22 @@ uppercase = true
 
 [node name="DealCard" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )
+bus = "SFX"
+
+[node name="BlockShield" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 20 )
+bus = "SFX"
+
+[node name="TakeDamage" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 22 )
+bus = "SFX"
+
+[node name="Die" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 22 )
+bus = "SFX"
+
+[node name="EndTurn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )
 bus = "SFX"
 
 [connection signal="child_exiting_tree" from="Enemies" to="." method="_on_Enemies_child_exiting_tree"]

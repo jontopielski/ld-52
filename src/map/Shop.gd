@@ -42,7 +42,24 @@ func setup_tabs():
 			next_tab.set_is_top_tab(true)
 		next_tab.set_resource(example_items[i])
 	yield(get_tree().create_timer(0.05), "timeout")
+	for i in range(0, $TopTabs.get_child_count()):
+		$TopTabs.get_child(i).trim_item_name_if_necessary($TopTabs.get_child_count(), get_max_name_size($TopTabs.get_child_count()))
+	for i in range(0, $BottomTabs.get_child_count()):
+		$BottomTabs.get_child(i).trim_item_name_if_necessary($BottomTabs.get_child_count(), get_max_name_size($BottomTabs.get_child_count()))
+	yield(get_tree().create_timer(0.05), "timeout")
 	$TopTabs.get_child(0).pressed = true
+
+func get_max_name_size(child_count):
+	match child_count:
+		2:
+			return 15
+		3:
+			return 8
+		4:
+			return 5
+		5:
+			return 3
+	return 15
 
 func clear_all_shop_tabs():
 	for tab in $TopTabs.get_children():

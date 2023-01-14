@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=1]
 [ext_resource path="res://src/map/ShopTab.gd" type="Script" id=2]
@@ -27,18 +27,6 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=19]
-content_margin_left = 3.0
-content_margin_right = 2.0
-content_margin_top = 2.0
-content_margin_bottom = 2.0
-bg_color = Color( 1, 1, 1, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
-
 [sub_resource type="StyleBoxFlat" id=16]
 content_margin_left = 2.0
 content_margin_right = 1.0
@@ -53,6 +41,7 @@ margin_bottom = 9.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 3
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
@@ -60,7 +49,7 @@ custom_fonts/font = ExtResource( 1 )
 custom_styles/hover = SubResource( 17 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/focus = SubResource( 18 )
-custom_styles/disabled = SubResource( 19 )
+custom_styles/disabled = ExtResource( 3 )
 custom_styles/normal = SubResource( 16 )
 toggle_mode = true
 enabled_focus_mode = 0

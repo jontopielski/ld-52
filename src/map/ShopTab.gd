@@ -12,8 +12,10 @@ func set_is_top_tab(_is_top_tab):
 	is_top_tab = _is_top_tab
 	if is_top_tab:
 		add_stylebox_override("pressed", TopTabPressed)
+		add_stylebox_override("disabled", TopTabPressed)
 	else:
 		add_stylebox_override("pressed", BottomTabPressed)
+		add_stylebox_override("disabled", BottomTabPressed)
 
 func _ready():
 	set_is_top_tab(is_top_tab)
@@ -37,9 +39,17 @@ func set_resource(_resource):
 		"relics":
 			item_type = Enums.ItemType.RELIC
 			symbol = Globals.get_relic_symbol()
-	text = symbol + "^" + resource.name.to_upper() + "^%d$" % resource.cost
+	text = symbol + "/" + resource.name.to_upper() + "/%d" % resource.cost
+
+func trim_item_name_if_necessary(child_count, max_characters_in_name):
+	var current_name_split = text.split("/")
+	var updated_name = current_name_split[1].substr(0, max_characters_in_name)
+	text = current_name_split[0] + "/" + updated_name + "/" + current_name_split[2]
 
 func _on_ShopTab_toggled(button_pressed):
 	if button_pressed:
 		get_tree().call_group("shop_tabs", "unpress_if_not_id", get_instance_id())
 		get_tree().call_group("Shop", "display_item", resource, item_type)
+		disabled = true
+	else:
+		disabled = false

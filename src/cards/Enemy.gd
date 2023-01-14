@@ -11,6 +11,8 @@ export(Resource) var enemy = null setget set_enemy
 var damage = 0
 var health = 0
 
+var attack_player_offset = Vector2(0, 20)
+
 func set_enemy(_enemy):
 	enemy = _enemy
 	damage = enemy.damage
@@ -21,6 +23,15 @@ func set_enemy(_enemy):
 func _ready():
 	render_current_enemy()
 
+func attack_player():
+	var TWEEN_TIME = 0.25
+	$Tween.interpolate_property(self, "rect_position", rect_position, rect_position + attack_player_offset, TWEEN_TIME, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield($Tween, "tween_all_completed")
+	TWEEN_TIME = 0.25
+	$Tween.interpolate_property(self, "rect_position", rect_position, rect_position - attack_player_offset, TWEEN_TIME, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	$Tween.start()
+
 func clear_existing_icons():
 	for child in $BaseCard/Damage.get_children():
 		child.queue_free()
@@ -28,12 +39,13 @@ func clear_existing_icons():
 		child.queue_free()
 
 func die():
+	$Die.play()
+	$EnemyArea/CollisionShape2D.disabled = true
 	get_tree().call_group("Battle", "enemy_queued_for_death", self)
 	$AnimationPlayer.play("die")
 	yield($AnimationPlayer, "animation_finished")
-	get_tree().call_group("Battle", "spawn_explosion_at_pos", rect_position + $BaseCard.rect_size / 2.0)
-	spawn_item_on_death()
-	queue_free()
+	$AnimationPlayer.play("flip_over")
+	yield($AnimationPlayer, "animation_finished")
 
 func spawn_item_on_death():
 	var next_card_rsc = Globals.get_randomized_item_from_list(enemy.drops)

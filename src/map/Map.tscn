@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/map/Map.gd" type="Script" id=2]
@@ -18,16 +18,19 @@
 [ext_resource path="res://sprites/map/ui/DamageSort_2.png" type="Texture" id=16]
 [ext_resource path="res://src/map/Shop.tscn" type="PackedScene" id=17]
 [ext_resource path="res://resources/map_nodes/Cemetery.tres" type="Resource" id=18]
-[ext_resource path="res://resources/map_nodes/Forest.tres" type="Resource" id=19]
-[ext_resource path="res://resources/map_nodes/Church.tres" type="Resource" id=20]
-[ext_resource path="res://resources/map_nodes/Grotto.tres" type="Resource" id=21]
-[ext_resource path="res://resources/map_nodes/Lake.tres" type="Resource" id=22]
-[ext_resource path="res://resources/map_nodes/Manor.tres" type="Resource" id=23]
-[ext_resource path="res://resources/map_nodes/Pillars.tres" type="Resource" id=24]
+[ext_resource path="res://sprites/symbols/Health.png" type="Texture" id=19]
+[ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=20]
+[ext_resource path="res://resources/icons/Health.tres" type="Resource" id=21]
+[ext_resource path="res://resources/map_nodes/Pillars.tres" type="Resource" id=22]
+[ext_resource path="res://resources/map_nodes/Tower.tres" type="Resource" id=23]
+[ext_resource path="res://resources/map_nodes/Wheat.tres" type="Resource" id=24]
 [ext_resource path="res://src/ui/SettingsButton.tscn" type="PackedScene" id=25]
 [ext_resource path="res://audio/sfx/settings/open_settings.wav" type="AudioStream" id=26]
 [ext_resource path="res://audio/sfx/map/continue_map_02.wav" type="AudioStream" id=27]
+[ext_resource path="res://resources/map_nodes/Lake.tres" type="Resource" id=28]
 [ext_resource path="res://audio/sfx/settings/close_settings.wav" type="AudioStream" id=29]
+[ext_resource path="res://resources/map_nodes/Manor.tres" type="Resource" id=30]
+[ext_resource path="res://resources/map_nodes/Mountain.tres" type="Resource" id=31]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 2.0
@@ -69,6 +72,43 @@ content_margin_top = 1.0
 content_margin_bottom = 1.0
 bg_color = Color( 1, 1, 1, 1 )
 border_width_top = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=12]
+resource_local_to_scene = true
+shader = SubResource( 11 )
+shader_param/inverted = true
+
+[sub_resource type="StyleBoxFlat" id=10]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
@@ -159,28 +199,6 @@ tracks/1/keys = {
 "values": [ ExtResource( 6 ) ]
 }
 
-[sub_resource type="StyleBoxFlat" id=10]
-content_margin_left = 2.0
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color( 0, 0, 0, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 1, 1, 1, 1 )
-
-[sub_resource type="StyleBoxFlat" id=9]
-content_margin_left = 2.0
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color( 1, 1, 1, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
-
 [node name="Map" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -188,7 +206,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
-test_map_nodes = [ ExtResource( 18 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ]
+test_map_nodes = [ ExtResource( 18 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ]
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -261,24 +279,41 @@ text = "CONTINUE"
 
 [node name="SettingsButton" parent="TopBar" instance=ExtResource( 25 )]
 
-[node name="Shop" parent="." instance=ExtResource( 17 )]
-
-[node name="CardDisplay" parent="." instance=ExtResource( 7 )]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
-anims/RESET = SubResource( 6 )
-anims/idle = SubResource( 5 )
-anims/walk = SubResource( 8 )
-
-[node name="Tween" type="Tween" parent="."]
-
-[node name="ShopButton" type="Button" parent="."]
-anchor_left = 1.0
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
 anchor_right = 1.0
-margin_left = -176.0
-margin_right = -155.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_right = -47.0
+custom_constants/separation = 0
+
+[node name="Health" type="HBoxContainer" parent="TopBar/HBox"]
+margin_right = 28.0
 margin_bottom = 9.0
+custom_constants/separation = 1
+
+[node name="Icon" parent="TopBar/HBox/Health" instance=ExtResource( 20 )]
+material = SubResource( 12 )
+margin_right = 7.0
+margin_bottom = 9.0
+mouse_filter = 2
+texture = ExtResource( 19 )
+stretch_mode = 4
+icon = ExtResource( 21 )
+inverted = true
+
+[node name="Count" type="Label" parent="TopBar/HBox/Health"]
+margin_left = 8.0
+margin_top = 1.0
+margin_right = 28.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "10/10"
+
+[node name="ShopButton" type="Button" parent="TopBar/HBox"]
+margin_left = 28.0
+margin_right = 47.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 19, 0 )
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -293,9 +328,9 @@ custom_styles/normal = SubResource( 9 )
 enabled_focus_mode = 0
 text = "SHOP"
 
-[node name="AlphaSort" type="TextureButton" parent="."]
-margin_left = 21.0
-margin_right = 30.0
+[node name="AlphaSort" type="TextureButton" parent="TopBar/HBox"]
+margin_left = 47.0
+margin_right = 56.0
 margin_bottom = 9.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -304,9 +339,9 @@ texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 10 )
 texture_hover = ExtResource( 9 )
 
-[node name="GoldSort" type="TextureButton" parent="."]
-margin_left = 30.0
-margin_right = 39.0
+[node name="GoldSort" type="TextureButton" parent="TopBar/HBox"]
+margin_left = 56.0
+margin_right = 65.0
 margin_bottom = 9.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -315,9 +350,9 @@ texture_normal = ExtResource( 11 )
 texture_pressed = ExtResource( 13 )
 texture_hover = ExtResource( 12 )
 
-[node name="DamageSort" type="TextureButton" parent="."]
-margin_left = 39.0
-margin_right = 48.0
+[node name="DamageSort" type="TextureButton" parent="TopBar/HBox"]
+margin_left = 65.0
+margin_right = 74.0
 margin_bottom = 9.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -325,6 +360,19 @@ enabled_focus_mode = 0
 texture_normal = ExtResource( 15 )
 texture_pressed = ExtResource( 16 )
 texture_hover = ExtResource( 14 )
+
+[node name="Shop" parent="." instance=ExtResource( 17 )]
+visible = false
+
+[node name="CardDisplay" parent="." instance=ExtResource( 7 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/RESET = SubResource( 6 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 8 )
+
+[node name="Tween" type="Tween" parent="."]
 
 [node name="Continue" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 27 )
@@ -341,15 +389,17 @@ bus = "SFX"
 [connection signal="mouse_entered" from="TopBar/ContinueButton" to="." method="_on_ContinueButton_mouse_entered"]
 [connection signal="mouse_exited" from="TopBar/ContinueButton" to="." method="_on_Sort_mouse_exited"]
 [connection signal="pressed" from="TopBar/ContinueButton" to="." method="_on_ContinueButton_pressed"]
-[connection signal="mouse_entered" from="ShopButton" to="." method="_on_ShopButton_mouse_entered"]
-[connection signal="mouse_exited" from="ShopButton" to="." method="_on_Sort_mouse_exited"]
-[connection signal="pressed" from="ShopButton" to="." method="_on_ShopButton_pressed"]
-[connection signal="mouse_entered" from="AlphaSort" to="." method="_on_AlphaSort_mouse_entered"]
-[connection signal="mouse_exited" from="AlphaSort" to="." method="_on_Sort_mouse_exited"]
-[connection signal="pressed" from="AlphaSort" to="." method="_on_AlphaSort_pressed"]
-[connection signal="mouse_entered" from="GoldSort" to="." method="_on_GoldSort_mouse_entered"]
-[connection signal="mouse_exited" from="GoldSort" to="." method="_on_Sort_mouse_exited"]
-[connection signal="pressed" from="GoldSort" to="." method="_on_GoldSort_pressed"]
-[connection signal="mouse_entered" from="DamageSort" to="." method="_on_DamageSort_mouse_entered"]
-[connection signal="mouse_exited" from="DamageSort" to="." method="_on_Sort_mouse_exited"]
-[connection signal="pressed" from="DamageSort" to="." method="_on_DamageSort_pressed"]
+[connection signal="mouse_entered" from="TopBar/HBox/Health" to="." method="_on_Health_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/Health" to="." method="_on_Sort_mouse_exited"]
+[connection signal="mouse_entered" from="TopBar/HBox/ShopButton" to="." method="_on_ShopButton_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/ShopButton" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="TopBar/HBox/ShopButton" to="." method="_on_ShopButton_pressed"]
+[connection signal="mouse_entered" from="TopBar/HBox/AlphaSort" to="." method="_on_AlphaSort_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/AlphaSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="TopBar/HBox/AlphaSort" to="." method="_on_AlphaSort_pressed"]
+[connection signal="mouse_entered" from="TopBar/HBox/GoldSort" to="." method="_on_GoldSort_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/GoldSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="TopBar/HBox/GoldSort" to="." method="_on_GoldSort_pressed"]
+[connection signal="mouse_entered" from="TopBar/HBox/DamageSort" to="." method="_on_DamageSort_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/HBox/DamageSort" to="." method="_on_Sort_mouse_exited"]
+[connection signal="pressed" from="TopBar/HBox/DamageSort" to="." method="_on_DamageSort_pressed"]

@@ -1,4 +1,3 @@
-tool
 extends VBoxContainer
 
 const Icon = preload("res://src/cards/Icon.tscn")
@@ -11,7 +10,7 @@ export(bool) var is_using_manual_mouse_entered = false setget set_is_using_manua
 
 func set_card(_card):
 	card = _card
-	if get_node("Damage"):
+	if !Engine.editor_hint and has_node("Damage"):
 		render_current_card()
 
 func set_is_using_manual_mouse_entered(_is_using_manual_mouse_entered):

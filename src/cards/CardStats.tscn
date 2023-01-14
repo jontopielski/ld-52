@@ -36,18 +36,3 @@ margin_right = 31.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 31, 7 )
 custom_constants/separation = 1
-
-[connection signal="mouse_entered" from="Damage/Icon" to="Damage/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Damage/Icon" to="Damage/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Damage/Icon2" to="Damage/Icon2" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Damage/Icon2" to="Damage/Icon2" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Damage/Icon3" to="Damage/Icon3" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Damage/Icon3" to="Damage/Icon3" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Damage/Icon7" to="Damage/Icon7" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Damage/Icon7" to="Damage/Icon7" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Shield/Icon" to="Shield/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Shield/Icon" to="Shield/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Gold/Icon" to="Gold/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Gold/Icon" to="Gold/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="Gold/Icon2" to="Gold/Icon2" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="Gold/Icon2" to="Gold/Icon2" method="_on_Icon_mouse_exited"]

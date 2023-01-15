@@ -1,12 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://src/cards/Card.gd" type="Script" id=1]
-[ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=2]
-[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
-[ext_resource path="res://resources/cards/Sword.tres" type="Resource" id=4]
-[ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=5]
-[ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=6]
-[ext_resource path="res://audio/sfx/battle/cannot_place_card.wav" type="AudioStream" id=7]
+[ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=1]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=2]
+[ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=3]
+[ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=4]
+[ext_resource path="res://src/cards/RewardCard.gd" type="Script" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
@@ -16,10 +14,7 @@
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
-[sub_resource type="StyleBoxEmpty" id=7]
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 17.5, 22 )
+[sub_resource type="StyleBoxEmpty" id=13]
 
 [sub_resource type="Animation" id=10]
 length = 0.001
@@ -58,18 +53,6 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("FlippedCard:rect_position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -189,10 +172,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.35, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0.35, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("FlippedCard:visible")
@@ -213,38 +196,24 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 0.5 ),
+"times": PoolRealArray( 0, 0.4, 0.55 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("FlippedCard:rect_position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
-}
 
-[node name="Card" type="Button"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -141.0
-margin_bottom = -100.0
+[node name="RewardCard" type="Button"]
+margin_right = 35.0
+margin_bottom = 44.0
 rect_min_size = Vector2( 32, 32 )
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/focus = SubResource( 5 )
 custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
-script = ExtResource( 1 )
-card = ExtResource( 4 )
+custom_styles/normal = SubResource( 13 )
+script = ExtResource( 5 )
 
 [node name="BaseCard" type="TextureRect" parent="."]
 anchor_left = 0.5
@@ -258,33 +227,28 @@ margin_bottom = 22.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_pivot_offset = Vector2( 18, 22 )
-texture = ExtResource( 2 )
+mouse_filter = 2
+texture = ExtResource( 4 )
 
 [node name="Title" type="Label" parent="BaseCard"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -10.0
+margin_left = -15.5
 margin_top = 1.0
-margin_right = 10.0
+margin_right = 15.5
 margin_bottom = 8.0
 grow_horizontal = 2
-mouse_filter = 1
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = ExtResource( 3 )
-text = "Sword"
-align = 1
+custom_fonts/font = ExtResource( 2 )
+text = "Test"
 valign = 1
 uppercase = true
 
-[node name="CardStats" parent="BaseCard" instance=ExtResource( 6 )]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -15.5
-margin_top = -34.0
-margin_right = 15.5
-margin_bottom = 0.0
+[node name="CardStats" parent="BaseCard" instance=ExtResource( 1 )]
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 33.0
+margin_bottom = 44.0
 
 [node name="FlippedCard" type="TextureRect" parent="."]
 visible = false
@@ -292,14 +256,8 @@ margin_right = 35.0
 margin_bottom = 44.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 18, 22 )
-texture = ExtResource( 5 )
-
-[node name="CardArea" type="Area2D" parent="."]
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardArea"]
-position = Vector2( 17.5, 22 )
-shape = SubResource( 8 )
+mouse_filter = 2
+texture = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "RESET"
@@ -310,22 +268,17 @@ anims/flip_spawn = SubResource( 12 )
 
 [node name="Tween" type="Tween" parent="."]
 
+[node name="DelayShowTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
 [node name="SpawnStartYPosition" type="Position2D" parent="."]
-position = Vector2( 90, 160 )
+position = Vector2( 90, -50 )
 
 [node name="SpawnEndYPosition" type="Position2D" parent="."]
-position = Vector2( 91, 86 )
+position = Vector2( 90, 40 )
 
-[node name="DiscardEndYPosition" type="Position2D" parent="."]
-position = Vector2( 91, -38 )
-
-[node name="Error" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
-
-[connection signal="button_down" from="." to="." method="_on_Card_button_down"]
-[connection signal="button_up" from="." to="." method="_on_Card_button_up"]
-[connection signal="pressed" from="." to="." method="_on_Card_pressed"]
-[connection signal="mouse_entered" from="BaseCard/Title" to="." method="_on_Title_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Title" to="." method="_on_Title_mouse_exited"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
+[connection signal="mouse_entered" from="." to="." method="_on_MapCard_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_MapCard_mouse_exited"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="timeout" from="DelayShowTimer" to="." method="_on_DelayShowTimer_timeout"]

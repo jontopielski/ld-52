@@ -257,15 +257,6 @@ rect_pivot_offset = Vector2( 18, 22 )
 mouse_filter = 2
 texture = ExtResource( 2 )
 
-[node name="CountLabel" type="Label" parent="."]
-visible = false
-margin_left = 10.0
-margin_top = 9.5
-margin_right = 14.0
-margin_bottom = 16.5
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "4"
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "RESET"
 anims/RESET = SubResource( 10 )

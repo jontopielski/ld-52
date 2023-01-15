@@ -6,6 +6,7 @@
 [node name="CardStats" type="VBoxContainer"]
 margin_right = 31.0
 margin_bottom = 34.0
+mouse_filter = 2
 custom_constants/separation = 2
 script = ExtResource( 1 )
 card = ExtResource( 2 )
@@ -14,6 +15,7 @@ card = ExtResource( 2 )
 margin_right = 31.0
 margin_bottom = 7.0
 rect_min_size = Vector2( 31, 7 )
+mouse_filter = 2
 custom_constants/separation = 1
 
 [node name="Shield" type="HBoxContainer" parent="."]
@@ -21,6 +23,7 @@ margin_top = 9.0
 margin_right = 31.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 31, 7 )
+mouse_filter = 2
 custom_constants/separation = 1
 
 [node name="Gold" type="HBoxContainer" parent="."]
@@ -28,6 +31,7 @@ margin_top = 18.0
 margin_right = 31.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 31, 7 )
+mouse_filter = 2
 custom_constants/separation = 1
 
 [node name="Effects" type="HBoxContainer" parent="."]
@@ -35,4 +39,5 @@ margin_top = 27.0
 margin_right = 31.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 31, 7 )
+mouse_filter = 2
 custom_constants/separation = 1

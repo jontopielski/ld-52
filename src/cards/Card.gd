@@ -45,7 +45,7 @@ func _process(delta):
 		elif len(colliding_enemies) == 1 and hovered_enemy_ref != colliding_enemies.front():
 			hovered_enemy_ref = colliding_enemies.front()
 	if pressed:
-		if is_hovering_enemy and hovered_enemy_ref.health > 0 and Rect2(hovered_enemy_ref.rect_position, hovered_enemy_ref.rect_size + Vector2(0, 6)).grow(4).encloses(Rect2(get_global_mouse_position(), Vector2.ZERO)):
+		if is_hovering_enemy and hovered_enemy_ref.health > 0 and Rect2(hovered_enemy_ref.rect_position, hovered_enemy_ref.rect_size + Vector2(0, 4)).grow(4).encloses(Rect2(get_global_mouse_position(), Vector2.ZERO)):
 			rect_global_position = hovered_enemy_ref.rect_position + PLACEMENT_OFFSET
 		else:
 			rect_global_position = get_global_mouse_position() + mouse_offset
@@ -77,10 +77,11 @@ func _on_Card_button_up():
 			$AnimationPlayer.play("flip_discard")
 			float_card_up_and_destroy()
 		else:
+			$Error.play()
 			yield(get_tree().create_timer(0.05), "timeout")
 			var TWEEN_TIME = rect_position.distance_to(position_before_hold) / 200.0
 			TWEEN_TIME = 0.3
-			$Tween.interpolate_property(self, "rect_position", rect_position, position_before_hold, TWEEN_TIME, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+			$Tween.interpolate_property(self, "rect_position", rect_position, position_before_hold, TWEEN_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			$Tween.start()
 
 func float_card_up_and_destroy():
@@ -88,6 +89,14 @@ func float_card_up_and_destroy():
 	is_queued_for_deletion = true
 	var TWEEN_TIME = .4
 	$Tween.interpolate_property(self, "rect_position", rect_position, Vector2(rect_position.x, $DiscardEndYPosition.position.y), TWEEN_TIME, Tween.TRANS_EXPO, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield($Tween, "tween_all_completed")
+	queue_free()
+
+func float_card_down_and_destroy():
+	is_queued_for_deletion = true
+	var TWEEN_TIME = rand_range(.35, .5)
+	$Tween.interpolate_property(self, "rect_position", rect_position, Vector2(rect_position.x, $SpawnStartYPosition.position.y), TWEEN_TIME, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
 	yield($Tween, "tween_all_completed")
 	queue_free()

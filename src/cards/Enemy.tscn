@@ -318,6 +318,9 @@ position = Vector2( 90, -50 )
 [node name="SpawnEndYPosition" type="Position2D" parent="."]
 position = Vector2( 90, 14 )
 
+[node name="DiscardEndYPosition" type="Position2D" parent="."]
+position = Vector2( 91, -38 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 8 )
 anims/die = SubResource( 10 )
@@ -343,9 +346,3 @@ bus = "SFX"
 [connection signal="mouse_exited" from="BaseCard/Damage/Icon6" to="BaseCard/Damage/Icon6" method="_on_Icon_mouse_exited"]
 [connection signal="mouse_entered" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_entered"]
 [connection signal="mouse_exited" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon6" to="BaseCard/Health/Icon6" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon6" to="BaseCard/Health/Icon6" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon7" to="BaseCard/Health/Icon7" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon7" to="BaseCard/Health/Icon7" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon8" to="BaseCard/Health/Icon8" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon8" to="BaseCard/Health/Icon8" method="_on_Icon_mouse_exited"]

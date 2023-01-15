@@ -24,7 +24,7 @@ func _ready():
 	render_current_enemy()
 
 func attack_player():
-	var TWEEN_TIME = 0.25
+	var TWEEN_TIME = 0.15
 	$Tween.interpolate_property(self, "rect_position", rect_position, rect_position + attack_player_offset, TWEEN_TIME, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
 	yield($Tween, "tween_all_completed")
@@ -37,6 +37,13 @@ func clear_existing_icons():
 		child.queue_free()
 	for child in $BaseCard/Health.get_children():
 		child.queue_free()
+
+func float_card_up_and_destroy():
+	var TWEEN_TIME = rand_range(.35, .45)
+	$Tween.interpolate_property(self, "rect_position", rect_position, Vector2(rect_position.x, $DiscardEndYPosition.position.y), TWEEN_TIME, Tween.TRANS_EXPO, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield($Tween, "tween_all_completed")
+	queue_free()
 
 func die():
 	$Die.play()

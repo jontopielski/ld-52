@@ -1,14 +1,22 @@
 extends CanvasLayer
 
+const CursorColored = preload("res://sprites/ui/CursorOutlineColored.png")
+const CursorWhite = preload("res://sprites/ui/CursorOutlineWhite.png")
+
 export(bool) var hide_menu_at_start = true
 
 var use_white_cursor = true
 
 func _ready():
+	$Menu/Background/Options/Sliders/Hints/BasicHints.pressed = Globals.show_basic_hints
 	if hide_menu_at_start:
 		get_tree().paused = false
 		$Menu.hide()
 	$Menu/Background/Options/Sliders/FullscreenBox.pressed = OS.window_fullscreen
+	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+	else:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -60,3 +68,18 @@ func _on_MusicSlider_value_changed(value):
 func _on_WhiteCursorBox_toggled(button_pressed):
 	use_white_cursor = button_pressed
 	CursorManager.update_all_cursors()
+
+func _on_BasicHints_toggled(button_pressed):
+	Globals.show_basic_hints = button_pressed
+
+func _on_WhiteCursorBox_mouse_entered():
+	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored
+	else:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+
+func _on_WhiteCursorBox_mouse_exited():
+	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+	else:
+		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored

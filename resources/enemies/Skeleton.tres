@@ -7,5 +7,5 @@
 script = ExtResource( 1 )
 name = "Skeleton"
 damage = 3
-health = 4
+health = 1
 drops = [ ExtResource( 2 ) ]

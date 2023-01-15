@@ -16,6 +16,14 @@ func set_card(_card):
 func set_is_using_manual_mouse_entered(_is_using_manual_mouse_entered):
 	is_using_manual_mouse_entered = _is_using_manual_mouse_entered
 
+func is_mouse_hovering_over_any_icons():
+	var is_hovering = false
+	for list in get_children():
+		for icon in list.get_children():
+			if icon.get_global_rect().encloses(Rect2(get_global_mouse_position(), Vector2.ZERO)):
+				is_hovering = true
+	return is_hovering
+
 func render_current_card():
 	clear_existing_icons()
 	add_icon_for_amount(Damage, $Damage, card.damage)

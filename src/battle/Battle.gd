@@ -49,7 +49,8 @@ func spawn_enemies():
 		next_enemy.set_enemy(map_node.enemies.front())
 		$Enemies.add_child(next_enemy)
 		var extra_space_at_end = (get_viewport_rect().size.x / enemy_count) - CARD_WIDTH
-		next_enemy.spawn_in_from_x_pos(4 + (extra_space_at_end / 2.0) + ((get_viewport_rect().size.x - 8) / enemy_count) * i)
+		next_enemy.spawn_in_from_x_pos(3 + (extra_space_at_end / 2.0) + ((get_viewport_rect().size.x - 8) / enemy_count) * i)
+		yield(get_tree().create_timer(0.1), "timeout")
 
 func setup_player_deck():
 	randomize()
@@ -62,10 +63,20 @@ func update_ui():
 	$TopBar/HBox/Health/Count.text = "%d/%d" % [Globals.current_health, Globals.max_health]
 	$ShieldHealth/Health/Label.text = str(Globals.current_health)
 
+func player_won_the_fight():
+	yield(get_tree().create_timer(1.0), "timeout")
+	for card in $PlayerCards.get_children():
+		card.float_card_down_and_destroy()
+	for enemy in $Enemies.get_children():
+		enemy.float_card_up_and_destroy()
+	yield(get_tree().create_timer(0.25), "timeout")
+	$CardReward.spawn_rewards()
+
 func enemy_queued_for_death(enemy):
 	enemy_count -= 1
 	if enemy_count == 0:
 		$TopBar/EndTurnButton.hide()
+		player_won_the_fight()
 
 func deal_player_hand():
 	for i in range(0, INITIAL_HAND_SIZE):
@@ -89,10 +100,11 @@ func deal_player_hand():
 		$PlayerCards.add_child(next_card_obj)
 		next_card_obj.set_card(next_card)
 		var extra_space_at_end = (get_viewport_rect().size.x / INITIAL_HAND_SIZE) - CARD_WIDTH
-		next_card_obj.spawn_in_from_x_pos(4 + (extra_space_at_end / 2.0) + ((get_viewport_rect().size.x - 8) / INITIAL_HAND_SIZE) * i)
+		next_card_obj.spawn_in_from_x_pos(3 + (extra_space_at_end / 2.0) + ((get_viewport_rect().size.x - 8) / INITIAL_HAND_SIZE) * i)
 		update_ui()
 	yield(get_tree().create_timer(CARD_DEAL_TIME_OFFSET * 2), "timeout")
-	$TopBar/EndTurnButton.show()
+	if enemy_count > 0:
+		$TopBar/EndTurnButton.show()
 
 func play_deal_card_sound(card_index):
 	yield(get_tree().create_timer(0.25), "timeout")

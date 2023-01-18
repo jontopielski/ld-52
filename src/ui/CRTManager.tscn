@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/ui/Screenshot.png" type="Texture" id=1]
+[ext_resource path="res://src/ui/CRTManager.gd" type="Script" id=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+void fragment() {
+	float distance_from_center = abs(length(SCREEN_UV - vec2(0.5, 0.5)) - length(vec2(0.75, 0.75)));
+	COLOR = texture(SCREEN_TEXTURE, SCREEN_UV);
+	COLOR.rgb = mix(COLOR.rgb, vec3(mix(COLOR.r, 0.25, mix(0.1, 0.15, (COLOR.r + COLOR.g + COLOR.b) / 3.0)), mix(COLOR.g, 0.25, mix(0.1, 0.15, (COLOR.r + COLOR.g + COLOR.b) / 3.0)), mix(COLOR.b, 0.5, mix(0.25, 0.1, (COLOR.r + COLOR.g + COLOR.b) / 3.0))), float(int(UV.y * 144.0) % 2 == 0));
+	COLOR.r = mix(COLOR.r - .05, COLOR.r, min(0.5, distance_from_center));
+	COLOR.g = mix(COLOR.g - .05, COLOR.g, min(0.7, distance_from_center));
+	COLOR.b = mix(COLOR.b - .05, COLOR.b, min(0.9, distance_from_center));
+	COLOR.rgb = mix(COLOR.rgb - vec3(0.5), COLOR.rgb, min(0.9, distance_from_center));
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+
+[node name="CRTManager" type="CanvasLayer"]
+layer = 6
+script = ExtResource( 2 )
+
+[node name="Example" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 88, 72 )
+mouse_filter = 2
+texture = ExtResource( 1 )
+stretch_mode = 2
+
+[node name="CRT" type="ColorRect" parent="."]
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

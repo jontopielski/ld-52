@@ -1,13 +1,14 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/utils/Globals.gd" type="Script" id=1]
-[ext_resource path="res://resources/cards/Shield.tres" type="Resource" id=2]
-[ext_resource path="res://resources/cards/Sword.tres" type="Resource" id=3]
-[ext_resource path="res://resources/cards/Club.tres" type="Resource" id=4]
-[ext_resource path="res://resources/cards/Dagger.tres" type="Resource" id=5]
-[ext_resource path="res://resources/cards/Helm.tres" type="Resource" id=6]
+[ext_resource path="res://resources/cards/normal/Shield.tres" type="Resource" id=2]
+[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=3]
+[ext_resource path="res://resources/cards/normal/Club.tres" type="Resource" id=4]
+[ext_resource path="res://resources/cards/normal/Dagger.tres" type="Resource" id=5]
+[ext_resource path="res://resources/cards/normal/Helm.tres" type="Resource" id=6]
 
 [node name="Globals" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )
 deck = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 6 ) ]
 show_basic_hints = false

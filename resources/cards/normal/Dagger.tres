@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://resources/cards/BaseCard.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+name = "Dagger"
+description = ""
+rarity = 1
+cost = 0
+damage = 1
+shield = 0
+gold = 1

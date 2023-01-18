@@ -26,7 +26,7 @@ func unpress_if_not_id(id):
 	if get_instance_id() != id:
 		pressed = false
 
-func set_resource(_resource):
+func set_resource(_resource, show_symbols=true):
 	resource = _resource
 	var symbol = ""
 	match resource.resource_path.split("/")[3]:
@@ -39,7 +39,10 @@ func set_resource(_resource):
 		"relics":
 			item_type = Enums.ItemType.RELIC
 			symbol = Globals.get_relic_symbol()
-	text = symbol + "/" + resource.name.to_upper() + "/%d" % resource.cost
+	if show_symbols:
+		text = symbol + "/" + resource.name.to_upper() + "/%d" % resource.cost
+	else:
+		text = resource.name.to_upper()
 
 func trim_item_name_if_necessary(child_count, max_characters_in_name):
 	var current_name_split = text.split("/")
@@ -50,6 +53,7 @@ func _on_ShopTab_toggled(button_pressed):
 	if button_pressed:
 		get_tree().call_group("shop_tabs", "unpress_if_not_id", get_instance_id())
 		get_tree().call_group("Shop", "display_item", resource, item_type)
+		get_tree().call_group("Editor", "display_item", resource)
 		disabled = true
 	else:
 		disabled = false

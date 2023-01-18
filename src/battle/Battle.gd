@@ -36,7 +36,7 @@ func _process(delta):
 		Globals.current_health = 0
 		update_ui()
 	elif OS.is_debug_build() and Input.is_action_just_pressed("ui_jump_to_map"):
-		get_tree().change_scene_to(Globals.Map)
+		TransitionScreen.transition_to(Globals.Map)
 
 func spawn_explosion_at_pos(pos):
 	var next_explosion = Explosion.instance()
@@ -113,6 +113,10 @@ func play_deal_card_sound(card_index):
 
 func discard_card(card):
 	current_discard.push_back(card)
+	update_ui()
+
+func add_card(card):
+	current_deck.push_back(card)
 	update_ui()
 
 func _on_EndTurnButton_pressed():
@@ -192,9 +196,9 @@ func _on_EndTurnButton_mouse_entered():
 
 func _on_ContinueButton_pressed():
 	if $GameOver.visible:
-		get_tree().change_scene_to(Globals.MainMenu)
+		TransitionScreen.transition_to(Globals.MainMenu)
 	else:
-		get_tree().change_scene_to(Globals.Map)
+		TransitionScreen.transition_to(Globals.Map)
 
 func _on_Enemies_child_exiting_tree(node):
 	if $Enemies.get_child_count() == 1:

@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="blood draw"
-run/main_scene="res://src/map/Map.tscn"
+run/main_scene="res://src/menus/MainMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -22,6 +22,8 @@ Globals="*res://src/utils/Globals.tscn"
 SettingsMenu="*res://src/menus/SettingsMenu.tscn"
 CursorManager="*res://src/ui/CursorManager.tscn"
 PaletteManager="*res://src/ui/PaletteManager.tscn"
+TransitionScreen="*res://src/ui/TransitionScreen.tscn"
+CRTManager="*res://src/ui/CRTManager.tscn"
 
 [display]
 

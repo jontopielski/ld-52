@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/cards/Card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/menus/CardEditor.gd" type="Script" id=2]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+
+[node name="ResourceEditor" type="CanvasLayer"]
+
+[node name="CardEditor" type="Control" parent="." groups=["Editor"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="Card" parent="CardEditor" instance=ExtResource( 1 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.5
+margin_top = -22.0
+margin_right = 17.5
+margin_bottom = 22.0
+
+[node name="Tabs" type="VBoxContainer" parent="CardEditor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 11.0
+margin_bottom = -11.0
+mouse_filter = 2
+custom_constants/separation = 2
+
+[node name="Tab_01" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_right = 176.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+custom_constants/separation = 2
+
+[node name="Tab_02" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_top = 11.0
+margin_right = 176.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+size_flags_vertical = 2
+custom_constants/separation = 2
+
+[node name="Tab_03" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_top = 102.0
+margin_right = 176.0
+margin_bottom = 111.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+custom_constants/separation = 2
+
+[node name="Tab_04" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_top = 113.0
+margin_right = 176.0
+margin_bottom = 122.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+custom_constants/separation = 2
+
+[node name="Description" type="Label" parent="CardEditor"]
+visible = false
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 28.0
+margin_bottom = 37.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/normal = SubResource( 1 )
+text = "Description of the card goes here!"
+align = 1
+valign = 1
+uppercase = true

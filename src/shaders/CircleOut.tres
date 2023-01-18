@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=18]
+code = "shader_type canvas_item;
+
+uniform float visible_diameter : hint_range(0.0, 1.0) = 1.0;
+uniform vec2 origin = vec2(0.5, 0.5);
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR = mix(vec4(0.0), COLOR, float(bool(length(UV - origin) > visible_diameter)));
+}"
+
+[resource]
+shader = SubResource( 18 )
+shader_param/visible_diameter = 0.0
+shader_param/origin = Vector2( 0.5, 0.5 )

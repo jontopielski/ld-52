@@ -9,10 +9,8 @@ enum NodeType {
 enum Rarity {
 	NONE,
 	COMMON,
-	MEDIUM,
-	RARE,
-	VERY_RARE,
-	ULTRA_RARE
+	UNCOMMON,
+	RARE
 }
 
 enum ItemType {

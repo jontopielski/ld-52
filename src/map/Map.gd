@@ -88,7 +88,7 @@ func change_to_battle():
 		node_queue_positions.push_back(map_node.rect_position)
 	Globals.node_queue_positions = node_queue_positions
 	Globals.current_node_queue_resources = saved_node_queue
-	get_tree().change_scene_to(Globals.Battle)
+	TransitionScreen.transition_to(Globals.Battle)
 
 func generate_map(spawn_map_nodes = true):
 	var points = $PolygonPath.polygon
@@ -151,9 +151,6 @@ func _on_ShopButton_pressed():
 		close_shop()
 	else:
 		open_shop()
-
-func _on_ConfirmButton_pressed():
-	pass # Replace with function body.
 
 func _on_ShopButton_mouse_entered():
 	get_tree().call_group("Terminal", "set_terminal_text", "Open the shop (tab)")

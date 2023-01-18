@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://src/menus/SettingsMenu.gd" type="Script" id=1]
 [ext_resource path="res://sprites/ui/Dither.png" type="Texture" id=2]
@@ -6,19 +6,32 @@
 [ext_resource path="res://sprites/ui/Close_Hover.png" type="Texture" id=4]
 [ext_resource path="res://sprites/ui/Close_Pressed.png" type="Texture" id=5]
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=6]
-[ext_resource path="res://sprites/ui/FullScreen_Unchecked.png" type="Texture" id=7]
-[ext_resource path="res://sprites/ui/FullScreen_Checked.png" type="Texture" id=8]
-[ext_resource path="res://sprites/ui/Slider_Tick.png" type="Texture" id=9]
-[ext_resource path="res://sprites/ui/SFX_Grabber.png" type="Texture" id=10]
+[ext_resource path="res://sprites/ui/Checkbox_Unchecked.png" type="Texture" id=7]
+[ext_resource path="res://sprites/ui/Checkbox_Checked.png" type="Texture" id=8]
+[ext_resource path="res://sprites/settings/Slider_Tick.png" type="Texture" id=9]
+[ext_resource path="res://sprites/settings/SFX_Grabber.png" type="Texture" id=10]
 [ext_resource path="res://audio/sfx/settings/open_settings.wav" type="AudioStream" id=11]
-[ext_resource path="res://sprites/ui/Palette_Grabber.png" type="Texture" id=12]
-[ext_resource path="res://sprites/ui/Music_Grabber.png" type="Texture" id=13]
+[ext_resource path="res://sprites/settings/Palette_Grabber.png" type="Texture" id=12]
+[ext_resource path="res://sprites/settings/Music_Grabber.png" type="Texture" id=13]
 [ext_resource path="res://audio/sfx/settings/close_settings.wav" type="AudioStream" id=14]
 [ext_resource path="res://audio/sfx/ui/beep.wav" type="AudioStream" id=15]
 [ext_resource path="res://sprites/symbols/Damage.png" type="Texture" id=16]
 [ext_resource path="res://sprites/symbols/Shield.png" type="Texture" id=17]
 [ext_resource path="res://sprites/symbols/Gold.png" type="Texture" id=18]
-[ext_resource path="res://sprites/ui/CursorOutlineWhite.png" type="Texture" id=19]
+[ext_resource path="res://sprites/settings/CursorOutlineWhite.png" type="Texture" id=19]
+[ext_resource path="res://sprites/settings/Editor_Normal.png" type="Texture" id=20]
+[ext_resource path="res://sprites/settings/Editor_Hover.png" type="Texture" id=21]
+[ext_resource path="res://sprites/settings/Editor_Pressed.png" type="Texture" id=22]
+[ext_resource path="res://sprites/ui/WindowTemplate.png" type="Texture" id=23]
+
+[sub_resource type="StyleBoxTexture" id=9]
+texture = ExtResource( 23 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 10.0
+margin_bottom = 4.0
+expand_margin_top = 8.0
 
 [sub_resource type="StyleBoxFlat" id=10]
 draw_center = false
@@ -44,7 +57,7 @@ border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=8]
 
-[sub_resource type="StyleBoxEmpty" id=9]
+[sub_resource type="StyleBoxEmpty" id=11]
 
 [node name="SettingsMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -61,44 +74,49 @@ anchor_bottom = 1.0
 texture = ExtResource( 2 )
 stretch_mode = 2
 
-[node name="Background" type="ColorRect" parent="Menu"]
+[node name="Window" type="Panel" parent="Menu"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -67.0
-margin_top = -49.0
+margin_top = -46.0
 margin_right = 67.0
-margin_bottom = 49.0
+margin_bottom = 46.0
+custom_styles/panel = SubResource( 9 )
 
-[node name="Outline" type="ColorRect" parent="Menu/Background"]
-visible = false
+[node name="Outline" type="ColorRect" parent="Menu/Window"]
+show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.0
-margin_top = -1.0
+margin_top = -9.0
 margin_right = 1.0
 margin_bottom = 1.0
 
-[node name="Border" type="Panel" parent="Menu/Background"]
+[node name="Border" type="Panel" parent="Menu/Window"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 10 )
 
-[node name="TopBar" type="ColorRect" parent="Menu/Background"]
-anchor_right = 1.0
-margin_bottom = 9.0
-color = Color( 0, 0, 0, 1 )
+[node name="EditorButton" type="TextureButton" parent="Menu/Window"]
+margin_top = -8.0
+margin_right = 9.0
+margin_bottom = 1.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 20 )
+texture_pressed = ExtResource( 22 )
+texture_hover = ExtResource( 21 )
 
-[node name="CloseButton" type="TextureButton" parent="Menu/Background/TopBar"]
+[node name="CloseButton" type="TextureButton" parent="Menu/Window"]
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
 margin_left = -9.0
-margin_top = -4.5
-margin_bottom = 4.5
+margin_top = -8.0
+margin_bottom = 1.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 enabled_focus_mode = 0
@@ -107,15 +125,13 @@ texture_pressed = ExtResource( 5 )
 texture_hover = ExtResource( 4 )
 stretch_mode = 3
 
-[node name="Label" type="Label" parent="Menu/Background/TopBar"]
+[node name="Label" type="Label" parent="Menu/Window"]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
 margin_left = -20.0
-margin_top = -4.5
+margin_top = -8.0
 margin_right = 20.0
-margin_bottom = 4.5
+margin_bottom = 1.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 6 )
 text = "Settings"
@@ -123,26 +139,26 @@ align = 1
 valign = 1
 uppercase = true
 
-[node name="Options" type="HBoxContainer" parent="Menu/Background"]
+[node name="Options" type="HBoxContainer" parent="Menu/Window"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -50.0
-margin_top = -27.0
+margin_top = -29.5
 margin_right = 50.0
-margin_bottom = 32.0
+margin_bottom = 29.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Names" type="VBoxContainer" parent="Menu/Background/Options"]
+[node name="Names" type="VBoxContainer" parent="Menu/Window/Options"]
 margin_right = 59.0
-margin_bottom = 59.0
+margin_bottom = 72.0
 size_flags_horizontal = 3
 custom_constants/separation = 6
 alignment = 1
 
-[node name="Fullscreen" type="Label" parent="Menu/Background/Options/Names"]
+[node name="Fullscreen" type="Label" parent="Menu/Window/Options/Names"]
 margin_right = 59.0
 margin_bottom = 7.0
 size_flags_horizontal = 3
@@ -151,7 +167,7 @@ text = "Fullscreen:"
 valign = 1
 uppercase = true
 
-[node name="Music" type="Label" parent="Menu/Background/Options/Names"]
+[node name="Music" type="Label" parent="Menu/Window/Options/Names"]
 margin_top = 13.0
 margin_right = 59.0
 margin_bottom = 20.0
@@ -161,7 +177,7 @@ text = "Music Volume:"
 valign = 1
 uppercase = true
 
-[node name="SFX" type="Label" parent="Menu/Background/Options/Names"]
+[node name="SFX" type="Label" parent="Menu/Window/Options/Names"]
 margin_top = 26.0
 margin_right = 59.0
 margin_bottom = 33.0
@@ -171,13 +187,13 @@ text = "Sound Volume:"
 valign = 1
 uppercase = true
 
-[node name="Palette" type="HBoxContainer" parent="Menu/Background/Options/Names"]
+[node name="Palette" type="HBoxContainer" parent="Menu/Window/Options/Names"]
 margin_top = 39.0
 margin_right = 59.0
 margin_bottom = 46.0
 custom_constants/separation = 0
 
-[node name="Palette" type="Label" parent="Menu/Background/Options/Names/Palette"]
+[node name="Palette" type="Label" parent="Menu/Window/Options/Names/Palette"]
 margin_right = 33.0
 margin_bottom = 7.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -185,13 +201,13 @@ text = "palette "
 valign = 1
 uppercase = true
 
-[node name="Mouse" type="TextureRect" parent="Menu/Background/Options/Names/Palette"]
+[node name="Mouse" type="TextureRect" parent="Menu/Window/Options/Names/Palette"]
 margin_left = 33.0
 margin_right = 40.0
 margin_bottom = 7.0
 texture = ExtResource( 19 )
 
-[node name="Text" type="Label" parent="Menu/Background/Options/Names/Palette"]
+[node name="Text" type="Label" parent="Menu/Window/Options/Names/Palette"]
 margin_left = 40.0
 margin_right = 42.0
 margin_bottom = 7.0
@@ -200,12 +216,22 @@ text = ":"
 valign = 1
 uppercase = true
 
-[node name="BasicHint" type="HBoxContainer" parent="Menu/Background/Options/Names"]
+[node name="CRT" type="Label" parent="Menu/Window/Options/Names"]
 margin_top = 52.0
 margin_right = 59.0
 margin_bottom = 59.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "CRT MONITOR:"
+valign = 1
+uppercase = true
 
-[node name="Hint" type="Label" parent="Menu/Background/Options/Names/BasicHint"]
+[node name="BasicHint" type="HBoxContainer" parent="Menu/Window/Options/Names"]
+margin_top = 65.0
+margin_right = 59.0
+margin_bottom = 72.0
+
+[node name="Hint" type="Label" parent="Menu/Window/Options/Names/BasicHint"]
 margin_right = 47.0
 margin_bottom = 7.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -213,14 +239,14 @@ text = "Basic Hints:"
 valign = 1
 uppercase = true
 
-[node name="Sliders" type="VBoxContainer" parent="Menu/Background/Options"]
+[node name="Sliders" type="VBoxContainer" parent="Menu/Window/Options"]
 margin_left = 63.0
 margin_right = 100.0
-margin_bottom = 59.0
+margin_bottom = 72.0
 custom_constants/separation = 6
 alignment = 1
 
-[node name="FullscreenBox" type="CheckBox" parent="Menu/Background/Options/Sliders"]
+[node name="FullscreenBox" type="CheckBox" parent="Menu/Window/Options/Sliders"]
 margin_right = 7.0
 margin_bottom = 7.0
 focus_mode = 0
@@ -242,7 +268,7 @@ custom_styles/hover_pressed = SubResource( 6 )
 custom_styles/normal = SubResource( 1 )
 enabled_focus_mode = 0
 
-[node name="MusicSlider" type="HSlider" parent="Menu/Background/Options/Sliders"]
+[node name="MusicSlider" type="HSlider" parent="Menu/Window/Options/Sliders"]
 margin_top = 13.0
 margin_right = 37.0
 margin_bottom = 20.0
@@ -255,14 +281,14 @@ custom_icons/grabber_highlight = ExtResource( 13 )
 custom_icons/grabber = ExtResource( 13 )
 custom_styles/slider = SubResource( 7 )
 custom_styles/grabber_area_highlight = SubResource( 8 )
-custom_styles/grabber_area = SubResource( 9 )
+custom_styles/grabber_area = SubResource( 11 )
 max_value = 10.0
 value = 10.0
 scrollable = false
 tick_count = 11
 ticks_on_borders = true
 
-[node name="SFXSlider" type="HSlider" parent="Menu/Background/Options/Sliders"]
+[node name="SFXSlider" type="HSlider" parent="Menu/Window/Options/Sliders"]
 margin_top = 26.0
 margin_right = 37.0
 margin_bottom = 33.0
@@ -275,20 +301,20 @@ custom_icons/grabber_highlight = ExtResource( 10 )
 custom_icons/grabber = ExtResource( 10 )
 custom_styles/slider = SubResource( 7 )
 custom_styles/grabber_area_highlight = SubResource( 8 )
-custom_styles/grabber_area = SubResource( 9 )
+custom_styles/grabber_area = SubResource( 11 )
 max_value = 10.0
 value = 10.0
 scrollable = false
 tick_count = 11
 ticks_on_borders = true
 
-[node name="Palette" type="HBoxContainer" parent="Menu/Background/Options/Sliders"]
+[node name="Palette" type="HBoxContainer" parent="Menu/Window/Options/Sliders"]
 margin_top = 39.0
 margin_right = 37.0
 margin_bottom = 46.0
 custom_constants/separation = 3
 
-[node name="PaletteSlider" type="HSlider" parent="Menu/Background/Options/Sliders/Palette"]
+[node name="PaletteSlider" type="HSlider" parent="Menu/Window/Options/Sliders/Palette"]
 margin_right = 27.0
 margin_bottom = 7.0
 focus_mode = 0
@@ -300,14 +326,14 @@ custom_icons/grabber_highlight = ExtResource( 12 )
 custom_icons/grabber = ExtResource( 12 )
 custom_styles/slider = SubResource( 7 )
 custom_styles/grabber_area_highlight = SubResource( 8 )
-custom_styles/grabber_area = SubResource( 9 )
+custom_styles/grabber_area = SubResource( 11 )
 max_value = 10.0
 step = 2.0
 scrollable = false
 tick_count = 6
 ticks_on_borders = true
 
-[node name="WhiteCursorBox" type="CheckBox" parent="Menu/Background/Options/Sliders/Palette"]
+[node name="WhiteCursorBox" type="CheckBox" parent="Menu/Window/Options/Sliders/Palette"]
 margin_left = 30.0
 margin_right = 37.0
 margin_bottom = 7.0
@@ -331,12 +357,36 @@ custom_styles/normal = SubResource( 1 )
 pressed = true
 enabled_focus_mode = 0
 
-[node name="Hints" type="HBoxContainer" parent="Menu/Background/Options/Sliders"]
+[node name="CRTBox" type="CheckBox" parent="Menu/Window/Options/Sliders"]
 margin_top = 52.0
-margin_right = 37.0
+margin_right = 7.0
 margin_bottom = 59.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+custom_icons/radio_checked_disabled = ExtResource( 8 )
+custom_icons/radio_checked = ExtResource( 8 )
+custom_icons/checked_disabled = ExtResource( 8 )
+custom_icons/radio_unchecked_disabled = ExtResource( 7 )
+custom_icons/checked = ExtResource( 8 )
+custom_icons/radio_unchecked = ExtResource( 7 )
+custom_icons/unchecked_disabled = ExtResource( 7 )
+custom_icons/unchecked = ExtResource( 7 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/hover_pressed = SubResource( 6 )
+custom_styles/normal = SubResource( 1 )
+pressed = true
+enabled_focus_mode = 0
 
-[node name="BasicHints" type="CheckBox" parent="Menu/Background/Options/Sliders/Hints"]
+[node name="Hints" type="HBoxContainer" parent="Menu/Window/Options/Sliders"]
+margin_top = 65.0
+margin_right = 37.0
+margin_bottom = 72.0
+
+[node name="BasicHints" type="CheckBox" parent="Menu/Window/Options/Sliders/Hints"]
 margin_right = 7.0
 margin_bottom = 7.0
 focus_mode = 0
@@ -359,24 +409,24 @@ custom_styles/normal = SubResource( 1 )
 pressed = true
 enabled_focus_mode = 0
 
-[node name="Basics" type="HBoxContainer" parent="Menu/Background/Options/Sliders/Hints"]
+[node name="Basics" type="HBoxContainer" parent="Menu/Window/Options/Sliders/Hints"]
 margin_left = 14.0
 margin_right = 37.0
 margin_bottom = 7.0
 custom_constants/separation = 1
 
-[node name="Basic01" type="TextureRect" parent="Menu/Background/Options/Sliders/Hints/Basics"]
+[node name="Basic01" type="TextureRect" parent="Menu/Window/Options/Sliders/Hints/Basics"]
 margin_right = 7.0
 margin_bottom = 7.0
 texture = ExtResource( 16 )
 
-[node name="Basic03" type="TextureRect" parent="Menu/Background/Options/Sliders/Hints/Basics"]
+[node name="Basic03" type="TextureRect" parent="Menu/Window/Options/Sliders/Hints/Basics"]
 margin_left = 8.0
 margin_right = 15.0
 margin_bottom = 7.0
 texture = ExtResource( 17 )
 
-[node name="Basic02" type="TextureRect" parent="Menu/Background/Options/Sliders/Hints/Basics"]
+[node name="Basic02" type="TextureRect" parent="Menu/Window/Options/Sliders/Hints/Basics"]
 margin_left = 16.0
 margin_right = 23.0
 margin_bottom = 7.0
@@ -404,14 +454,15 @@ bus = "SFX"
 stream = ExtResource( 15 )
 bus = "SFX"
 
-[connection signal="mouse_entered" from="Menu/Background/TopBar/CloseButton" to="." method="_on_CloseButton_mouse_entered"]
-[connection signal="mouse_exited" from="Menu/Background/TopBar/CloseButton" to="." method="_on_CloseButton_mouse_exited"]
-[connection signal="pressed" from="Menu/Background/TopBar/CloseButton" to="." method="_on_CloseButton_pressed"]
-[connection signal="toggled" from="Menu/Background/Options/Sliders/FullscreenBox" to="." method="_on_FullscreenBox_toggled"]
-[connection signal="value_changed" from="Menu/Background/Options/Sliders/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
-[connection signal="value_changed" from="Menu/Background/Options/Sliders/SFXSlider" to="." method="_on_SFXSlider_value_changed"]
-[connection signal="value_changed" from="Menu/Background/Options/Sliders/Palette/PaletteSlider" to="." method="_on_PaletteSlider_value_changed"]
-[connection signal="mouse_entered" from="Menu/Background/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_mouse_entered"]
-[connection signal="mouse_exited" from="Menu/Background/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_mouse_exited"]
-[connection signal="toggled" from="Menu/Background/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_toggled"]
-[connection signal="toggled" from="Menu/Background/Options/Sliders/Hints/BasicHints" to="." method="_on_BasicHints_toggled"]
+[connection signal="mouse_entered" from="Menu/Window/CloseButton" to="." method="_on_CloseButton_mouse_entered"]
+[connection signal="mouse_exited" from="Menu/Window/CloseButton" to="." method="_on_CloseButton_mouse_exited"]
+[connection signal="pressed" from="Menu/Window/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="toggled" from="Menu/Window/Options/Sliders/FullscreenBox" to="." method="_on_FullscreenBox_toggled"]
+[connection signal="value_changed" from="Menu/Window/Options/Sliders/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
+[connection signal="value_changed" from="Menu/Window/Options/Sliders/SFXSlider" to="." method="_on_SFXSlider_value_changed"]
+[connection signal="value_changed" from="Menu/Window/Options/Sliders/Palette/PaletteSlider" to="." method="_on_PaletteSlider_value_changed"]
+[connection signal="mouse_entered" from="Menu/Window/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_mouse_entered"]
+[connection signal="mouse_exited" from="Menu/Window/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_mouse_exited"]
+[connection signal="toggled" from="Menu/Window/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_toggled"]
+[connection signal="toggled" from="Menu/Window/Options/Sliders/CRTBox" to="." method="_on_CRTBox_toggled"]
+[connection signal="toggled" from="Menu/Window/Options/Sliders/Hints/BasicHints" to="." method="_on_BasicHints_toggled"]

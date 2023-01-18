@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform float percent_visible : hint_range(0.0, 1.0) = 1.0;
+
+void fragment() {
+	float actual_percent = (percent_visible + 1.0) / 2.0;
+	COLOR = texture(TEXTURE, UV);
+	COLOR = mix(COLOR, vec4(0.0), float(bool(UV.y > actual_percent || (1.0 - UV.y) > actual_percent)));
+	COLOR = mix(COLOR, vec4(0.0), float(bool(UV.x > actual_percent || (1.0 - UV.x) > actual_percent)));
+}"
+
+[resource]
+shader = SubResource( 4 )
+shader_param/percent_visible = 1.0

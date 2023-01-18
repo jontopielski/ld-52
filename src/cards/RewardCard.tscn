@@ -54,6 +54,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("BaseCard:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=11]
 resource_name = "flip"
@@ -94,18 +106,6 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("FlippedCard:rect_position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -160,6 +160,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 0, -2 ) ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("BaseCard:rect_position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ) ]
+}
 
 [sub_resource type="Animation" id=12]
 resource_name = "flip_spawn"
@@ -206,6 +218,7 @@ tracks/2/keys = {
 margin_right = 35.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
@@ -213,6 +226,7 @@ custom_styles/pressed = SubResource( 4 )
 custom_styles/focus = SubResource( 5 )
 custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 13 )
+enabled_focus_mode = 0
 script = ExtResource( 5 )
 
 [node name="BaseCard" type="TextureRect" parent="."]
@@ -220,10 +234,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -17.5
-margin_top = -22.0
-margin_right = 17.5
-margin_bottom = 22.0
+margin_right = 35.0
+margin_bottom = 44.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_pivot_offset = Vector2( 18, 22 )
@@ -268,17 +280,19 @@ anims/flip_spawn = SubResource( 12 )
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="DelayShowTimer" type="Timer" parent="."]
-wait_time = 0.05
-one_shot = true
-
 [node name="SpawnStartYPosition" type="Position2D" parent="."]
 position = Vector2( 90, -50 )
+
+[node name="CardChosenPosition" type="Position2D" parent="."]
+position = Vector2( 90, 181 )
+
+[node name="CardUnchosenPosition" type="Position2D" parent="."]
+position = Vector2( 90, -67 )
 
 [node name="SpawnEndYPosition" type="Position2D" parent="."]
 position = Vector2( 90, 40 )
 
 [connection signal="mouse_entered" from="." to="." method="_on_MapCard_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_MapCard_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_RewardCard_pressed"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
-[connection signal="timeout" from="DelayShowTimer" to="." method="_on_DelayShowTimer_timeout"]

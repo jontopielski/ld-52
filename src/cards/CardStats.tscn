@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://src/cards/CardStats.gd" type="Script" id=1]
-[ext_resource path="res://resources/cards/Sword.tres" type="Resource" id=2]
+[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=2]
 
 [node name="CardStats" type="VBoxContainer"]
 margin_right = 31.0

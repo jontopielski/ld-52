@@ -1,22 +1,22 @@
 extends CanvasLayer
 
-const CursorColored = preload("res://sprites/ui/CursorOutlineColored.png")
-const CursorWhite = preload("res://sprites/ui/CursorOutlineWhite.png")
+const CursorColored = preload("res://sprites/settings/CursorOutlineColored.png")
+const CursorWhite = preload("res://sprites/settings/CursorOutlineWhite.png")
 
 export(bool) var hide_menu_at_start = true
 
 var use_white_cursor = true
 
 func _ready():
-	$Menu/Background/Options/Sliders/Hints/BasicHints.pressed = Globals.show_basic_hints
+	$Menu/Window/Options/Sliders/Hints/BasicHints.pressed = Globals.show_basic_hints
 	if hide_menu_at_start:
 		get_tree().paused = false
 		$Menu.hide()
-	$Menu/Background/Options/Sliders/FullscreenBox.pressed = OS.window_fullscreen
-	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+	$Menu/Window/Options/Sliders/FullscreenBox.pressed = OS.window_fullscreen
+	if $Menu/Window/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorWhite
 	else:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorColored
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -40,7 +40,7 @@ func _on_CloseButton_pressed():
 
 func _on_CloseButton_mouse_entered():
 	return
-	get_tree().call_group("Terminal", "set_terminal_text", ": Close Settings", $Menu/Background/TopBar/CloseButton.texture_hover)
+	get_tree().call_group("Terminal", "set_terminal_text", ": Close Settings", $Menu/Window/CloseButton.texture_hover)
 
 func _on_CloseButton_mouse_exited():
 	return
@@ -73,13 +73,19 @@ func _on_BasicHints_toggled(button_pressed):
 	Globals.show_basic_hints = button_pressed
 
 func _on_WhiteCursorBox_mouse_entered():
-	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored
+	if $Menu/Window/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorColored
 	else:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorWhite
 
 func _on_WhiteCursorBox_mouse_exited():
-	if $Menu/Background/Options/Sliders/Palette/WhiteCursorBox.pressed:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorWhite
+	if $Menu/Window/Options/Sliders/Palette/WhiteCursorBox.pressed:
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorWhite
 	else:
-		$Menu/Background/Options/Names/Palette/Mouse.texture = CursorColored
+		$Menu/Window/Options/Names/Palette/Mouse.texture = CursorColored
+
+func _on_CRTBox_toggled(button_pressed):
+	if button_pressed:
+		CRTManager.show_crt()
+	else:
+		CRTManager.hide_crt()

@@ -23,13 +23,13 @@
 [ext_resource path="res://audio/sfx/battle/end_turn.wav" type="AudioStream" id=21]
 [ext_resource path="res://audio/sfx/battle/die.wav" type="AudioStream" id=22]
 [ext_resource path="res://src/battle/CardReward.gd" type="Script" id=23]
-[ext_resource path="res://resources/cards/Sword.tres" type="Resource" id=24]
-[ext_resource path="res://resources/cards/Bone.tres" type="Resource" id=25]
-[ext_resource path="res://resources/cards/Shield.tres" type="Resource" id=26]
-[ext_resource path="res://resources/cards/Dagger.tres" type="Resource" id=27]
-[ext_resource path="res://resources/cards/Helm.tres" type="Resource" id=28]
-[ext_resource path="res://resources/cards/Club.tres" type="Resource" id=29]
-[ext_resource path="res://resources/cards/Steel.tres" type="Resource" id=31]
+[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=24]
+[ext_resource path="res://resources/cards/undead/Bone.tres" type="Resource" id=25]
+[ext_resource path="res://resources/cards/normal/Shield.tres" type="Resource" id=26]
+[ext_resource path="res://resources/cards/normal/Dagger.tres" type="Resource" id=27]
+[ext_resource path="res://resources/cards/normal/Helm.tres" type="Resource" id=28]
+[ext_resource path="res://resources/cards/normal/Club.tres" type="Resource" id=29]
+[ext_resource path="res://resources/cards/normal/Steel.tres" type="Resource" id=31]
 
 [sub_resource type="Shader" id=11]
 code = "shader_type canvas_item;
@@ -272,6 +272,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
 map_node = ExtResource( 9 )
+enemy_count = 2
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0

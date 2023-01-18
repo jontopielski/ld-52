@@ -5,11 +5,9 @@ const Map = preload("res://src/map/Map.tscn")
 const MainMenu = preload("res://src/menus/MainMenu.tscn")
 
 const RARITY_PROBABILITIES = {
-	Enums.Rarity.COMMON: 0.70,
-	Enums.Rarity.MEDIUM: 0.20,
-	Enums.Rarity.RARE: 0.07,
-	Enums.Rarity.VERY_RARE: 0.03,
-	Enums.Rarity.ULTRA_RARE: 0.01
+	Enums.Rarity.COMMON: 0.60,
+	Enums.Rarity.UNCOMMON: 0.35,
+	Enums.Rarity.RARE: 0.05
 }
 
 export(Array, Resource) var deck = []
@@ -33,6 +31,7 @@ func _process(delta):
 		var current_scene_path = get_tree().current_scene.filename
 		get_tree().change_scene(current_scene_path)
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_screenshot"):
+		randomize()
 		var image = get_viewport().get_texture().get_data()
 		image.flip_y()
 		image.save_png("C:\\Users\\jonto\\Desktop\\Game_Screenshot_%s.png" % str(randi() % 1000))
@@ -52,10 +51,8 @@ func get_relic_symbol():
 func get_randomized_item_from_list(items):
 	var items_by_rarity = {
 		Enums.Rarity.COMMON: get_all_items_with_rarity(items, Enums.Rarity.COMMON),
-		Enums.Rarity.MEDIUM: get_all_items_with_rarity(items, Enums.Rarity.MEDIUM),
-		Enums.Rarity.RARE: get_all_items_with_rarity(items, Enums.Rarity.RARE),
-		Enums.Rarity.VERY_RARE: get_all_items_with_rarity(items, Enums.Rarity.VERY_RARE),
-		Enums.Rarity.ULTRA_RARE: get_all_items_with_rarity(items, Enums.Rarity.ULTRA_RARE)
+		Enums.Rarity.UNCOMMON: get_all_items_with_rarity(items, Enums.Rarity.UNCOMMON),
+		Enums.Rarity.RARE: get_all_items_with_rarity(items, Enums.Rarity.RARE)
 	}
 	var randomized_item = null
 	while !randomized_item:

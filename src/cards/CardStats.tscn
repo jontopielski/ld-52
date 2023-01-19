@@ -1,13 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/cards/CardStats.gd" type="Script" id=1]
 [ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=2]
+[ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/inverted = false
 
 [node name="CardStats" type="VBoxContainer"]
 margin_right = 31.0
 margin_bottom = 34.0
 mouse_filter = 2
-custom_constants/separation = 2
+custom_constants/separation = 1
 script = ExtResource( 1 )
 card = ExtResource( 2 )
 
@@ -18,26 +34,31 @@ rect_min_size = Vector2( 31, 7 )
 mouse_filter = 2
 custom_constants/separation = 1
 
+[node name="Icon" parent="Damage" instance=ExtResource( 3 )]
+material = SubResource( 2 )
+margin_right = 7.0
+margin_bottom = 7.0
+
 [node name="Shield" type="HBoxContainer" parent="."]
-margin_top = 9.0
+margin_top = 8.0
 margin_right = 31.0
-margin_bottom = 16.0
+margin_bottom = 15.0
 rect_min_size = Vector2( 31, 7 )
 mouse_filter = 2
 custom_constants/separation = 1
 
 [node name="Gold" type="HBoxContainer" parent="."]
-margin_top = 18.0
+margin_top = 16.0
 margin_right = 31.0
-margin_bottom = 25.0
+margin_bottom = 23.0
 rect_min_size = Vector2( 31, 7 )
 mouse_filter = 2
 custom_constants/separation = 1
 
 [node name="Effects" type="HBoxContainer" parent="."]
-margin_top = 27.0
+margin_top = 24.0
 margin_right = 31.0
-margin_bottom = 34.0
+margin_bottom = 31.0
 rect_min_size = Vector2( 31, 7 )
 mouse_filter = 2
 custom_constants/separation = 1

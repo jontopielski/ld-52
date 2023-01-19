@@ -338,11 +338,11 @@ bus = "SFX"
 stream = ExtResource( 7 )
 bus = "SFX"
 
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon4" to="BaseCard/Damage/Icon4" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon4" to="BaseCard/Damage/Icon4" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon5" to="BaseCard/Damage/Icon5" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon5" to="BaseCard/Damage/Icon5" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon6" to="BaseCard/Damage/Icon6" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon6" to="BaseCard/Damage/Icon6" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon2" to="BaseCard/Health/Icon2" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon2" to="BaseCard/Damage/Icon2" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon2" to="BaseCard/Damage/Icon2" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Damage/Icon3" to="BaseCard/Damage/Icon3" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Damage/Icon3" to="BaseCard/Damage/Icon3" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_exited"]

@@ -11,3 +11,4 @@ cost = 0
 damage = 1
 shield = 2
 gold = 2
+effects = [  ]

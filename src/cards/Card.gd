@@ -1,5 +1,7 @@
 extends Button
 
+const ShatterCard = preload("res://src/effects/ShatterCard.tscn")
+
 export(Resource) var card = null setget set_card
 
 var PLACEMENT_OFFSET = Vector2(0, 9)
@@ -17,6 +19,9 @@ func set_card(_card):
 		$BaseCard/Title.text = card.name
 		$BaseCard/CardStats.set_card(card)
 
+func _ready():
+	set_card(card)
+
 func spawn_in_from_x_pos(x_pos):
 	$BaseCard/CardStats.set_card(card)
 	rect_position = Vector2(x_pos, $SpawnStartYPosition.position.y)
@@ -33,6 +38,8 @@ func get_enemies_from_colliding_areas(areas):
 	return enemies
 
 func _process(delta):
+	if Input.is_action_just_pressed("ui_accept"):
+		shatter_card()
 	var colliding_enemies = get_enemies_from_colliding_areas($CardArea.get_overlapping_areas())
 	if !is_hovering_enemy:
 		if !colliding_enemies.empty():
@@ -74,8 +81,12 @@ func _on_Card_button_up():
 	if is_hovering_enemy and rect_global_position == hovered_enemy_ref.rect_position + PLACEMENT_OFFSET:
 		if card.damage > 0 and hovered_enemy_ref.health > 0:
 			hovered_enemy_ref.reduce_health(card.damage)
-			$AnimationPlayer.play("flip_discard")
-			float_card_up_and_destroy()
+			if has_effect("Brittle"):
+				shatter_card()
+			else:
+				$AnimationPlayer.play("flip_discard")
+				yield($AnimationPlayer, "animation_finished")
+				float_card_up_and_destroy()
 		else:
 			$Error.play()
 			yield(get_tree().create_timer(0.05), "timeout")
@@ -83,6 +94,18 @@ func _on_Card_button_up():
 			TWEEN_TIME = 0.3
 			$Tween.interpolate_property(self, "rect_position", rect_position, position_before_hold, TWEEN_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			$Tween.start()
+
+func has_effect(effect_name):
+	for effect in card.effects:
+		if effect.name == effect_name:
+			return true
+	return false
+
+func shatter_card():
+	var next_shatter = ShatterCard.instance()
+	next_shatter.global_position = rect_global_position - Vector2(8, 8)
+	get_parent().get_parent().get_node("CardEffects").add_child(next_shatter)
+	queue_free()
 
 func float_card_up_and_destroy():
 	get_tree().call_group("Battle", "discard_card", card)

@@ -29,6 +29,14 @@ func render_current_card():
 	add_icon_for_amount(Damage, $Damage, card.damage)
 	add_icon_for_amount(Shield, $Shield, card.shield)
 	add_icon_for_amount(Gold, $Gold, card.gold)
+	add_effects_icons()
+
+func add_effects_icons():
+	for effect in card.effects:
+		var next_icon = Icon.instance()
+		next_icon.set_icon(effect)
+		$Effects.add_child(next_icon)
+		next_icon.set_is_using_manual_mouse_entered(is_using_manual_mouse_entered)
 
 func add_icon_for_amount(icon_rsc, cntl_node, amount):
 	if amount > 4:
@@ -54,4 +62,6 @@ func clear_existing_icons():
 	for child in $Shield.get_children():
 		child.queue_free()
 	for child in $Gold.get_children():
+		child.queue_free()
+	for child in $Effects.get_children():
 		child.queue_free()

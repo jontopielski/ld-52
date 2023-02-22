@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/enemies/BaseEnemy.gd" type="Script" id=1]
+[ext_resource path="res://resources/enemy_effects/Mob.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+name = "Wolf"
+damage = 3
+health = 2
+effects = [ ExtResource( 3 ) ]

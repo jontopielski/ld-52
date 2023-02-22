@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://audio/sfx/ui/quit.wav" type="AudioStream" id=1]
+[ext_resource path="res://src/ui/BlackScreen.gd" type="Script" id=2]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
+
+[node name="BlackScreen" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 2 )
+
+[node name="Quit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+bus = "SFX"
+
+[node name="Smiley" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -12.5
+margin_top = -3.5
+margin_right = 12.5
+margin_bottom = 3.5
+custom_fonts/font = ExtResource( 3 )
+text = "BYE! s"

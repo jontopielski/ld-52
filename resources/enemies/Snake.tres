@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/enemies/BaseEnemy.gd" type="Script" id=1]
+[ext_resource path="res://resources/enemy_effects/Dodge.tres" type="Resource" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Snake"
+damage = 2
+health = 2
+effects = [ ExtResource( 2 ) ]

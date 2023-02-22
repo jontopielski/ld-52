@@ -10,13 +10,12 @@ config_version=4
 
 [application]
 
-config/name="blood draw"
-run/main_scene="res://src/menus/MainMenu.tscn"
+config/name="Blood Draw"
+run/main_scene="res://src/battle/Battle.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resolution_handler.gd"
 Enums="*res://src/utils/Enums.gd"
 Globals="*res://src/utils/Globals.tscn"
 SettingsMenu="*res://src/menus/SettingsMenu.tscn"
@@ -24,6 +23,11 @@ CursorManager="*res://src/ui/CursorManager.tscn"
 PaletteManager="*res://src/ui/PaletteManager.tscn"
 TransitionScreen="*res://src/ui/TransitionScreen.tscn"
 CRTManager="*res://src/ui/CRTManager.tscn"
+IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resolution_handler.gd"
+AudioManager="*res://audio/AudioManager.tscn"
+Sort="*res://src/utils/Sort.gd"
+EnemyGeneration="*res://src/utils/EnemyGeneration.gd"
+CardGeneration="*res://src/utils/CardGeneration.gd"
 
 [display]
 
@@ -71,6 +75,14 @@ texture={
 
 [input]
 
+ui_focus_next={
+"deadzone": 0.5,
+"events": [  ]
+}
+ui_focus_prev={
+"deadzone": 0.5,
+"events": [  ]
+}
 ui_reset={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":82,"unicode":0,"echo":false,"script":null)
@@ -81,9 +93,10 @@ ui_screenshot={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":79,"unicode":0,"echo":false,"script":null)
  ]
 }
-ui_tab={
+ui_shop={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777218,"unicode":0,"echo":false,"script":null)
+, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 ui_autowin={

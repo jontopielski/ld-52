@@ -46,10 +46,27 @@ margin_right = 176.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 9 )
 mouse_filter = 2
-size_flags_vertical = 2
+size_flags_vertical = 0
 custom_constants/separation = 2
 
 [node name="Tab_03" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_top = 22.0
+margin_right = 176.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+size_flags_vertical = 2
+custom_constants/separation = 2
+
+[node name="Tab_04" type="HBoxContainer" parent="CardEditor/Tabs"]
+margin_top = 91.0
+margin_right = 176.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 9 )
+mouse_filter = 2
+custom_constants/separation = 2
+
+[node name="Tab_05" type="HBoxContainer" parent="CardEditor/Tabs"]
 margin_top = 102.0
 margin_right = 176.0
 margin_bottom = 111.0
@@ -57,7 +74,7 @@ rect_min_size = Vector2( 0, 9 )
 mouse_filter = 2
 custom_constants/separation = 2
 
-[node name="Tab_04" type="HBoxContainer" parent="CardEditor/Tabs"]
+[node name="Tab_06" type="HBoxContainer" parent="CardEditor/Tabs"]
 margin_top = 113.0
 margin_right = 176.0
 margin_bottom = 122.0

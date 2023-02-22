@@ -1,0 +1,131 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://sprites/map/loop_progress/CurrentLoopEmpty.png" type="Texture" id=1]
+[ext_resource path="res://src/map/LoopProgress.gd" type="Script" id=2]
+[ext_resource path="res://sprites/map/loop_progress/TinyBoss.png" type="Texture" id=3]
+[ext_resource path="res://sprites/map/loop_progress/LoopProgressSeparator.png" type="Texture" id=4]
+[ext_resource path="res://sprites/map/loop_progress/CurrentLoopActive.png" type="Texture" id=5]
+[ext_resource path="res://sprites/map/loop_progress/CurrentLoopCompleted.png" type="Texture" id=6]
+[ext_resource path="res://sprites/map/loop_progress/ProgressBarFill.png" type="Texture" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+draw_center = false
+
+[node name="LoopProgress" type="Panel"]
+margin_right = 37.0
+margin_bottom = 7.0
+rect_min_size = Vector2( 37, 7 )
+mouse_filter = 1
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+empty_loop = ExtResource( 1 )
+active_loop = ExtResource( 5 )
+finished_loop = ExtResource( 6 )
+
+[node name="HBox" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="HBox"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Separator_01" type="TextureRect" parent="HBox"]
+margin_left = 6.0
+margin_right = 11.0
+margin_bottom = 7.0
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Separator_02" type="TextureRect" parent="HBox"]
+margin_left = 16.0
+margin_right = 21.0
+margin_bottom = 7.0
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Separator_03" type="TextureRect" parent="HBox"]
+margin_left = 26.0
+margin_right = 31.0
+margin_bottom = 7.0
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Loop_01" type="TextureRect" parent="HBox"]
+margin_right = 7.0
+margin_bottom = 7.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+
+[node name="Progress" type="TextureProgress" parent="HBox/Loop_01"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -1.5
+margin_top = -1.5
+margin_right = 1.5
+margin_bottom = 1.5
+max_value = 95.0
+texture_progress = ExtResource( 8 )
+fill_mode = 4
+
+[node name="Loop_02" type="TextureRect" parent="HBox"]
+margin_left = 10.0
+margin_right = 17.0
+margin_bottom = 7.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+
+[node name="Progress" type="TextureProgress" parent="HBox/Loop_02"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -1.5
+margin_top = -1.5
+margin_right = 1.5
+margin_bottom = 1.5
+max_value = 95.0
+texture_progress = ExtResource( 8 )
+fill_mode = 4
+
+[node name="Loop_03" type="TextureRect" parent="HBox"]
+margin_left = 20.0
+margin_right = 27.0
+margin_bottom = 7.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+
+[node name="Progress" type="TextureProgress" parent="HBox/Loop_03"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -1.5
+margin_top = -1.5
+margin_right = 1.5
+margin_bottom = 1.5
+max_value = 95.0
+texture_progress = ExtResource( 8 )
+fill_mode = 4
+
+[node name="Boss" type="TextureRect" parent="HBox"]
+margin_left = 30.0
+margin_right = 37.0
+margin_bottom = 7.0
+mouse_filter = 0
+texture = ExtResource( 3 )
+stretch_mode = 4
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="mouse_entered" from="." to="." method="_on_LoopProgress_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_LoopProgress_mouse_exited"]
+[connection signal="mouse_entered" from="HBox/Boss" to="." method="_on_Boss_mouse_entered"]
+[connection signal="mouse_exited" from="HBox/Boss" to="." method="_on_Boss_mouse_exited"]
+[connection signal="tween_step" from="Tween" to="." method="_on_Tween_tween_step"]

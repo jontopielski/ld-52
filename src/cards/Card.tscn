@@ -3,11 +3,12 @@
 [ext_resource path="res://src/cards/Card.gd" type="Script" id=1]
 [ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=2]
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
-[ext_resource path="res://resources/cards/undead/Bone.tres" type="Resource" id=4]
+[ext_resource path="res://resources/cards/fragile/Bone.tres" type="Resource" id=4]
 [ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=5]
 [ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=6]
 [ext_resource path="res://audio/sfx/battle/cannot_place_card.wav" type="AudioStream" id=7]
-[ext_resource path="res://audio/sfx/battle/brittle.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/sfx/battle/fragile.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/sfx/battle/deal_card.wav" type="AudioStream" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
@@ -232,10 +233,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=13]
-resource_name = "shatter"
-
-[node name="Card" type="Button"]
+[node name="Card" type="Button" groups=["cards"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -141.0
@@ -291,6 +289,21 @@ margin_right = 15.5
 margin_bottom = 0.0
 card = ExtResource( 4 )
 
+[node name="Weight" type="Label" parent="BaseCard"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -15.5
+margin_top = 26.0
+margin_right = 15.5
+margin_bottom = 33.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "5.0"
+valign = 1
+uppercase = true
+
 [node name="FlippedCard" type="TextureRect" parent="."]
 visible = false
 margin_right = 35.0
@@ -312,7 +325,6 @@ anims/RESET = SubResource( 10 )
 anims/flip = SubResource( 11 )
 anims/flip_discard = SubResource( 9 )
 anims/flip_spawn = SubResource( 12 )
-anims/shatter = SubResource( 13 )
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -333,10 +345,11 @@ bus = "SFX"
 stream = ExtResource( 8 )
 bus = "SFX"
 
+[node name="DealCard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+bus = "SFX"
+
 [connection signal="button_down" from="." to="." method="_on_Card_button_down"]
 [connection signal="button_up" from="." to="." method="_on_Card_button_up"]
 [connection signal="pressed" from="." to="." method="_on_Card_pressed"]
-[connection signal="mouse_entered" from="BaseCard/Title" to="." method="_on_Title_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Title" to="." method="_on_Title_mouse_exited"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

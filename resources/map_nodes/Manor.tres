@@ -9,3 +9,6 @@ name = "Manor"
 description = ""
 texture = ExtResource( 2 )
 cost = 2
+icons = [  ]
+enemies = [  ]
+drops = [  ]

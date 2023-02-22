@@ -1,13 +1,18 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://fonts/3x7.tres" type="DynamicFont" id=1]
 [ext_resource path="res://sprites/effects/Slash.png" type="Texture" id=2]
 [ext_resource path="res://sprites/cards/CardBack.png" type="Texture" id=3]
-[ext_resource path="res://resources/enemies/Skeleton.tres" type="Resource" id=4]
+[ext_resource path="res://resources/enemies/Goblin.tres" type="Resource" id=4]
 [ext_resource path="res://sprites/cards/BaseCard.png" type="Texture" id=5]
 [ext_resource path="res://audio/sfx/battle/attack_enemy.wav" type="AudioStream" id=6]
 [ext_resource path="res://audio/sfx/battle/enemy_die_damp.wav" type="AudioStream" id=7]
+[ext_resource path="res://sprites/enemies/Skeleton.png" type="Texture" id=8]
+[ext_resource path="res://src/shaders/Inverted.tres" type="Material" id=9]
 [ext_resource path="res://src/cards/Enemy.gd" type="Script" id=10]
+[ext_resource path="res://audio/sfx/battle/dodge.wav" type="AudioStream" id=11]
+[ext_resource path="res://sprites/effects/Poison.png" type="Texture" id=12]
+[ext_resource path="res://audio/sfx/battle/poison.wav" type="AudioStream" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 17.5, 22 )
@@ -28,11 +33,32 @@ region = Rect2( 128, 0, 64, 64 )
 atlas = ExtResource( 2 )
 region = Rect2( 192, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 12 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 12 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 12 )
+region = Rect2( 192, 0, 64, 64 )
+
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
 "frames": [ null, SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), null ],
 "loop": false,
 "name": "default",
+"speed": 10.0
+}, {
+"frames": [ null, SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), null ],
+"loop": true,
+"name": "poison",
 "speed": 10.0
 } ]
 
@@ -118,6 +144,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=11]
 resource_name = "flip_over"
+length = 0.3
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("FlippedCard:rect_scale")
@@ -168,12 +195,79 @@ tracks/3/keys = {
 "values": [ 3, 4, 5 ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "flip_spawn"
+[sub_resource type="Animation" id=12]
+resource_name = "flip_over_and_back"
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("FlippedCard:rect_scale")
-tracks/0/interp = 2
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 1 ), Vector2( 0, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FlippedCard:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BaseCard:rect_scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.65, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 0, 1 ), Vector2( 0.5, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Slash:frame")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5 ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "rebirth_enemy"
+} ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "flip_spawn"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("FlippedCard:rect_scale")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -237,7 +331,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 0 ), Vector2( 0, 0 ) ]
 }
 
-[node name="Enemy" type="Control"]
+[node name="Enemy" type="Control" groups=["enemies"]]
 margin_right = 35.0
 margin_bottom = 44.0
 script = ExtResource( 10 )
@@ -258,10 +352,21 @@ margin_right = 16.5
 margin_bottom = 8.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Skeleton"
+text = "Goblin"
 align = 1
 valign = 1
 uppercase = true
+
+[node name="Texture" type="TextureRect" parent="BaseCard"]
+visible = false
+material = ExtResource( 9 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -15.5
+margin_top = 1.0
+margin_right = 15.5
+margin_bottom = 8.0
+texture = ExtResource( 8 )
 
 [node name="Damage" type="HBoxContainer" parent="BaseCard"]
 anchor_top = 0.5
@@ -281,6 +386,26 @@ margin_left = 2.0
 margin_top = -4.0
 margin_right = -2.0
 margin_bottom = 3.0
+custom_constants/separation = 1
+
+[node name="Status" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = 4.0
+margin_right = -2.0
+margin_bottom = 11.0
+custom_constants/separation = 1
+
+[node name="Effects" type="HBoxContainer" parent="BaseCard"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 2.0
+margin_top = 12.0
+margin_right = -2.0
+margin_bottom = 19.0
 custom_constants/separation = 1
 
 [node name="FlippedCard" type="TextureRect" parent="."]
@@ -309,7 +434,7 @@ position = Vector2( 17.5, 22 )
 shape = SubResource( 1 )
 
 [node name="Slash" type="AnimatedSprite" parent="."]
-position = Vector2( 20, 23 )
+position = Vector2( 17, 22 )
 frames = SubResource( 6 )
 
 [node name="SpawnStartYPosition" type="Position2D" parent="."]
@@ -325,6 +450,7 @@ position = Vector2( 91, -38 )
 anims/RESET = SubResource( 8 )
 anims/die = SubResource( 10 )
 anims/flip_over = SubResource( 11 )
+anims/flip_over_and_back = SubResource( 12 )
 anims/flip_spawn = SubResource( 9 )
 anims/take_damage = SubResource( 7 )
 
@@ -334,15 +460,14 @@ anims/take_damage = SubResource( 7 )
 stream = ExtResource( 6 )
 bus = "SFX"
 
+[node name="Poison" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+bus = "SFX"
+
+[node name="Dodge" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+bus = "SFX"
+
 [node name="Die" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 bus = "SFX"
-
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon" to="BaseCard/Damage/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon2" to="BaseCard/Damage/Icon2" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon2" to="BaseCard/Damage/Icon2" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Damage/Icon3" to="BaseCard/Damage/Icon3" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Damage/Icon3" to="BaseCard/Damage/Icon3" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="BaseCard/Health/Icon" to="BaseCard/Health/Icon" method="_on_Icon_mouse_exited"]

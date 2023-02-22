@@ -1,14 +1,23 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://resources/map_nodes/BaseMapNode.gd" type="Script" id=1]
 [ext_resource path="res://sprites/stacked/Forest.png" type="Texture" id=2]
+[ext_resource path="res://resources/enemies/Wolf.tres" type="Resource" id=3]
+[ext_resource path="res://resources/enemies/Snake.tres" type="Resource" id=4]
+[ext_resource path="res://resources/enemies/Ent.tres" type="Resource" id=5]
+[ext_resource path="res://resources/cards/drops/Club.tres" type="Resource" id=6]
+[ext_resource path="res://resources/cards/fragile/Bone.tres" type="Resource" id=7]
+[ext_resource path="res://resources/cards/fragile/Bow.tres" type="Resource" id=8]
+[ext_resource path="res://resources/cards/shop/Longbow.tres" type="Resource" id=10]
+[ext_resource path="res://resources/icons/Location.tres" type="Resource" id=11]
+[ext_resource path="res://resources/map_icons/Multi.tres" type="Resource" id=12]
 
 [resource]
 script = ExtResource( 1 )
 name = "Forest"
-description = ""
-node_type = 0
+description = "Find ranged weapons"
 texture = ExtResource( 2 )
-cost = 3
-enemies = [  ]
-spawn_rates = [  ]
+cost = 4
+icons = [ ExtResource( 11 ), ExtResource( 12 ) ]
+enemies = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ) ]
+drops = [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 10 ) ]

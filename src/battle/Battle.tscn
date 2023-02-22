@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/battle/Battle.gd" type="Script" id=2]
@@ -8,7 +8,7 @@
 [ext_resource path="res://resources/icons/Deck.tres" type="Resource" id=6]
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=7]
 [ext_resource path="res://resources/icons/Discard.tres" type="Resource" id=8]
-[ext_resource path="res://resources/map_nodes/Cemetery.tres" type="Resource" id=9]
+[ext_resource path="res://sprites/ui/EndTurnNormal.png" type="Texture" id=9]
 [ext_resource path="res://resources/icons/Shield.tres" type="Resource" id=10]
 [ext_resource path="res://sprites/symbols/Shield.png" type="Texture" id=11]
 [ext_resource path="res://fonts/3x7.tres" type="DynamicFont" id=12]
@@ -18,18 +18,14 @@
 [ext_resource path="res://sprites/characters/player/PlayerWalk.png" type="Texture" id=16]
 [ext_resource path="res://src/ui/SettingsButton.tscn" type="PackedScene" id=17]
 [ext_resource path="res://sprites/characters/player/PlayerDeath.png" type="Texture" id=18]
-[ext_resource path="res://audio/sfx/battle/deal_card.wav" type="AudioStream" id=19]
+[ext_resource path="res://sprites/ui/EndTurnHover.png" type="Texture" id=19]
 [ext_resource path="res://audio/sfx/battle/block_shield.wav" type="AudioStream" id=20]
 [ext_resource path="res://audio/sfx/battle/end_turn.wav" type="AudioStream" id=21]
-[ext_resource path="res://audio/sfx/battle/die.wav" type="AudioStream" id=22]
-[ext_resource path="res://src/battle/CardReward.gd" type="Script" id=23]
-[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=24]
-[ext_resource path="res://resources/cards/undead/Bone.tres" type="Resource" id=25]
-[ext_resource path="res://resources/cards/normal/Shield.tres" type="Resource" id=26]
-[ext_resource path="res://resources/cards/normal/Dagger.tres" type="Resource" id=27]
-[ext_resource path="res://resources/cards/normal/Helm.tres" type="Resource" id=28]
-[ext_resource path="res://resources/cards/normal/Club.tres" type="Resource" id=29]
-[ext_resource path="res://resources/cards/normal/Steel.tres" type="Resource" id=31]
+[ext_resource path="res://audio/sfx/battle/player_die.wav" type="AudioStream" id=22]
+[ext_resource path="res://src/battle/CardReward.tscn" type="PackedScene" id=23]
+[ext_resource path="res://src/battle/RewardShop.tscn" type="PackedScene" id=24]
+[ext_resource path="res://audio/sfx/battle/player_take_damage.wav" type="AudioStream" id=25]
+[ext_resource path="res://audio/sfx/settings/abandon.wav" type="AudioStream" id=26]
 
 [sub_resource type="Shader" id=11]
 code = "shader_type canvas_item;
@@ -59,9 +55,9 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=16]
 resource_local_to_scene = true
 shader = SubResource( 27 )
-shader_param/inverted = true
+shader_param/inverted = false
 
-[sub_resource type="Shader" id=13]
+[sub_resource type="Shader" id=30]
 code = "shader_type canvas_item;
 
 uniform bool inverted = false;
@@ -73,15 +69,15 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=28]
 resource_local_to_scene = true
-shader = SubResource( 13 )
+shader = SubResource( 30 )
 shader_param/inverted = true
 
 [sub_resource type="ShaderMaterial" id=12]
 resource_local_to_scene = true
-shader = SubResource( 13 )
+shader = SubResource( 30 )
 shader_param/inverted = true
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=22]
 content_margin_left = 2.0
 content_margin_top = 1.0
 content_margin_bottom = 1.0
@@ -100,33 +96,6 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 expand_margin_left = 1.0
 expand_margin_right = 1.0
-
-[sub_resource type="StyleBoxFlat" id=14]
-content_margin_left = 1.0
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color( 1, 1, 1, 1 )
-border_width_top = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="StyleBoxFlat" id=22]
-content_margin_left = 2.0
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color( 0, 0, 0, 1 )
-border_color = Color( 1, 1, 1, 1 )
-
-[sub_resource type="StyleBoxFlat" id=25]
-content_margin_left = 3.0
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color( 0, 0, 0, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=24]
 content_margin_left = 2.0
@@ -181,7 +150,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=26]
 resource_name = "death"
-length = 2.0
+length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Player:texture")
 tracks/0/interp = 1
@@ -201,7 +170,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.6, 1.1, 2 ),
+"times": PoolRealArray( 0, 0.5, 1, 1.5 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
@@ -267,12 +236,10 @@ tracks/1/keys = {
 "values": [ ExtResource( 16 ) ]
 }
 
-[node name="Battle" type="Control" groups=["Battle"]]
+[node name="Battle" type="Control" groups=["Battle", "ui"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
-map_node = ExtResource( 9 )
-enemy_count = 2
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -293,63 +260,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="CardReward" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-script = ExtResource( 23 )
-card_count = 2
-possible_cards = [ ExtResource( 25 ), ExtResource( 29 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 26 ), ExtResource( 31 ), ExtResource( 24 ) ]
-
-[node name="2CardPositions" type="HBoxContainer" parent="CardReward"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -55.0
-margin_right = 55.0
-mouse_filter = 2
-
-[node name="Control_1" type="Control" parent="CardReward/2CardPositions"]
-margin_left = 26.0
-margin_right = 26.0
-size_flags_horizontal = 6
-
-[node name="Control_2" type="Control" parent="CardReward/2CardPositions"]
-margin_left = 83.0
-margin_right = 83.0
-size_flags_horizontal = 6
-
-[node name="3CardPositions" type="HBoxContainer" parent="CardReward"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -73.0
-margin_right = 73.0
-mouse_filter = 2
-
-[node name="Control_1" type="Control" parent="CardReward/3CardPositions"]
-margin_left = 23.0
-margin_right = 23.0
-size_flags_horizontal = 6
-
-[node name="Control_2" type="Control" parent="CardReward/3CardPositions"]
-margin_left = 73.0
-margin_right = 73.0
-size_flags_horizontal = 6
-
-[node name="Control_3" type="Control" parent="CardReward/3CardPositions"]
-margin_left = 123.0
-margin_right = 123.0
-size_flags_horizontal = 6
-
-[node name="ChooseHint" type="Control" parent="CardReward"]
+[node name="CardReward" parent="." instance=ExtResource( 23 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 9.0
-margin_bottom = -9.0
+
+[node name="RewardShop" parent="." instance=ExtResource( 24 )]
+visible = false
 
 [node name="ShieldHealth" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -414,45 +329,46 @@ anchor_right = 1.0
 margin_bottom = 9.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="HBox" type="HBoxContainer" parent="TopBar"]
-anchor_right = 1.0
+[node name="Health" type="HBoxContainer" parent="TopBar"]
 margin_left = 1.0
-margin_right = -47.0
-margin_bottom = 9.0
-custom_constants/separation = 0
-
-[node name="Health" type="HBoxContainer" parent="TopBar/HBox"]
-margin_right = 20.0
+margin_right = 29.0
 margin_bottom = 9.0
 custom_constants/separation = 1
 
-[node name="Icon" parent="TopBar/HBox/Health" instance=ExtResource( 5 )]
+[node name="Icon" parent="TopBar/Health" instance=ExtResource( 5 )]
 material = SubResource( 16 )
 margin_right = 7.0
 margin_bottom = 9.0
 mouse_filter = 2
 texture = ExtResource( 13 )
-stretch_mode = 4
 icon = ExtResource( 14 )
-inverted = true
 
-[node name="Count" type="Label" parent="TopBar/HBox/Health"]
+[node name="Count" type="Label" parent="TopBar/Health"]
 margin_left = 8.0
 margin_top = 1.0
-margin_right = 20.0
+margin_right = 28.0
 margin_bottom = 8.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "5/5"
+text = "03/08"
 
-[node name="Buffer" type="Control" parent="TopBar/HBox"]
-margin_left = 20.0
-margin_right = 104.0
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+anchor_right = 1.0
+margin_left = 106.0
+margin_right = -46.0
 margin_bottom = 9.0
-size_flags_horizontal = 3
+grow_horizontal = 0
+custom_constants/separation = 0
+
+[node name="Spend" type="Label" parent="TopBar/HBox"]
+margin_top = 1.0
+margin_right = 18.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "10.00"
 
 [node name="Deck" type="HBoxContainer" parent="TopBar/HBox"]
-margin_left = 104.0
-margin_right = 115.0
+margin_left = 18.0
+margin_right = 29.0
 margin_bottom = 9.0
 custom_constants/separation = 0
 
@@ -462,7 +378,6 @@ margin_right = 7.0
 margin_bottom = 9.0
 mouse_filter = 2
 texture = ExtResource( 3 )
-stretch_mode = 4
 icon = ExtResource( 6 )
 inverted = true
 
@@ -475,14 +390,14 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "8"
 
 [node name="TinyBuffer" type="Control" parent="TopBar/HBox"]
-margin_left = 115.0
-margin_right = 116.0
+margin_left = 29.0
+margin_right = 30.0
 margin_bottom = 9.0
 rect_min_size = Vector2( 1, 0 )
 
 [node name="Discard" type="HBoxContainer" parent="TopBar/HBox"]
-margin_left = 116.0
-margin_right = 128.0
+margin_left = 30.0
+margin_right = 42.0
 margin_bottom = 9.0
 custom_constants/separation = 1
 
@@ -492,7 +407,6 @@ margin_right = 7.0
 margin_bottom = 9.0
 mouse_filter = 2
 texture = ExtResource( 4 )
-stretch_mode = 4
 icon = ExtResource( 8 )
 inverted = true
 
@@ -506,31 +420,24 @@ text = "0"
 
 [node name="SettingsButton" parent="TopBar" instance=ExtResource( 17 )]
 
-[node name="EndTurnButton" type="Button" parent="TopBar"]
+[node name="EndTurnButton" type="TextureButton" parent="TopBar"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -46.0
+margin_left = -45.0
+margin_top = 1.0
 margin_right = -10.0
-margin_bottom = 9.0
+margin_bottom = 8.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-custom_fonts/font = ExtResource( 7 )
-custom_styles/hover = SubResource( 9 )
-custom_styles/pressed = SubResource( 10 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/disabled = SubResource( 14 )
-custom_styles/normal = SubResource( 14 )
-text = "END TURN"
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 19 )
+texture_hover = ExtResource( 19 )
 
 [node name="ContinueButton" type="Button" parent="TopBar"]
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -46.0
+margin_left = -45.0
 margin_right = -10.0
 margin_bottom = 9.0
 focus_mode = 0
@@ -540,7 +447,7 @@ custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 7 )
 custom_styles/hover = SubResource( 22 )
-custom_styles/pressed = SubResource( 25 )
+custom_styles/pressed = SubResource( 22 )
 custom_styles/focus = SubResource( 10 )
 custom_styles/disabled = SubResource( 24 )
 custom_styles/normal = SubResource( 24 )
@@ -582,16 +489,16 @@ custom_fonts/font = ExtResource( 7 )
 text = "Game Over"
 uppercase = true
 
-[node name="DealCard" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 19 )
-bus = "SFX"
-
 [node name="BlockShield" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
 bus = "SFX"
 
 [node name="TakeDamage" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 22 )
+stream = ExtResource( 25 )
+bus = "SFX"
+
+[node name="ReturnToMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 26 )
 bus = "SFX"
 
 [node name="Die" type="AudioStreamPlayer" parent="."]
@@ -602,11 +509,8 @@ bus = "SFX"
 stream = ExtResource( 21 )
 bus = "SFX"
 
-[connection signal="child_exiting_tree" from="Enemies" to="." method="_on_Enemies_child_exiting_tree"]
-[connection signal="mouse_entered" from="CardReward/ChooseHint" to="CardReward" method="_on_ChooseHint_mouse_entered"]
-[connection signal="mouse_exited" from="CardReward/ChooseHint" to="CardReward" method="_on_ChooseHint_mouse_exited"]
-[connection signal="mouse_entered" from="TopBar/HBox/Health" to="." method="_on_Health_mouse_entered"]
-[connection signal="mouse_exited" from="TopBar/HBox/Health" to="." method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="TopBar/Health" to="." method="_on_Health_mouse_entered"]
+[connection signal="mouse_exited" from="TopBar/Health" to="." method="_on_Icon_mouse_exited"]
 [connection signal="mouse_entered" from="TopBar/HBox/Deck" to="." method="_on_Deck_mouse_entered"]
 [connection signal="mouse_exited" from="TopBar/HBox/Deck" to="." method="_on_Icon_mouse_exited"]
 [connection signal="mouse_entered" from="TopBar/HBox/Discard" to="." method="_on_Discard_mouse_entered"]

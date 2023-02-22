@@ -1,137 +1,95 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=1]
-[ext_resource path="res://sprites/ui/Dither.png" type="Texture" id=2]
-[ext_resource path="res://src/map/Shop.gd" type="Script" id=3]
-[ext_resource path="res://src/map/ShopTab.tscn" type="PackedScene" id=4]
-[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=5]
-[ext_resource path="res://resources/cards/undead/Bone.tres" type="Resource" id=6]
-[ext_resource path="res://resources/map_nodes/Forest.tres" type="Resource" id=7]
-[ext_resource path="res://resources/map_nodes/Cemetery.tres" type="Resource" id=8]
-[ext_resource path="res://resources/cards/normal/Shield.tres" type="Resource" id=9]
-[ext_resource path="res://resources/map_nodes/Church.tres" type="Resource" id=10]
-[ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=11]
-[ext_resource path="res://sprites/ui/ShopPreviewBorder.png" type="Texture" id=12]
-[ext_resource path="res://src/stacked/StackedSprite.tscn" type="PackedScene" id=13]
+[ext_resource path="res://sprites/ui/Close_Pressed.png" type="Texture" id=2]
+[ext_resource path="res://sprites/ui/Close_Normal.png" type="Texture" id=3]
+[ext_resource path="res://sprites/ui/Close_Hover.png" type="Texture" id=5]
+[ext_resource path="res://src/map/Shop.gd" type="Script" id=6]
+[ext_resource path="res://audio/sfx/settings/close_settings.wav" type="AudioStream" id=7]
+[ext_resource path="res://src/map/ShopItem.tscn" type="PackedScene" id=8]
 
-[sub_resource type="StyleBoxFlat" id=21]
-bg_color = Color( 1, 1, 1, 1 )
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 2.0
+content_margin_right = 2.0
+content_margin_top = 1.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
+border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=22]
-bg_color = Color( 1, 1, 1, 1 )
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0, 0, 0, 1 )
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 1 )
 
-[node name="Shop" type="Control" groups=["Shop"]]
+[node name="Shop" type="Container" groups=["Shop"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 9.0
-margin_bottom = -9.0
-script = ExtResource( 3 )
-example_items = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 6 ), ExtResource( 8 ) ]
-STARTING_TABS = 5
-
-[node name="Dither" type="TextureRect" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 2 )
-stretch_mode = 2
-
-[node name="Border" type="ColorRect" parent="."]
-margin_left = 4.0
-margin_top = 12.0
-margin_right = 172.0
-margin_bottom = 71.0
-
-[node name="Content" type="Panel" parent="."]
-margin_left = 5.0
-margin_top = 21.0
-margin_right = 171.0
-margin_bottom = 62.0
-custom_styles/panel = SubResource( 21 )
-
-[node name="Border" type="Panel" parent="Content"]
-visible = false
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 40.0
-margin_bottom = 39.0
-custom_styles/panel = SubResource( 22 )
-
-[node name="PreviewBorder" type="TextureRect" parent="Content"]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 37.0
-margin_bottom = 39.0
 mouse_filter = 2
-texture = ExtResource( 12 )
+script = ExtResource( 6 )
 
-[node name="StackedSprite" parent="Content" instance=ExtResource( 13 )]
-visible = false
-position = Vector2( 19, 25 )
-rotate_sprites = true
+[node name="Window" type="PanelContainer" parent="."]
+margin_left = 25.0
+margin_top = 14.0
+margin_right = 151.0
+margin_bottom = 55.0
+custom_styles/panel = SubResource( 3 )
 
-[node name="CardStats" parent="Content" instance=ExtResource( 11 )]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 35.0
-margin_bottom = 38.0
+[node name="Content" type="VBoxContainer" parent="Window"]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 39.0
+custom_constants/separation = 0
 
-[node name="Description" type="Label" parent="Content"]
-margin_left = 39.0
-margin_top = 4.0
-margin_right = 163.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_constants/line_spacing = 1
+[node name="Title" type="Label" parent="Window/Content"]
+margin_right = 122.0
+margin_bottom = 9.0
 custom_fonts/font = ExtResource( 1 )
-text = "This is where the description of the object goes!"
-autowrap = true
-clip_text = true
-uppercase = true
+custom_styles/normal = SubResource( 2 )
+text = "SHOP"
+align = 1
+valign = 1
 
-[node name="TopTabs" type="HBoxContainer" parent="."]
-margin_left = 5.0
-margin_top = 13.0
-margin_right = 171.0
-margin_bottom = 22.0
-custom_constants/separation = 2
+[node name="CloseButton" type="TextureButton" parent="Window/Content/Title"]
+visible = false
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -8.0
+margin_top = -4.5
+margin_right = 1.0
+margin_bottom = 4.5
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 5 )
+stretch_mode = 3
 
-[node name="ShopTab1" parent="TopTabs" instance=ExtResource( 4 )]
-margin_right = 54.0
+[node name="Items" type="VBoxContainer" parent="Window/Content"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 38.0
+custom_constants/separation = 1
 
-[node name="ShopTab2" parent="TopTabs" instance=ExtResource( 4 )]
-margin_left = 56.0
-margin_right = 110.0
+[node name="ShopItem1" parent="Window/Content/Items" instance=ExtResource( 8 )]
 
-[node name="ShopTab3" parent="TopTabs" instance=ExtResource( 4 )]
-margin_left = 112.0
-margin_right = 166.0
+[node name="ShopItem2" parent="Window/Content/Items" instance=ExtResource( 8 )]
+margin_top = 10.0
+margin_bottom = 19.0
 
-[node name="BottomTabs" type="HBoxContainer" parent="."]
-margin_left = 5.0
-margin_top = 61.0
-margin_right = 171.0
-margin_bottom = 70.0
-custom_constants/separation = 2
+[node name="ShopItem3" parent="Window/Content/Items" instance=ExtResource( 8 )]
+margin_top = 20.0
+margin_bottom = 29.0
 
-[node name="ShopTab1" parent="BottomTabs" instance=ExtResource( 4 )]
-margin_right = 54.0
+[node name="Close" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "SFX"
 
-[node name="ShopTab2" parent="BottomTabs" instance=ExtResource( 4 )]
-margin_left = 56.0
-margin_right = 110.0
-
-[node name="ShopTab3" parent="BottomTabs" instance=ExtResource( 4 )]
-margin_left = 112.0
-margin_right = 166.0
+[connection signal="pressed" from="Window/Content/Title/CloseButton" to="." method="_on_CloseButton_pressed"]

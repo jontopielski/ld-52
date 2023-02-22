@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://resources/effects/negative/Fragile.tres" type="Resource" id=1]
+[ext_resource path="res://resources/effects/negative/Imprecise.tres" type="Resource" id=2]
+[ext_resource path="res://resources/effects/unused/Multi.tres" type="Resource" id=3]
+[ext_resource path="res://resources/cards/BaseCard.gd" type="Script" id=4]
+
+[resource]
+script = ExtResource( 4 )
+name = "Bonebow"
+description = ""
+damage = 2
+shield = 0
+effects = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 2 ) ]

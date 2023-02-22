@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/player_take_damage.wav-22c2ae50e1d31082662dc75949132008.sample"
+
+[deps]
+
+source_file="res://audio/sfx/battle/player_take_damage.wav"
+dest_files=[ "res://.import/player_take_damage.wav-22c2ae50e1d31082662dc75949132008.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

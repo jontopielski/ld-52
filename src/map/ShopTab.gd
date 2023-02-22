@@ -40,7 +40,7 @@ func set_resource(_resource, show_symbols=true):
 			item_type = Enums.ItemType.RELIC
 			symbol = Globals.get_relic_symbol()
 	if show_symbols:
-		text = symbol + "/" + resource.name.to_upper() + "/%d" % resource.cost
+		text = symbol + "/" + resource.name.to_upper()
 	else:
 		text = resource.name.to_upper()
 

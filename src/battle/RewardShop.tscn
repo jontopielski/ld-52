@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=1]
+[ext_resource path="res://resources/rewards/TwoCards.tres" type="Resource" id=2]
+[ext_resource path="res://resources/rewards/Heal.tres" type="Resource" id=3]
+[ext_resource path="res://resources/rewards/Boost.tres" type="Resource" id=4]
+[ext_resource path="res://src/map/ShopItem.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/rewards/Refill.tres" type="Resource" id=6]
+[ext_resource path="res://src/battle/RewardShop.gd" type="Script" id=7]
+[ext_resource path="res://src/battle/RewardWindowPre.tres" type="StyleBox" id=8]
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[node name="RewardShop" type="Control" groups=["RewardShop"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+
+[node name="Window" type="PanelContainer" parent="."]
+margin_left = 25.0
+margin_top = 30.0
+margin_right = 151.0
+margin_bottom = 81.0
+rect_pivot_offset = Vector2( 61, 28 )
+custom_styles/panel = ExtResource( 8 )
+
+[node name="Content" type="VBoxContainer" parent="Window"]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 49.0
+custom_constants/separation = 0
+
+[node name="Title" type="Label" parent="Window/Content"]
+margin_right = 122.0
+margin_bottom = 9.0
+custom_fonts/font = ExtResource( 1 )
+custom_styles/normal = SubResource( 2 )
+text = "CHOOSE REWARD"
+align = 1
+valign = 1
+
+[node name="Items" type="VBoxContainer" parent="Window/Content"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 48.0
+custom_constants/separation = 1
+
+[node name="ShopItem1" parent="Window/Content/Items" instance=ExtResource( 5 )]
+resource = ExtResource( 2 )
+
+[node name="ShopItem2" parent="Window/Content/Items" instance=ExtResource( 5 )]
+margin_top = 10.0
+margin_bottom = 19.0
+resource = ExtResource( 3 )
+
+[node name="ShopItem3" parent="Window/Content/Items" instance=ExtResource( 5 )]
+margin_top = 20.0
+margin_bottom = 29.0
+resource = ExtResource( 4 )
+
+[node name="ShopItem4" parent="Window/Content/Items" instance=ExtResource( 5 )]
+margin_top = 30.0
+margin_bottom = 39.0
+resource = ExtResource( 6 )
+
+[node name="MouseBlock" type="Button" parent="Window"]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 49.0
+focus_mode = 0
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 3 )
+enabled_focus_mode = 0
+flat = true
+
+[node name="Cover" type="MarginContainer" parent="Window"]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 49.0
+custom_constants/margin_top = 9
+
+[node name="ColorRect" type="ColorRect" parent="Window/Cover"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 48.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/effects/BaseEffect.gd" type="Script" id=1]
+[ext_resource path="res://sprites/symbols/Fortify.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+is_testing = false
+name = "Fortify"
+texture = ExtResource( 2 )
+description = "+1 shield each turn"
+multiplier = 1.75
+minimum_damage = 0
+minimum_shield = 1

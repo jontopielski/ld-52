@@ -24,15 +24,31 @@ func is_mouse_hovering_over_any_icons():
 				is_hovering = true
 	return is_hovering
 
+func get_icon_array(ignore_negative_effects=true):
+	var attributes = []
+	for damage in $Damage.get_children():
+		attributes.push_back(Damage)
+	for shield in $Shield.get_children():
+		attributes.push_back(Shield)
+	for effect in $Effects.get_children():
+		if ignore_negative_effects and effect.icon.multiplier < 1.0:
+			continue
+		attributes.push_back(effect.icon.duplicate())
+	return attributes
+
+func render_card_manually(damage, shield, effects):
+	add_icon_for_amount(Damage, $Damage, damage)
+	add_icon_for_amount(Shield, $Shield, shield)
+	add_effects_icons(effects)
+
 func render_current_card():
 	clear_existing_icons()
 	add_icon_for_amount(Damage, $Damage, card.damage)
 	add_icon_for_amount(Shield, $Shield, card.shield)
-	add_icon_for_amount(Gold, $Gold, card.gold)
-	add_effects_icons()
+	add_effects_icons(card.effects)
 
-func add_effects_icons():
-	for effect in card.effects:
+func add_effects_icons(effects):
+	for effect in effects:
 		var next_icon = Icon.instance()
 		next_icon.set_icon(effect)
 		$Effects.add_child(next_icon)

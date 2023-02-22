@@ -1,68 +1,58 @@
 extends Control
 
-const ShopTab = preload("res://src/map/ShopTab.tscn")
-
-export(Array, Resource) var example_items = []
-
-export(int) var STARTING_TABS = 6
+const ShopItem = preload("res://src/map/ShopItem.tscn")
 
 func _ready():
-	setup_tabs()
+	hide()
+	randomize_shop_items()
+	yield(get_tree().create_timer(0.05), "timeout")
+	show()
 
-func display_item(resource, item_type):
-	match item_type:
-		Enums.ItemType.CARD:
-			display_card(resource)
-		Enums.ItemType.MAP_NODE:
-			display_map_node(resource)
+func randomize_shop_items():
+	clear_items()
+	var valid_cards = get_shop_cards()
+	randomize(); valid_cards.shuffle()
+	for i in range(0, 2):
+		var next_item = ShopItem.instance()
+		next_item.set_resource(valid_cards[i])
+		$Window/Content/Items.add_child(next_item)
+	var reroll = ShopItem.instance()
+	reroll.set_reroll()
+	$Window/Content/Items.add_child(reroll)
 
-func display_card(card):
-	$Content/StackedSprite.hide()
-	$Content/CardStats.show()
+func get_shop_cards():
+	var cards = []
+	var dir = Directory.new()
+	var card_paths = Globals.get_resources_at_path("res://resources/cards/shop", false)
+	for card_path in card_paths:
+		cards.push_back(load(card_path))
+	return cards
 
-	$Content/CardStats.set_card(card)
-	$Content/Description.text = card.description
+func get_events():
+	var locations = []
+	var dir = Directory.new()
+	var location_paths = Globals.get_resources_at_path("res://resources/map_nodes", false)
+	for location_path in location_paths:
+		var next_location = load(location_path)
+		if next_location.event != null:
+			locations.push_back(next_location)
+	return locations
 
-func display_map_node(map_node):
-	$Content/StackedSprite.show()
-	$Content/CardStats.hide()
-	
-	$Content/StackedSprite.set_texture(map_node.texture)
-	$Content/Description.text = map_node.description
+func clear_items():
+	for item in $Window/Content/Items.get_children():
+		item.queue_free()
 
-func setup_tabs():
-	clear_all_shop_tabs()
-	for i in range(0, STARTING_TABS):
-		var next_tab = ShopTab.instance()
-		if $TopTabs.get_child_count() > $BottomTabs.get_child_count():
-			$BottomTabs.add_child(next_tab)
-			next_tab.set_is_top_tab(false)
+func item_selected():
+	get_tree().call_group("Map", "event_finished")
+	queue_free()
+
+func shop_closed():
+	for item in $Window/Content/Items.get_children():
+		if item.disabled:
+			item.set_everything_white()
 		else:
-			$TopTabs.add_child(next_tab)
-			next_tab.set_is_top_tab(true)
-		next_tab.set_resource(example_items[i])
-	yield(get_tree().create_timer(0.05), "timeout")
-	for i in range(0, $TopTabs.get_child_count()):
-		$TopTabs.get_child(i).trim_item_name_if_necessary($TopTabs.get_child_count(), get_max_name_size($TopTabs.get_child_count()))
-	for i in range(0, $BottomTabs.get_child_count()):
-		$BottomTabs.get_child(i).trim_item_name_if_necessary($BottomTabs.get_child_count(), get_max_name_size($BottomTabs.get_child_count()))
-	yield(get_tree().create_timer(0.05), "timeout")
-	$TopTabs.get_child(0).pressed = true
+			item.set_everything_black()
 
-func get_max_name_size(child_count):
-	match child_count:
-		2:
-			return 15
-		3:
-			return 8
-		4:
-			return 5
-		5:
-			return 3
-	return 15
-
-func clear_all_shop_tabs():
-	for tab in $TopTabs.get_children():
-		tab.queue_free()
-	for tab in $BottomTabs.get_children():
-		tab.queue_free()
+func _on_CloseButton_pressed():
+	if get_parent().name == "Map":
+		get_parent().close_shop()

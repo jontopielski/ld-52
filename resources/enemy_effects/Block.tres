@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/enemy_effects/BaseEnemyEffect.gd" type="Script" id=1]
+[ext_resource path="res://sprites/symbols/Block.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Block"
+texture = ExtResource( 2 )
+description = "Negates first attack"
+multiplier = 2.0
+is_starting_effect = true
+is_solo_only = false
+is_multi_only = false
+minimum_index = 2

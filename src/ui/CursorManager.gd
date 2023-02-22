@@ -25,9 +25,8 @@ func update_all_cursors():
 
 func update_cursor(cursor_sprite, cursor_shape, offset = Vector2.ZERO):
 	var current_window_size = OS.window_size
-	var base_window_size = get_viewport_rect().size
+	var base_window_size = Vector2(ProjectSettings.get_setting("display/window/size/width"), ProjectSettings.get_setting("display/window/size/height"))
 	var scale_multiple = min(floor(current_window_size.x / base_window_size.x), floor(current_window_size.y / base_window_size.y))
-
 	var texture = ImageTexture.new()
 	var image = cursor_sprite.get_data()
 	var palette_white = PaletteManager.get_current_white_color()
@@ -38,7 +37,6 @@ func update_cursor(cursor_sprite, cursor_shape, offset = Vector2.ZERO):
 			if image.get_pixel(x, y) == Color.white:
 				image.set_pixel(x, y, palette_white)
 	image.unlock()
-	image.resize(image.get_size().x * (scale_multiple), image.get_size().y * (scale_multiple), Image.INTERPOLATE_NEAREST)
+	image.resize(image.get_size().x * (scale_multiple + 0), image.get_size().y * (scale_multiple + 0), Image.INTERPOLATE_NEAREST)
 	texture.create_from_image(image)
-	
 	Input.set_custom_mouse_cursor(texture, cursor_shape, offset)

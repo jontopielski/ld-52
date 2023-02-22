@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/enemy_effects/BaseEnemyEffect.gd" type="Script" id=1]
+[ext_resource path="res://sprites/symbols/Decrement.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Decrement"
+texture = ExtResource( 2 )
+description = "Draw 1 less card"
+multiplier = 2.0
+is_starting_effect = true
+is_solo_only = true
+is_multi_only = false
+minimum_index = 3

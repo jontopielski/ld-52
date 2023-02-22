@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+var is_transitioning = false
+
 func _ready():
 	hide_all_textures()
 
@@ -9,9 +11,10 @@ func hide_all_textures():
 			child.hide()
 
 func transition_to(next_scene):
+	is_transitioning = true
 	var is_main_menu = false
 	hide_all_textures()
-	if "MainMenu" in get_tree().current_scene.name:
+	if "MainMenu" in get_tree().current_scene.name and !next_scene == Globals.BlackScreen:
 		is_main_menu = true
 		$Circle.material.set_shader_param("visible_diameter", 0.0)
 		$Circle.texture = get_screenshot_texture()
@@ -31,6 +34,7 @@ func transition_to(next_scene):
 		$AnimationPlayer.play("fast_clamp_in")
 	elif is_main_menu:
 		yield(get_tree().create_timer(0.05), "timeout")
+		AudioManager.play_sound("StartGame")
 		$AnimationPlayer.play("circle_out")
 	elif next_scene == Globals.Map:
 		$AnimationPlayer.play("reverse_clamp_out")
@@ -39,6 +43,7 @@ func transition_to(next_scene):
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	hide_all_textures()
+	is_transitioning = false
 
 func get_screenshot_texture():
 	var texture = ImageTexture.new()

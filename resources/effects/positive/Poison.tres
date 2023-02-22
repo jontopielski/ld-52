@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/effects/BaseEffect.gd" type="Script" id=1]
+[ext_resource path="res://sprites/symbols/Poison.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+is_testing = false
+name = "Poison"
+texture = ExtResource( 2 )
+description = "Inflicts +1 poison"
+multiplier = 1.5
+minimum_damage = 1
+minimum_shield = 0

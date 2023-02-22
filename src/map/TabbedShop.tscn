@@ -1,0 +1,129 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://src/map/TabbedShop.gd" type="Script" id=1]
+[ext_resource path="res://src/map/ShopTab.tscn" type="PackedScene" id=2]
+[ext_resource path="res://sprites/ui/ShopPreviewBorder.png" type="Texture" id=4]
+[ext_resource path="res://src/cards/CardStats.tscn" type="PackedScene" id=5]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=8]
+[ext_resource path="res://src/stacked/StackedSprite.tscn" type="PackedScene" id=10]
+[ext_resource path="res://sprites/ui/Dither.png" type="Texture" id=13]
+
+[sub_resource type="StyleBoxFlat" id=21]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+bg_color = Color( 1, 1, 1, 1 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[node name="TabbedShop" type="Control" groups=["Shop"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 9.0
+margin_bottom = -9.0
+script = ExtResource( 1 )
+
+[node name="Dither" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 13 )
+stretch_mode = 2
+
+[node name="Border" type="ColorRect" parent="."]
+margin_left = 4.0
+margin_top = 12.0
+margin_right = 172.0
+margin_bottom = 71.0
+
+[node name="Content" type="Panel" parent="."]
+margin_left = 5.0
+margin_top = 21.0
+margin_right = 171.0
+margin_bottom = 62.0
+custom_styles/panel = SubResource( 21 )
+
+[node name="Border" type="Panel" parent="Content"]
+visible = false
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 40.0
+margin_bottom = 39.0
+custom_styles/panel = SubResource( 22 )
+
+[node name="PreviewBorder" type="TextureRect" parent="Content"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 37.0
+margin_bottom = 39.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+
+[node name="StackedSprite" parent="Content" instance=ExtResource( 10 )]
+visible = false
+position = Vector2( 19, 25 )
+rotate_sprites = true
+
+[node name="CardStats" parent="Content" instance=ExtResource( 5 )]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 35.0
+margin_bottom = 38.0
+
+[node name="Description" type="Label" parent="Content"]
+margin_left = 39.0
+margin_top = 4.0
+margin_right = 163.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_constants/line_spacing = 1
+custom_fonts/font = ExtResource( 8 )
+text = "This is where the description of the object goes!"
+autowrap = true
+clip_text = true
+uppercase = true
+
+[node name="TopTabs" type="HBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 13.0
+margin_right = 171.0
+margin_bottom = 22.0
+custom_constants/separation = 2
+
+[node name="ShopTab1" parent="TopTabs" instance=ExtResource( 2 )]
+margin_right = 54.0
+
+[node name="ShopTab2" parent="TopTabs" instance=ExtResource( 2 )]
+margin_left = 56.0
+margin_right = 110.0
+
+[node name="ShopTab3" parent="TopTabs" instance=ExtResource( 2 )]
+margin_left = 112.0
+margin_right = 166.0
+
+[node name="BottomTabs" type="HBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 61.0
+margin_right = 171.0
+margin_bottom = 70.0
+custom_constants/separation = 2
+
+[node name="ShopTab1" parent="BottomTabs" instance=ExtResource( 2 )]
+margin_right = 54.0
+
+[node name="ShopTab2" parent="BottomTabs" instance=ExtResource( 2 )]
+margin_left = 56.0
+margin_right = 110.0
+
+[node name="ShopTab3" parent="BottomTabs" instance=ExtResource( 2 )]
+margin_left = 112.0
+margin_right = 166.0

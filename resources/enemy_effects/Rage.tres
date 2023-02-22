@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/enemy_effects/BaseEnemyEffect.gd" type="Script" id=1]
+[ext_resource path="res://sprites/symbols/Rage.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Rage"
+texture = ExtResource( 2 )
+description = "Gains +1 damage when hit"
+multiplier = 1.4
+is_starting_effect = true
+is_solo_only = false
+is_multi_only = false

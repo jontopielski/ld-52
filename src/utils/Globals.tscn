@@ -1,20 +1,58 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/utils/Globals.gd" type="Script" id=1]
-[ext_resource path="res://resources/cards/normal/Shield.tres" type="Resource" id=2]
-[ext_resource path="res://resources/cards/normal/Sword.tres" type="Resource" id=3]
-[ext_resource path="res://resources/cards/normal/Club.tres" type="Resource" id=4]
-[ext_resource path="res://resources/cards/normal/Dagger.tres" type="Resource" id=5]
-[ext_resource path="res://resources/cards/normal/Helm.tres" type="Resource" id=6]
-[ext_resource path="res://resources/cards/undead/Bone.tres" type="Resource" id=7]
+[ext_resource path="res://resources/cards/BaseCard.gd" type="Script" id=2]
+[ext_resource path="res://resources/rewards/TwoCards.tres" type="Resource" id=3]
+[ext_resource path="res://resources/rewards/Heal.tres" type="Resource" id=4]
+[ext_resource path="res://resources/rewards/Refill.tres" type="Resource" id=5]
+[ext_resource path="res://resources/rewards/Boost.tres" type="Resource" id=6]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+name = ""
+description = ""
+damage = 2
+shield = 0
+effects = [  ]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+name = ""
+description = ""
+damage = 0
+shield = 2
+effects = [  ]
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 2 )
+name = ""
+description = ""
+damage = 1
+shield = 1
+effects = [  ]
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 2 )
+name = ""
+description = ""
+damage = 1
+shield = 1
+effects = [  ]
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 2 )
+name = ""
+description = ""
+damage = 1
+shield = 1
+effects = [  ]
 
 [node name="Globals" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
-deck = [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
+starting_deck = [ SubResource( 1 ), SubResource( 2 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ]
+rewards = [ ExtResource( 3 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 5 ) ]
 show_basic_hints = false
-max_health = 7
-current_health = 7
 
 [node name="BaseLayer" type="CanvasLayer" parent="."]
 layer = -1

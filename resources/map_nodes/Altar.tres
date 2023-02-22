@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://resources/map_nodes/BaseMapNode.gd" type="Script" id=1]
+[ext_resource path="res://sprites/stacked/Altar.png" type="Texture" id=2]
+[ext_resource path="res://src/map/FusionCard.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/symbols/Fusion.png" type="Texture" id=4]
+
+[resource]
+script = ExtResource( 1 )
+name = "Altar"
+description = "Fuse two cards together"
+texture = ExtResource( 2 )
+icon = ExtResource( 4 )
+event = ExtResource( 3 )

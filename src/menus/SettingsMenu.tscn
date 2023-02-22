@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://src/menus/SettingsMenu.gd" type="Script" id=1]
 [ext_resource path="res://sprites/ui/Dither.png" type="Texture" id=2]
@@ -17,12 +17,23 @@
 [ext_resource path="res://audio/sfx/ui/beep.wav" type="AudioStream" id=15]
 [ext_resource path="res://sprites/symbols/Damage.png" type="Texture" id=16]
 [ext_resource path="res://sprites/symbols/Shield.png" type="Texture" id=17]
-[ext_resource path="res://sprites/symbols/Gold.png" type="Texture" id=18]
+[ext_resource path="res://sprites/symbols/Health.png" type="Texture" id=18]
 [ext_resource path="res://sprites/settings/CursorOutlineWhite.png" type="Texture" id=19]
 [ext_resource path="res://sprites/settings/Editor_Normal.png" type="Texture" id=20]
 [ext_resource path="res://sprites/settings/Editor_Hover.png" type="Texture" id=21]
 [ext_resource path="res://sprites/settings/Editor_Pressed.png" type="Texture" id=22]
 [ext_resource path="res://sprites/ui/WindowTemplate.png" type="Texture" id=23]
+[ext_resource path="res://sprites/settings/AbandonTinyNormal.png" type="Texture" id=24]
+[ext_resource path="res://sprites/settings/AbandonTinyHover.png" type="Texture" id=25]
+[ext_resource path="res://sprites/settings/AbandonTinyPressed.png" type="Texture" id=26]
+[ext_resource path="res://sprites/settings/YouSureHover.png" type="Texture" id=27]
+[ext_resource path="res://sprites/settings/YouSureNormal.png" type="Texture" id=28]
+[ext_resource path="res://sprites/settings/YouSurePressed.png" type="Texture" id=29]
+[ext_resource path="res://sprites/settings/Slash.png" type="Texture" id=30]
+[ext_resource path="res://audio/sfx/settings/checkbox_on.wav" type="AudioStream" id=31]
+[ext_resource path="res://audio/sfx/settings/checkbox_off.wav" type="AudioStream" id=32]
+[ext_resource path="res://audio/sfx/settings/abandon_warning.wav" type="AudioStream" id=33]
+[ext_resource path="res://audio/sfx/settings/abandon.wav" type="AudioStream" id=34]
 
 [sub_resource type="StyleBoxTexture" id=9]
 texture = ExtResource( 23 )
@@ -79,9 +90,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -67.0
-margin_top = -46.0
-margin_right = 67.0
+margin_left = -62.0
+margin_top = -43.0
+margin_right = 62.0
 margin_bottom = 46.0
 custom_styles/panel = SubResource( 9 )
 
@@ -95,12 +106,14 @@ margin_right = 1.0
 margin_bottom = 1.0
 
 [node name="Border" type="Panel" parent="Menu/Window"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 10 )
 
 [node name="EditorButton" type="TextureButton" parent="Menu/Window"]
+visible = false
 margin_top = -8.0
 margin_right = 9.0
 margin_bottom = 1.0
@@ -144,72 +157,81 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -50.0
-margin_top = -29.5
-margin_right = 50.0
-margin_bottom = 29.5
+margin_left = -47.0
+margin_top = -36.5
+margin_right = 45.0
+margin_bottom = 36.5
 grow_horizontal = 2
 grow_vertical = 2
+custom_constants/separation = 0
 
 [node name="Names" type="VBoxContainer" parent="Menu/Window/Options"]
-margin_right = 59.0
-margin_bottom = 72.0
-size_flags_horizontal = 3
-custom_constants/separation = 6
+margin_right = 47.0
+margin_bottom = 73.0
+custom_constants/separation = 4
 alignment = 1
 
 [node name="Fullscreen" type="Label" parent="Menu/Window/Options/Names"]
-margin_right = 59.0
+margin_right = 47.0
 margin_bottom = 7.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Fullscreen:"
+text = "Full screen:"
 valign = 1
 uppercase = true
 
 [node name="Music" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 13.0
-margin_right = 59.0
-margin_bottom = 20.0
+margin_top = 11.0
+margin_right = 47.0
+margin_bottom = 18.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Music Volume:"
+text = "Music level:"
 valign = 1
 uppercase = true
 
 [node name="SFX" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 26.0
-margin_right = 59.0
-margin_bottom = 33.0
+margin_top = 22.0
+margin_right = 47.0
+margin_bottom = 29.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Sound Volume:"
+text = "Sound level:"
 valign = 1
 uppercase = true
 
 [node name="Palette" type="HBoxContainer" parent="Menu/Window/Options/Names"]
-margin_top = 39.0
-margin_right = 59.0
-margin_bottom = 46.0
+margin_top = 33.0
+margin_right = 47.0
+margin_bottom = 40.0
+size_flags_horizontal = 0
 custom_constants/separation = 0
+alignment = 2
 
 [node name="Palette" type="Label" parent="Menu/Window/Options/Names/Palette"]
-margin_right = 33.0
+margin_right = 32.0
 margin_bottom = 7.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "palette "
+text = "Palettes"
+align = 2
 valign = 1
 uppercase = true
 
+[node name="Slash" type="TextureRect" parent="Menu/Window/Options/Names/Palette"]
+margin_left = 32.0
+margin_right = 38.0
+margin_bottom = 7.0
+texture = ExtResource( 30 )
+
 [node name="Mouse" type="TextureRect" parent="Menu/Window/Options/Names/Palette"]
-margin_left = 33.0
-margin_right = 40.0
+margin_left = 38.0
+margin_right = 45.0
 margin_bottom = 7.0
 texture = ExtResource( 19 )
 
 [node name="Text" type="Label" parent="Menu/Window/Options/Names/Palette"]
-margin_left = 40.0
-margin_right = 42.0
+margin_left = 45.0
+margin_right = 47.0
 margin_bottom = 7.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = ":"
@@ -217,9 +239,9 @@ valign = 1
 uppercase = true
 
 [node name="CRT" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 52.0
-margin_right = 59.0
-margin_bottom = 59.0
+margin_top = 44.0
+margin_right = 47.0
+margin_bottom = 51.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "CRT MONITOR:"
@@ -227,9 +249,9 @@ valign = 1
 uppercase = true
 
 [node name="BasicHint" type="HBoxContainer" parent="Menu/Window/Options/Names"]
-margin_top = 65.0
-margin_right = 59.0
-margin_bottom = 72.0
+margin_top = 55.0
+margin_right = 47.0
+margin_bottom = 62.0
 
 [node name="Hint" type="Label" parent="Menu/Window/Options/Names/BasicHint"]
 margin_right = 47.0
@@ -239,11 +261,22 @@ text = "Basic Hints:"
 valign = 1
 uppercase = true
 
+[node name="Abandon" type="Label" parent="Menu/Window/Options/Names"]
+margin_top = 66.0
+margin_right = 47.0
+margin_bottom = 73.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Abandon run:"
+valign = 1
+uppercase = true
+
 [node name="Sliders" type="VBoxContainer" parent="Menu/Window/Options"]
-margin_left = 63.0
-margin_right = 100.0
-margin_bottom = 72.0
-custom_constants/separation = 6
+margin_left = 55.0
+margin_right = 92.0
+margin_bottom = 73.0
+size_flags_horizontal = 10
+custom_constants/separation = 4
 alignment = 1
 
 [node name="FullscreenBox" type="CheckBox" parent="Menu/Window/Options/Sliders"]
@@ -269,9 +302,9 @@ custom_styles/normal = SubResource( 1 )
 enabled_focus_mode = 0
 
 [node name="MusicSlider" type="HSlider" parent="Menu/Window/Options/Sliders"]
-margin_top = 13.0
+margin_top = 11.0
 margin_right = 37.0
-margin_bottom = 20.0
+margin_bottom = 18.0
 rect_min_size = Vector2( 37, 7 )
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -289,9 +322,9 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="SFXSlider" type="HSlider" parent="Menu/Window/Options/Sliders"]
-margin_top = 26.0
+margin_top = 22.0
 margin_right = 37.0
-margin_bottom = 33.0
+margin_bottom = 29.0
 rect_min_size = Vector2( 37, 7 )
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -309,9 +342,9 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="Palette" type="HBoxContainer" parent="Menu/Window/Options/Sliders"]
-margin_top = 39.0
+margin_top = 33.0
 margin_right = 37.0
-margin_bottom = 46.0
+margin_bottom = 40.0
 custom_constants/separation = 3
 
 [node name="PaletteSlider" type="HSlider" parent="Menu/Window/Options/Sliders/Palette"]
@@ -358,9 +391,9 @@ pressed = true
 enabled_focus_mode = 0
 
 [node name="CRTBox" type="CheckBox" parent="Menu/Window/Options/Sliders"]
-margin_top = 52.0
+margin_top = 44.0
 margin_right = 7.0
-margin_bottom = 59.0
+margin_bottom = 51.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 size_flags_horizontal = 0
@@ -382,9 +415,9 @@ pressed = true
 enabled_focus_mode = 0
 
 [node name="Hints" type="HBoxContainer" parent="Menu/Window/Options/Sliders"]
-margin_top = 65.0
+margin_top = 55.0
 margin_right = 37.0
-margin_bottom = 72.0
+margin_bottom = 62.0
 
 [node name="BasicHints" type="CheckBox" parent="Menu/Window/Options/Sliders/Hints"]
 margin_right = 7.0
@@ -432,6 +465,29 @@ margin_right = 23.0
 margin_bottom = 7.0
 texture = ExtResource( 18 )
 
+[node name="AbandonButton" type="TextureButton" parent="Menu/Window/Options/Sliders"]
+margin_top = 66.0
+margin_right = 37.0
+margin_bottom = 73.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 26 )
+texture_hover = ExtResource( 25 )
+
+[node name="YouSureButton" type="TextureButton" parent="Menu/Window/Options/Sliders"]
+visible = false
+margin_top = 67.0
+margin_right = 37.0
+margin_bottom = 74.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+enabled_focus_mode = 0
+texture_normal = ExtResource( 28 )
+texture_pressed = ExtResource( 29 )
+texture_hover = ExtResource( 27 )
+
 [node name="BlackBox" type="ColorRect" parent="Menu"]
 visible = false
 anchor_right = 1.0
@@ -450,9 +506,30 @@ bus = "SFX"
 stream = ExtResource( 15 )
 bus = "SFX"
 
+[node name="AbandonWarning" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 33 )
+bus = "SFX"
+
+[node name="Abandon" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 34 )
+bus = "SFX"
+
 [node name="SFXBeep" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 bus = "SFX"
+
+[node name="CheckboxOn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 31 )
+bus = "SFX"
+
+[node name="CheckboxOff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 32 )
+bus = "SFX"
+
+[node name="InitializationTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+autostart = true
 
 [connection signal="mouse_entered" from="Menu/Window/CloseButton" to="." method="_on_CloseButton_mouse_entered"]
 [connection signal="mouse_exited" from="Menu/Window/CloseButton" to="." method="_on_CloseButton_mouse_exited"]
@@ -466,3 +543,6 @@ bus = "SFX"
 [connection signal="toggled" from="Menu/Window/Options/Sliders/Palette/WhiteCursorBox" to="." method="_on_WhiteCursorBox_toggled"]
 [connection signal="toggled" from="Menu/Window/Options/Sliders/CRTBox" to="." method="_on_CRTBox_toggled"]
 [connection signal="toggled" from="Menu/Window/Options/Sliders/Hints/BasicHints" to="." method="_on_BasicHints_toggled"]
+[connection signal="pressed" from="Menu/Window/Options/Sliders/AbandonButton" to="." method="_on_AbandonButton_pressed"]
+[connection signal="pressed" from="Menu/Window/Options/Sliders/YouSureButton" to="." method="_on_YouSureButton_pressed"]
+[connection signal="timeout" from="InitializationTimer" to="." method="_on_InitializationTimer_timeout"]

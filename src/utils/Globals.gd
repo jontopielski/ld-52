@@ -3,31 +3,179 @@ extends Node
 const Battle = preload("res://src/battle/Battle.tscn")
 const Map = preload("res://src/map/Map.tscn")
 const MainMenu = preload("res://src/menus/MainMenu.tscn")
+const BlackScreen = preload("res://src/ui/BlackScreen.tscn")
 
-const RARITY_PROBABILITIES = {
-	Enums.Rarity.COMMON: 0.60,
-	Enums.Rarity.UNCOMMON: 0.35,
-	Enums.Rarity.RARE: 0.05
-}
-
+export(bool) var show_debug_values = false
+export(Array, Resource) var starting_deck = []
 export(Array, Resource) var deck = []
-export(Array, Resource) var test_deck = []
-
+export(Array, Resource) var rewards = []
 export(Resource) var current_map_node = null
 export(bool) var show_basic_hints = true
 
 var current_node_queue_resources = []
 var node_queue_positions = []
 
-export(int) var max_health = 5
-export(int) var current_health = 5
+var current_floor = 0
+var current_index = 0
+
+export(int) var max_health = 8
+export(int) var current_health = 8
+
+onready var reward_to_cooldown_map = initialize_reward_to_cooldown_map()
+
+onready var starting_queues = {
+	"enemy_effects": get_all_enemy_effects(),
+	"enemy_counts": [1, 1, 1, 2, 2, 2, 3],
+	"2_enemy_weights": [[.7, .4], [.8, .4], [.5, .7], [.65, .55]],
+	"3_enemy_weights": [[.8, .3, .3], [.5, .4, .3], [.7, .2, .4], [.4, .4, .4]],
+	"card_effect_type": [00, 00, 00, -10, -11, 01, 01, 01, 01], # xy = (negative, positive)
+	"positive_effects": get_all_positive_effects(),
+	"negative_effects": get_all_negative_effects(),
+}
+
+onready var current_queues = {
+	"enemy_effects": [],
+	"enemy_counts": [],
+	"2_enemy_weights": [],
+	"3_enemy_weights": [],
+	"card_effect_type": [],
+	"positive_effects": [],
+	"negative_effects": [],
+}
 
 func _ready():
-	if !test_deck.empty():
-		deck = test_deck
+	initialize_queues()
+	initialize_starting_deck()
+
+func initialize_reward_to_cooldown_map():
+	var map = {}
+	for reward in rewards:
+		map[reward] = 0
+	return map
+
+func is_facing_boss():
+	if !current_map_node:
+		return false
+	else:
+		return "Boss" in current_map_node.name
+
+func initialize_starting_deck():
+	Globals.deck.clear()
+	if !starting_deck.empty():
+		for starting_card in starting_deck:
+			Globals.deck.push_back(starting_card.duplicate())
+		Globals.deck.back().effects.push_back(get_next_positive_effect())
+		return
+	var starting_card_weight = 1.1
+	var card_weight_increment = 0.1
+	var total_hand_weight = 0.0
+	for i in range(0, 5):
+		var card_weight = starting_card_weight + (i * card_weight_increment)
+		var next_card = CardGeneration.generate_card(card_weight, true)
+		total_hand_weight += Sort.get_card_weight(next_card)
+		Globals.deck.push_back(next_card)
+	if total_hand_weight > 10.0 or get_total_cards_with_shield(Globals.deck) < 2 or get_total_cards_with_damage(Globals.deck) < 2:
+		print("Starting hand weight of %.2f was too high!" % [total_hand_weight])
+		initialize_starting_deck()
+
+func get_total_cards_with_shield(hand):
+	var shield_count = 0
+	for card in hand:
+		if card.shield > 0:
+			shield_count += 1
+	return shield_count
+
+func get_total_cards_with_damage(hand):
+	var damage_count = 0
+	for card in hand:
+		if card.damage > 0:
+			damage_count += 1
+	return damage_count
+
+func initialize_queues():
+	randomize()
+	for starting_queue in starting_queues.keys():
+		current_queues[starting_queue] = starting_queues[starting_queue].duplicate()
+		current_queues[starting_queue].shuffle()
+
+func reset_all_state():
+	initialize_queues()
+	initialize_starting_deck()
+	current_map_node = null
+	current_node_queue_resources = []
+	node_queue_positions = []
+	current_floor = 0
+	current_index = 0
+	max_health = 8
+	current_health = 8
+	CardGeneration.generated_cards.clear()
+
+func get_next_positive_effect():
+	return pop_queue("positive_effects")
+
+func get_next_negative_effect():
+	return pop_queue("negative_effects")
+
+func get_next_card_effect_type():
+	return pop_queue("card_effect_type")
+
+func get_next_enemy_count():
+	return pop_queue("enemy_counts")
+
+func pop_queue(queue_name):
+	if current_queues[queue_name].empty():
+		current_queues[queue_name] = starting_queues[queue_name].duplicate()
+		randomize();
+		current_queues[queue_name].shuffle()
+	return current_queues[queue_name].pop_front()
+
+func get_all_positive_effects():
+	var positive_effects = get_resources_at_path("res://resources/effects/positive")
+	for positive_effect in positive_effects:
+		if positive_effect.is_testing:
+			return [positive_effect]
+	return positive_effects
+
+func get_all_negative_effects():
+	var negative_effects = get_resources_at_path("res://resources/effects/negative")
+	for negative_effect in negative_effects:
+		if negative_effect.is_testing:
+			return [negative_effect]
+	return negative_effects
+
+func add_health(health):
+	current_health = min(max_health, current_health + health)
+	get_tree().call_group("ui", "update_ui")
+
+func get_next_enemy_effect(enemy_count):
+	var effect_to_return = pop_queue("enemy_effects")
+	if effect_to_return.is_multi_only and enemy_count == 1:
+		return get_next_enemy_effect(enemy_count)
+	elif effect_to_return.is_solo_only and enemy_count > 1:
+		return get_next_enemy_effect(enemy_count)
+	elif effect_to_return.minimum_index > Globals.current_index:
+		return get_next_enemy_effect(enemy_count)
+	else:
+		return effect_to_return
+
+func get_all_enemy_effects():
+	var effects = get_resources_at_path("res://resources/enemy_effects/")
+	var effects_to_remove = []
+	for effect in effects:
+		if !effect.is_starting_effect:
+			effects_to_remove.push_back(effect)
+	for effect in effects_to_remove:
+		effects.erase(effect)
+	randomize(); effects.shuffle()
+	return effects
 
 func _process(delta):
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_reset"):
+		if get_tree().current_scene.name == "Battle" or get_tree().current_scene.name == "Map":
+			CardGeneration.generated_cards.clear()
+			initialize_starting_deck()
+		else:
+			reset_all_state()
 		var current_scene_path = get_tree().current_scene.filename
 		get_tree().change_scene(current_scene_path)
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_screenshot"):
@@ -35,6 +183,12 @@ func _process(delta):
 		var image = get_viewport().get_texture().get_data()
 		image.flip_y()
 		image.save_png("C:\\Users\\jonto\\Desktop\\Game_Screenshot_%s.png" % str(randi() % 1000))
+
+func remove_card(_card):
+	for card in deck:
+		if card == _card:
+			deck.erase(card)
+			break
 
 func get_card_symbol():
 	return "`"
@@ -48,34 +202,23 @@ func get_reroll_symbol():
 func get_relic_symbol():
 	return "~"
 
-func get_randomized_item_from_list(items):
-	var items_by_rarity = {
-		Enums.Rarity.COMMON: get_all_items_with_rarity(items, Enums.Rarity.COMMON),
-		Enums.Rarity.UNCOMMON: get_all_items_with_rarity(items, Enums.Rarity.UNCOMMON),
-		Enums.Rarity.RARE: get_all_items_with_rarity(items, Enums.Rarity.RARE)
-	}
-	var randomized_item = null
-	while !randomized_item:
-		var next_rarity = get_randomized_rarity()
-		var items_list_with_rarity = items_by_rarity[next_rarity]
-		if !items_list_with_rarity.empty():
-			items_list_with_rarity.shuffle()
-			randomized_item = items_list_with_rarity.front()
-	return randomized_item
+func get_resources_at_path(path, load_them=true):
+	var resources = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
 
-func get_randomized_rarity():
-	randomize()
-	var possible_rarities = []
-	for rarity_probability in RARITY_PROBABILITIES.keys():
-		var probability = RARITY_PROBABILITIES[rarity_probability]
-		for i in range(0, int(probability * 100)):
-			possible_rarities.push_back(rarity_probability)
-	possible_rarities.shuffle()
-	return possible_rarities[randi() % len(possible_rarities)]
-
-func get_all_items_with_rarity(items, rarity):
-	var items_with_rarity = []
-	for item in items:
-		if item.rarity == rarity:
-			items_with_rarity.push_back(item)
-	return items_with_rarity
+	while file_name != "":
+		if dir.current_is_dir() and file_name != "." and file_name != "..":
+			var nested_resources = get_resources_at_path(path + "/" + file_name)
+			for rsc in nested_resources:
+				resources.push_back(rsc)
+		elif file_name != "." and file_name != ".." and file_name.ends_with(".tres"):
+			if load_them:
+				resources.push_back(load(path + "/" + file_name))
+			else:
+				resources.push_back(path + "/" + file_name)
+		file_name = dir.get_next()
+	
+	return resources

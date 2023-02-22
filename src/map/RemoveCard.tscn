@@ -1,0 +1,245 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://sprites/ui/WindowTemplate.png" type="Texture" id=1]
+[ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=3]
+[ext_resource path="res://sprites/cards/CardOutline.png" type="Texture" id=4]
+[ext_resource path="res://sprites/map/CancelIcon.png" type="Texture" id=5]
+[ext_resource path="res://sprites/map/ConfirmIcon.png" type="Texture" id=6]
+[ext_resource path="res://src/map/RemoveCard.gd" type="Script" id=7]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 10.0
+margin_bottom = 4.0
+expand_margin_top = 8.0
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 1.0
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 2.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Shader" id=9]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+resource_local_to_scene = true
+shader = SubResource( 9 )
+shader_param/inverted = false
+
+[sub_resource type="ShaderMaterial" id=7]
+resource_local_to_scene = true
+shader = SubResource( 9 )
+shader_param/inverted = false
+
+[node name="RemoveCard" type="Control" groups=["map_card_listeners"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 7 )
+
+[node name="Window" type="Panel" parent="."]
+margin_left = 26.0
+margin_top = 21.0
+margin_right = 150.0
+margin_bottom = 81.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Title" type="Label" parent="Window"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -59.0
+margin_top = -7.0
+margin_right = 58.0
+custom_fonts/font = ExtResource( 3 )
+text = "remove card"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="BlankCard" type="TextureRect" parent="Window"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = -26.5
+margin_right = 18.0
+margin_bottom = 17.5
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Panel" type="Panel" parent="Window"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -58.0
+margin_top = 4.0
+margin_right = 58.0
+margin_bottom = 52.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="Instructions" type="Label" parent="Window"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -62.0
+margin_top = -9.0
+margin_right = 62.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/normal = SubResource( 8 )
+text = "Choose card below to remove"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Actions" type="HBoxContainer" parent="Window"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -62.0
+margin_top = -9.0
+margin_right = 62.0
+custom_constants/separation = -1
+alignment = 1
+
+[node name="Cancel" type="Button" parent="Window/Actions"]
+margin_right = 62.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 45, 0 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+enabled_focus_mode = 0
+
+[node name="Icon" type="TextureRect" parent="Window/Actions/Cancel"]
+material = SubResource( 6 )
+margin_left = 2.0
+margin_right = 7.0
+margin_bottom = 9.0
+texture = ExtResource( 5 )
+stretch_mode = 4
+
+[node name="HBox" type="HBoxContainer" parent="Window/Actions/Cancel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_right = -2.0
+mouse_filter = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Window/Actions/Cancel/HBox"]
+margin_top = 2.0
+margin_right = 53.0
+margin_bottom = 7.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Cancel"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Confirm" type="Button" parent="Window/Actions"]
+margin_left = 61.0
+margin_right = 124.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 45, 0 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+enabled_focus_mode = 0
+
+[node name="Icon" type="TextureRect" parent="Window/Actions/Confirm"]
+material = SubResource( 7 )
+margin_left = 2.0
+margin_right = 7.0
+margin_bottom = 9.0
+texture = ExtResource( 6 )
+stretch_mode = 4
+
+[node name="HBox" type="HBoxContainer" parent="Window/Actions/Confirm"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_right = -2.0
+mouse_filter = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Window/Actions/Confirm/HBox"]
+margin_top = 2.0
+margin_right = 54.0
+margin_bottom = 7.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Confirm"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="SelectedCard" type="Control" parent="."]
+margin_left = 71.0
+margin_top = 25.0
+margin_right = 106.0
+margin_bottom = 69.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="mouse_entered" from="Window/Actions/Cancel" to="." method="_on_Cancel_mouse_entered"]
+[connection signal="mouse_exited" from="Window/Actions/Cancel" to="." method="_on_Cancel_mouse_exited"]
+[connection signal="pressed" from="Window/Actions/Cancel" to="." method="_on_Cancel_pressed"]
+[connection signal="mouse_entered" from="Window/Actions/Confirm" to="." method="_on_Confirm_mouse_entered"]
+[connection signal="mouse_exited" from="Window/Actions/Confirm" to="." method="_on_Confirm_mouse_exited"]
+[connection signal="pressed" from="Window/Actions/Confirm" to="." method="_on_Confirm_pressed"]

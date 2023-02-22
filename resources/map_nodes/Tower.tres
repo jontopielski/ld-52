@@ -7,8 +7,6 @@
 script = ExtResource( 1 )
 name = "Tower"
 description = ""
-node_type = 0
 texture = ExtResource( 2 )
 cost = 2
 enemies = [  ]
-spawn_rates = [  ]

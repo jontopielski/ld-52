@@ -5,15 +5,18 @@
 [ext_resource path="res://audio/sfx/map/shuffle_02.wav" type="AudioStream" id=3]
 [ext_resource path="res://audio/sfx/map/shuffle_03.wav" type="AudioStream" id=4]
 
-[node name="CardDisplay" type="Control"]
+[node name="CardDisplay" type="Control" groups=["CardDisplay"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
+card_weight_increment = 0.5
 
 [node name="Cards" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = 87.0
+margin_bottom = -13.0
 mouse_filter = 2
 
 [node name="ShuffleAlpha" type="AudioStreamPlayer" parent="."]

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://src/ui/PaletteManager.gd" type="Script" id=1]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 uniform vec4 ColorOne : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
@@ -11,11 +11,11 @@ uniform vec4 ColorTwo : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 void fragment() {
 	vec4 current_color = vec4(texture(SCREEN_TEXTURE, SCREEN_UV));
 	float rgb_avg = (current_color.r + current_color.g + current_color.b) / 3.0;
-	COLOR = mix(ColorOne, ColorTwo, float(int(rgb_avg < 0.1)));
+	COLOR = mix(ColorOne, ColorTwo, float(int(rgb_avg < 0.25)));
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+shader = SubResource( 3 )
 shader_param/ColorOne = Color( 1, 1, 1, 1 )
 shader_param/ColorTwo = Color( 0, 0, 0, 1 )
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://resources/icons/Damage.tres" type="Resource" id=2]
 [ext_resource path="res://sprites/symbols/Damage.png" type="Texture" id=3]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=15]
 code = "shader_type canvas_item;
 
 uniform bool inverted = false;
@@ -16,13 +16,14 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = SubResource( 1 )
+shader = SubResource( 15 )
 shader_param/inverted = false
 
 [node name="Icon" type="TextureRect"]
 material = SubResource( 2 )
 rect_min_size = Vector2( 7, 7 )
 texture = ExtResource( 3 )
+stretch_mode = 4
 script = ExtResource( 1 )
 icon = ExtResource( 2 )
 

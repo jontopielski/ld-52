@@ -2,13 +2,19 @@ tool
 extends Node2D
 
 const WhiteShader = preload("res://src/shaders/White.tres")
+const InvertedShader = preload("res://src/shaders/InvertedStacks.tres")
 
 export(Texture) var texture = null setget set_texture
 export(int) var hframes = 0 setget set_hframes
 export(bool) var rotate_sprites = false setget set_rotate_sprites
 export(bool) var set_sprites_white = false
+export(bool) var invert_sprites = false setget set_invert_sprites
 
 var rotation_sum = 0
+
+func set_invert_sprites(value):
+	invert_sprites = value
+	render_sprites()
 
 func set_texture(value):
 	texture = value
@@ -50,6 +56,8 @@ func render_sprites():
 		add_child(next_sprite)
 		if set_sprites_white:
 			next_sprite.material = WhiteShader
+		if invert_sprites:
+			next_sprite.material = InvertedShader
 		next_sprite.texture = texture
 		next_sprite.hframes = hframes
 		next_sprite.frame = i

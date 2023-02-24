@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Sold.png-ca0b29eee0b2f9741b582370f104f91e.stex"
+path="res://.import/Lid.png-06890681bda58f3772986a86f1b203f8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/symbols/Sold.png"
-dest_files=[ "res://.import/Sold.png-ca0b29eee0b2f9741b582370f104f91e.stex" ]
+source_file="res://sprites/relics/Lid.png"
+dest_files=[ "res://.import/Lid.png-06890681bda58f3772986a86f1b203f8.stex" ]
 
 [params]
 

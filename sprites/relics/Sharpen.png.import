@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Dagger.png-29131f9804d71271add7814790608ab8.stex"
+path="res://.import/Sharpen.png-0e2fc5aa1b3fddfc61fd624f7e1e02cb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/symbols/Dagger.png"
-dest_files=[ "res://.import/Dagger.png-29131f9804d71271add7814790608ab8.stex" ]
+source_file="res://sprites/relics/Sharpen.png"
+dest_files=[ "res://.import/Sharpen.png-0e2fc5aa1b3fddfc61fd624f7e1e02cb.stex" ]
 
 [params]
 

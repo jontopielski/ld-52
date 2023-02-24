@@ -1,10 +1,10 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://resources/icons/BaseIcon.gd" type="Script" id=1]
-[ext_resource path="res://sprites/symbols/Sold.png" type="Texture" id=2]
+[ext_resource path="res://sprites/relics/Three.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-name = "Sold"
+name = "ThreeCards"
 texture = ExtResource( 2 )
-description = "Replaced on next reroll"
+description = "Choose between 3 cards"

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Brick.png-63e1d59412ef2b9dd88361c602bab9a4.stex"
+path="res://.import/Sturdy.png-921f4172e047f224946df3312170d1a6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/symbols/Brick.png"
-dest_files=[ "res://.import/Brick.png-63e1d59412ef2b9dd88361c602bab9a4.stex" ]
+source_file="res://sprites/relics/Sturdy.png"
+dest_files=[ "res://.import/Sturdy.png-921f4172e047f224946df3312170d1a6.stex" ]
 
 [params]
 

@@ -171,7 +171,10 @@ func _on_Card_button_up():
 				missed_enemies.push_back(enemy)
 				continue
 			var enemy_health_before_hit = enemy.health
-			enemy.take_damage(damage)
+			var damage_to_enemy = damage
+			if damage_to_enemy == 0 and Globals.has_relic("Sharpen"):
+				damage_to_enemy += 1
+			enemy.take_damage(damage_to_enemy)
 			if enemy_health_before_hit == enemy.health and damage > 0:
 				missed_enemies.push_back(enemy)
 		for missed_enemy in missed_enemies:
@@ -190,18 +193,27 @@ func _on_Card_button_up():
 				enemy.add_effect(Frozen)
 		if has_effect("Poison"):
 			for enemy in enemies:
-				enemy.add_poison(1)
+				var poison_amount = 1
+				if Globals.has_relic("Noxious"):
+					poison_amount += 1
+				enemy.add_poison(poison_amount)
 		for card in get_tree().get_nodes_in_group("cards"):
 			if card != self and card.has_effect("Stack"):
 				card.shield += 1
 			if card != self and card.has_effect("Expose") and card.shield > 0:
 				card.shield -= 1
-		if has_effect("Fragile") or has_effect("Freeze"):
+		if has_effect("Fragile") and is_able_to_break():
 			shatter_card()
 		else:
 			$AnimationPlayer.play("flip_discard")
 			yield($AnimationPlayer, "animation_finished")
 			float_card_up_and_destroy()
+
+func is_able_to_break():
+	if Globals.has_relic("Sturdy"):
+		if randi() % 2 == 0:
+			return false
+	return true
 
 func shatter_card():
 	var next_shatter = ShatterCard.instance()

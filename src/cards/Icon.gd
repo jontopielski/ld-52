@@ -45,13 +45,9 @@ func get_icon_text():
 func _on_Icon_mouse_entered():
 	if !Globals.show_basic_hints and (icon.name == "Damage" or icon.name == "Shield" or icon.name == "Gold" or icon.name == "Health"):
 		return
-	if icon.name == "Sold":
-		return
 	get_tree().call_group("Terminal", "set_terminal_text", get_icon_text(), texture)
 
 func _on_Icon_mouse_exited():
 	if !Globals.show_basic_hints and (icon.name == "Damage" or icon.name == "Shield" or icon.name == "Gold" or icon.name == "Health"):
-		return
-	if icon.name == "Sold":
 		return
 	get_tree().call_group("Terminal", "clear_terminal_text")

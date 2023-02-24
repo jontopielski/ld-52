@@ -1,6 +1,6 @@
 extends Control
 
-const HeartTexture = preload("res://sprites/symbols/Health.png")
+const HeartTexture = preload("res://sprites/symbols/Heart.png")
 const Home = preload("res://resources/map_nodes/Home.tres")
 const MapNode = preload("res://src/map/MapNode.tscn")
 const EmptyNode = preload("res://resources/map_nodes/Empty.tres")
@@ -16,8 +16,8 @@ func _ready():
 	update_ui()
 	if Globals.current_map_node:
 		generate_map(false)
-		for i in range(0, len(Globals.current_node_queue_resources)):
-			var node_queue_resource = Globals.current_node_queue_resources[i]
+		for i in range(0, len(Globals.current_map)):
+			var node_queue_resource = Globals.current_map[i]
 			var node_queue_position = Globals.node_queue_positions[i]
 			var next_map_node = MapNode.instance()
 			$MapNodes.add_child(next_map_node)
@@ -91,7 +91,7 @@ func save_node_queue():
 		saved_node_queue.push_back(map_node.map_node)
 		node_queue_positions.push_back(map_node.rect_position)
 	Globals.node_queue_positions = node_queue_positions
-	Globals.current_node_queue_resources = saved_node_queue
+	Globals.current_map = saved_node_queue
 
 func change_to_battle():
 	Globals.current_map_node = current_node.map_node

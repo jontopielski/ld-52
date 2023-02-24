@@ -18,6 +18,7 @@ func _process(delta):
 		spawn_rewards()
 
 func spawn_rewards():
+	set_card_count()
 	get_tree().call_group("Terminal", "set_terminal_text", "Choose a card")
 	var card_weight = 2.0 + (0.25 * Globals.current_index)
 	var possible_cards = get_generated_cards(card_weight)
@@ -30,6 +31,12 @@ func spawn_rewards():
 	if !card_display:
 		card_display = CardDisplay.instance()
 		add_child(card_display)
+
+func set_card_count():
+	if Globals.has_reward("2-Cards"):
+		card_count = 2
+	elif Globals.has_reward("3-Cards"):
+		card_count = 3
 
 func is_generated_cards_balanced(cards, closeness_percent):
 	Sort.sort_cards_by_weight(cards)

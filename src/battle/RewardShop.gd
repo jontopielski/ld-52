@@ -2,9 +2,14 @@ extends Control
 
 const ShopItem = preload("res://src/map/ShopItem.tscn")
 const RewardWindowPost = preload("res://src/battle/RewardWindowPost.tres")
+const TwoCards = preload("res://resources/rewards/2-Cards.tres")
+const ThreeCards = preload("res://resources/rewards/3-Cards.tres")
 
 func _ready():
 	clear_all_shop_items()
+	if Globals.has_relic("Three") and TwoCards in Globals.rewards:
+		Globals.remove_reward(TwoCards)
+		Globals.add_reward(ThreeCards)
 	for reward in Globals.rewards:
 		var next_shop_item = ShopItem.instance()
 		$Window/Content/Items.add_child(next_shop_item)

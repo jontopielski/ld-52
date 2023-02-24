@@ -5,7 +5,6 @@ const Damage = preload("res://resources/icons/Damage.tres")
 const Shield = preload("res://resources/icons/Shield.tres")
 const Location = preload("res://resources/icons/Location.tres")
 const Reroll = preload("res://resources/icons/Reroll.tres")
-const Sold = preload("res://resources/icons/Sold.tres")
 
 export(Resource) var resource = null setget set_resource
 
@@ -14,9 +13,7 @@ var item_type = Enums.ItemType.NONE
 func set_resource(_resource):
 	resource = _resource
 	clear_all_symbols()
-	if resource == Sold:
-		set_sold_out()
-	elif resource == Reroll:
+	if resource == Reroll:
 		set_reroll()
 	else:
 		match resource.resource_path.split("/")[3]:
@@ -58,18 +55,6 @@ func set_reroll():
 	reroll_icon.set_icon(Reroll)
 	$Symbols.add_child(reroll_icon)
 	$HBox/Name.text = "REROLL"
-
-func set_sold_out():
-	clear_all_symbols()
-	item_type = Enums.ItemType.SOLD_OUT
-	resource = Sold
-	var sold_icon = Icon.instance()
-	sold_icon.set_icon(Sold)
-	$Symbols.add_child(sold_icon)
-	$HBox/Name.text = ""
-	set_everything_white()
-	disabled = true
-	mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 func set_card_symbols():
 	add_icon_for_amount(Damage, $Symbols, resource.damage)
@@ -152,11 +137,10 @@ func _on_ShopItem_pressed():
 			get_tree().call_group("CardDisplay", "load_cards")
 			get_tree().call_group("Map", "update_ui")
 			get_tree().call_group("Shop", "item_selected")
-			set_resource(Sold)
 		Enums.ItemType.REWARD:
 			Globals.reward_to_cooldown_map[resource] = resource.cooldown
 			match resource.name:
-				"2-Cards":
+				"2-Cards", "3-Cards":
 					$Selected.play()
 					get_tree().call_group("RewardShop", "card_selected")
 					get_tree().call_group("Battle", "spawn_card_rewards")

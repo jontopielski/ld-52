@@ -7,7 +7,6 @@ enum ItemType {
 	RELIC,
 	REROLL,
 	REWARD,
-	SOLD_OUT,
 }
 
 enum EnemyAttackType {

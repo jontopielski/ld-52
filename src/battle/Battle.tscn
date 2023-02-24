@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/battle/Battle.gd" type="Script" id=2]
@@ -26,6 +26,9 @@
 [ext_resource path="res://src/battle/RewardShop.tscn" type="PackedScene" id=24]
 [ext_resource path="res://audio/sfx/battle/player_take_damage.wav" type="AudioStream" id=25]
 [ext_resource path="res://audio/sfx/settings/abandon.wav" type="AudioStream" id=26]
+[ext_resource path="res://src/ui/Relics.tscn" type="PackedScene" id=27]
+[ext_resource path="res://sprites/symbols/Heart.png" type="Texture" id=28]
+[ext_resource path="res://resources/icons/Heart.tres" type="Resource" id=29]
 
 [sub_resource type="Shader" id=11]
 code = "shader_type canvas_item;
@@ -55,7 +58,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=16]
 resource_local_to_scene = true
 shader = SubResource( 27 )
-shader_param/inverted = false
+shader_param/inverted = true
 
 [sub_resource type="Shader" id=30]
 code = "shader_type canvas_item;
@@ -340,8 +343,9 @@ material = SubResource( 16 )
 margin_right = 7.0
 margin_bottom = 9.0
 mouse_filter = 2
-texture = ExtResource( 13 )
-icon = ExtResource( 14 )
+texture = ExtResource( 28 )
+icon = ExtResource( 29 )
+inverted = true
 
 [node name="Count" type="Label" parent="TopBar/Health"]
 margin_left = 8.0
@@ -351,6 +355,11 @@ margin_bottom = 8.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "03/08"
 
+[node name="Relics" parent="TopBar" instance=ExtResource( 27 )]
+anchor_right = 0.0
+margin_left = 30.0
+margin_right = 105.0
+
 [node name="HBox" type="HBoxContainer" parent="TopBar"]
 anchor_right = 1.0
 margin_left = 106.0
@@ -359,16 +368,8 @@ margin_bottom = 9.0
 grow_horizontal = 0
 custom_constants/separation = 0
 
-[node name="Spend" type="Label" parent="TopBar/HBox"]
-margin_top = 1.0
-margin_right = 18.0
-margin_bottom = 8.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "10.00"
-
 [node name="Deck" type="HBoxContainer" parent="TopBar/HBox"]
-margin_left = 18.0
-margin_right = 29.0
+margin_right = 11.0
 margin_bottom = 9.0
 custom_constants/separation = 0
 
@@ -390,14 +391,14 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "8"
 
 [node name="TinyBuffer" type="Control" parent="TopBar/HBox"]
-margin_left = 29.0
-margin_right = 30.0
+margin_left = 11.0
+margin_right = 12.0
 margin_bottom = 9.0
 rect_min_size = Vector2( 1, 0 )
 
 [node name="Discard" type="HBoxContainer" parent="TopBar/HBox"]
-margin_left = 30.0
-margin_right = 42.0
+margin_left = 12.0
+margin_right = 24.0
 margin_bottom = 9.0
 custom_constants/separation = 1
 
@@ -417,6 +418,15 @@ margin_right = 12.0
 margin_bottom = 8.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "0"
+
+[node name="Spend" type="Label" parent="TopBar"]
+margin_left = 157.0
+margin_top = 10.0
+margin_right = 175.0
+margin_bottom = 17.0
+grow_horizontal = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10.00"
 
 [node name="SettingsButton" parent="TopBar" instance=ExtResource( 17 )]
 

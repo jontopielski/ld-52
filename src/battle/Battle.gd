@@ -1,6 +1,6 @@
 extends Control
 
-const HeartTexture = preload("res://sprites/symbols/Health.png")
+const HeartTexture = preload("res://sprites/symbols/Heart.png")
 const Explosion = preload("res://src/effects/Explosion.tscn")
 const Card = preload("res://src/cards/Card.tscn")
 const Enemy = preload("res://src/cards/Enemy.tscn")
@@ -51,7 +51,7 @@ func spawn_enemies():
 	var enemy_weights = get_enemy_weights_array(enemy_count)
 	for i in range(0, len(enemy_weights)):
 		enemy_weights[i] = enemy_weights[i] * enemy_spend
-	$TopBar/HBox/Spend.text = "%.2f" % float(enemy_spend)
+	$TopBar/Spend.text = "%.2f" % float(enemy_spend)
 	var enemy_resources = []
 	print(enemy_weights)
 	for i in range(0, enemy_count):
@@ -101,6 +101,8 @@ func player_won_the_fight():
 		card.float_card_down_and_destroy()
 	for enemy in $Enemies.get_children():
 		enemy.float_card_up_and_destroy()
+	if Globals.has_relic("Regen"):
+		Globals.add_health(1)
 	yield(get_tree().create_timer(0.25), "timeout")
 	$RewardShop.show()
 	$RewardShop.spawn_in()
@@ -233,6 +235,10 @@ func get_total_player_shield():
 	for card in $PlayerCards.get_children():
 		if !card.is_queued_for_deletion:
 			total_shield += card.shield
+	if Globals.has_relic("Blubber"):
+		total_shield += 1
+	if Globals.has_relic("Lid"):
+		total_shield = min(3, total_shield)
 	return total_shield
 
 func _on_Health_mouse_entered():

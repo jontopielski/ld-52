@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/icons/ThreeCards.tres" type="Resource" id=1]
+[ext_resource path="res://resources/rewards/BaseReward.gd" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+name = "3-Cards"
+icon = ExtResource( 1 )
+cooldown = 2

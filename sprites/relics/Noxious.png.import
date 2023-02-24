@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Shop.png-f200fb830ac9079f1217e0ff529f5d86.stex"
+path="res://.import/Noxious.png-cefe4c65ec8a12a118499037d6884f2e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/symbols/Shop.png"
-dest_files=[ "res://.import/Shop.png-f200fb830ac9079f1217e0ff529f5d86.stex" ]
+source_file="res://sprites/relics/Noxious.png"
+dest_files=[ "res://.import/Noxious.png-cefe4c65ec8a12a118499037d6884f2e.stex" ]
 
 [params]
 

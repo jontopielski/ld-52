@@ -9,11 +9,11 @@ export(bool) var show_debug_values = false
 export(Array, Resource) var starting_deck = []
 export(Array, Resource) var deck = []
 export(Array, Resource) var rewards = []
-export(Resource) var current_map_node = null
+export(Array, Resource) var relics = []
 export(bool) var show_basic_hints = true
 
-var current_node_queue_resources = []
-var node_queue_positions = []
+var current_map = []
+var current_map_node = null
 
 var current_floor = 0
 var current_index = 0
@@ -47,6 +47,23 @@ func _ready():
 	initialize_queues()
 	initialize_starting_deck()
 
+func has_reward(reward_name):
+	for reward in rewards:
+		if reward.name == reward_name:
+			return true
+	return false
+
+func remove_reward(reward):
+	reward_to_cooldown_map.erase(reward)
+	rewards.erase(reward)
+
+func add_reward(reward):
+	reward_to_cooldown_map[reward] = 0
+	if "Cards" in reward.name:
+		rewards.push_front(reward)
+	else:
+		rewards.push_back(reward)
+
 func initialize_reward_to_cooldown_map():
 	var map = {}
 	for reward in rewards:
@@ -58,6 +75,12 @@ func is_facing_boss():
 		return false
 	else:
 		return "Boss" in current_map_node.name
+
+func has_relic(relic_name):
+	for relic in relics:
+		if relic.name == relic_name:
+			return true
+	return false
 
 func initialize_starting_deck():
 	Globals.deck.clear()
@@ -102,7 +125,7 @@ func reset_all_state():
 	initialize_queues()
 	initialize_starting_deck()
 	current_map_node = null
-	current_node_queue_resources = []
+	current_map = []
 	node_queue_positions = []
 	current_floor = 0
 	current_index = 0

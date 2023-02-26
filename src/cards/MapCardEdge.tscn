@@ -1,0 +1,46 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://src/cards/MapCardEdge.gd" type="Script" id=1]
+[ext_resource path="res://sprites/map/edges/Greater_Than.png" type="Texture" id=2]
+[ext_resource path="res://sprites/map/edges/Dash.png" type="Texture" id=3]
+[ext_resource path="res://sprites/map/edges/Less_Than.png" type="Texture" id=4]
+[ext_resource path="res://sprites/map/edges/Equals.png" type="Texture" id=5]
+[ext_resource path="res://sprites/map/edges/Cross.png" type="Texture" id=6]
+[ext_resource path="res://sprites/map/edges/Empty.png" type="Texture" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool is_front_edge = false;
+uniform bool is_back_edge = false;
+
+void fragment() {
+	if (is_front_edge) {
+		if (UV.x >= .5) {
+			COLOR = texture(TEXTURE, UV);
+		} else {
+			COLOR = vec4(vec3(1.0), 0.0);
+		}
+	} else if (is_back_edge) {
+		if (UV.x <= .5) {
+			COLOR = texture(TEXTURE, UV);
+		} else {
+			COLOR = vec4(vec3(1.0), 0.0);
+		}
+	} else {
+		COLOR = texture(TEXTURE, UV);
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/is_front_edge = false
+shader_param/is_back_edge = false
+
+[node name="MapCardEdge" type="TextureRect"]
+material = SubResource( 2 )
+margin_right = 6.0
+margin_bottom = 19.0
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
+edges = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ]

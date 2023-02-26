@@ -1,45 +1,198 @@
 extends Control
 
+signal finished_walking
+
 const HeartTexture = preload("res://sprites/symbols/Heart.png")
 const Home = preload("res://resources/map_nodes/Home.tres")
 const MapNode = preload("res://src/map/MapNode.tscn")
-const EmptyNode = preload("res://resources/map_nodes/Empty.tres")
-const PLAYER_NODE_OFFSET = Vector2(7, 10)
+const PLAYER_NODE_OFFSET = Vector2(3, 3)
 
 export(Array, Resource) var test_map_nodes = []
 export(Array, Resource) var random_events = []
 
 var current_node = null
-var node_queue = []
+var next_node = null
+var current_map = []
+var map_card_objs = []
+var map_node_objs = []
 
 func _ready():
 	update_ui()
-	if Globals.current_map_node:
-		generate_map(false)
-		for i in range(0, len(Globals.current_map)):
-			var node_queue_resource = Globals.current_map[i]
-			var node_queue_position = Globals.node_queue_positions[i]
-			var next_map_node = MapNode.instance()
-			$MapNodes.add_child(next_map_node)
-			next_map_node.rect_position = node_queue_position
-			next_map_node.set_map_node(node_queue_resource)
-			node_queue.push_back(next_map_node)
-		current_node = node_queue.front()
-		$Player.position = node_queue.front().rect_position + PLAYER_NODE_OFFSET
+	setup_map_cards()
+	if Globals.current_map:
+		current_map = Globals.current_map
 	else:
 		generate_map()
-		setup_node_queue()
-		save_node_queue()
-		current_node = node_queue.front()
-		current_node.set_map_node(Home)
-		$Player.position = node_queue.front().rect_position + PLAYER_NODE_OFFSET
-		if !test_map_nodes.empty():
-			for i in range(0, min(len(node_queue), len(test_map_nodes))):
-				if test_map_nodes[i].name == "Random":
-					randomize()
-					node_queue[i + 1].set_map_node(random_events[randi() % len(random_events)])
+		Globals.current_map = current_map
+	load_current_map()
+	update_map_nodes()
+
+func map_node_pressed(selected_map_node):
+	Globals.current_index += 1
+	var map_nodes = map_node_objs[Globals.current_index]
+	for i in range(0, len(map_nodes)):
+		var map_node = map_nodes[i]
+		if map_node == selected_map_node:
+			var node_position = get_map_node_position_from_index(i, len(map_nodes))
+			Globals.current_map_node_position = node_position
+			Globals.visited_map_node_positions.push_back(node_position)
+			if i == 0 and len(map_nodes) >= 2:
+				map_nodes[i+1].set_unreachable()
+			elif i == 1 and len(map_nodes) >= 2:
+				map_nodes[i-1].set_unreachable()
+	walk_to_next_map_node(selected_map_node)
+	yield(self, "finished_walking")
+	handle_next_node()
+	yield(get_tree().create_timer(0.5), "timeout")
+	update_map_nodes()
+
+func handle_next_node():
+	Globals.current_map_node = get_current_map_node_type()
+	match Globals.current_map_node:
+		Enums.MapNodeType.ENEMY:
+			change_to_battle()
+
+func walk_to_next_map_node(selected_node):
+	$AnimationPlayer.play("walk")
+	var TWEEN_TIME = 1.0
+	$Tween.interpolate_property($Player, "position", $Player.position, selected_node.rect_global_position + get_player_position_offset(), TWEEN_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield($Tween, "tween_all_completed")
+	yield(get_tree().create_timer(.125), "timeout")
+	$AnimationPlayer.play("idle")
+	yield(get_tree().create_timer(.25), "timeout")
+	emit_signal("finished_walking")
+
+func update_map_nodes():
+	for i in range(0, len(map_node_objs)):
+		var map_nodes = map_node_objs[i]
+		if i < Globals.current_index:
+			for j in range(0, len(map_nodes)):
+				var map_node = map_nodes[j]
+				var map_node_position = get_map_node_position_from_index(j, len(map_nodes))
+				var visited_node = map_node_position == Globals.visited_map_node_positions[i]
+				map_node.set_past(visited_node)
+		elif i == Globals.current_index:
+			for j in range(0, len(map_nodes)):
+				var map_node_position = get_map_node_position_from_index(j, len(map_nodes))
+				if Globals.current_map_node_position == map_node_position:
+					map_nodes[j].set_current()
 				else:
-					node_queue[i + 1].set_map_node(test_map_nodes[i])
+					map_nodes[j].set_past()
+		elif i == Globals.current_index + 1:
+			var next_edge = get_edge_before_map_node_index(i)
+			for j in range(0, len(map_nodes)):
+				var next_map_node_position = get_map_node_position_from_index(j, len(map_nodes))
+				if next_edge == Enums.MapNodeType.EQUALS and next_map_node_position != Globals.current_map_node_position:
+					map_nodes[j].set_unreachable()
+				else:
+					map_nodes[j].set_next(j)
+		else:
+			for map_node in map_nodes:
+				map_node.set_unreachable()
+	yield(get_tree().create_timer(0.05), "timeout")
+	$Player.position = get_current_map_node().rect_global_position + get_player_position_offset()
+	Globals.current_map_node = get_current_map_node_type()
+
+func get_edge_before_map_node_index(node_index):
+	var map_index = get_map_array_index(node_index)
+	return current_map[map_index - 1].front()
+
+func get_current_map_node():
+	return map_node_objs[Globals.current_index][get_map_node_index(Globals.current_map_node_position)]
+
+func get_current_map_node_type():
+	return get_current_map_node().map_node_type
+
+func get_player_position_offset():
+	match Globals.current_map_node_position:
+		Enums.MapNodePosition.TOP:
+			return Vector2(5, -3)
+		Enums.MapNodePosition.MIDDLE:
+			return Vector2(5, 13)
+		Enums.MapNodePosition.BOTTOM:
+			return Vector2(5, 13)
+
+func get_map_node_index(map_node_position):
+	match map_node_position:
+		Enums.MapNodePosition.TOP:
+			return 0
+		Enums.MapNodePosition.MIDDLE:
+			return 0
+		Enums.MapNodePosition.BOTTOM:
+			return 1
+
+func get_map_node_position_from_index(index, array_length):
+	if array_length == 1:
+		return Enums.MapNodePosition.MIDDLE
+	elif array_length == 2 and index == 0:
+		return Enums.MapNodePosition.TOP
+	else:
+		return Enums.MapNodePosition.BOTTOM
+
+func get_map_array_index(node_index):
+	var map_card_number = node_index / 3
+	return (map_card_number + 1) + (node_index * 2)
+
+func load_current_map():
+	for i in range(0, len(map_card_objs)):
+		var next_map_card = map_card_objs[i]
+		var starting_slice_index = i * 7
+		next_map_card.set_map_card(current_map.slice(starting_slice_index, starting_slice_index + 6))
+	for map_card in map_card_objs:
+		map_node_objs.append_array(map_card.get_map_node_objs())
+
+func generate_map():
+	current_map.append_array(MapGeneration.get_next_home_card())
+	for i in range(1, len(map_card_objs) - 1):
+		current_map.append_array(MapGeneration.get_next_enemy_card())
+	current_map.append_array(MapGeneration.get_next_boss_card())
+	connect_card_edges()
+
+func connect_card_edges():
+	for i in range(6, len(current_map) - 1, 7):
+		if len(current_map[i-1]) == 1 and len(current_map[i+2]) == 1:
+			current_map[i] = [Enums.MapNodeType.DASH]
+			current_map[i+1] = [Enums.MapNodeType.DASH]
+		elif len(current_map[i-1]) == 2 and len(current_map[i+2]) == 1:
+			current_map[i] = [Enums.MapNodeType.GREATER_THAN]
+			current_map[i+1] = [Enums.MapNodeType.GREATER_THAN]
+		elif len(current_map[i-1]) == 1 and len(current_map[i+2]) == 2:
+			current_map[i] = [Enums.MapNodeType.LESS_THAN]
+			current_map[i+1] = [Enums.MapNodeType.LESS_THAN]
+		elif len(current_map[i-1]) == 2 and len(current_map[i+2]) == 2:
+			current_map[i] = [Enums.MapNodeType.EQUALS]
+			current_map[i+1] = [Enums.MapNodeType.EQUALS]
+
+func setup_map_cards():
+	match Globals.current_floor:
+		0:
+			map_card_objs = [
+				$MapCardVBox/MapCardHBox_0/MapCard_0,
+				$MapCardVBox/MapCardHBox_0/MapCard_1,
+				$MapCardVBox/MapCardHBox_0/MapCard_2
+			]
+			$MapCardVBox/MapCardHBox_1/MapCard_0.queue_free()
+			$MapCardVBox/MapCardHBox_1/MapCard_1.queue_free()
+			$MapCardVBox/MapCardHBox_1/MapCard_2.queue_free()
+		1:
+			map_card_objs = [
+				$MapCardVBox/MapCardHBox_0/MapCard_0,
+				$MapCardVBox/MapCardHBox_0/MapCard_1,
+				$MapCardVBox/MapCardHBox_1/MapCard_0,
+				$MapCardVBox/MapCardHBox_1/MapCard_1
+			]
+			$MapCardVBox/MapCardHBox_0/MapCard_2.queue_free()
+			$MapCardVBox/MapCardHBox_1/MapCard_2.queue_free()
+		2:
+			map_card_objs = [
+				$MapCardVBox/MapCardHBox_0/MapCard_0,
+				$MapCardVBox/MapCardHBox_0/MapCard_1,
+				$MapCardVBox/MapCardHBox_0/MapCard_2,
+				$MapCardVBox/MapCardHBox_1/MapCard_0,
+				$MapCardVBox/MapCardHBox_1/MapCard_1
+			]
+			$MapCardVBox/MapCardHBox_1/MapCard_2.queue_free()
 
 func _process(delta):
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_jump_to_battle"):
@@ -50,19 +203,12 @@ func update_ui():
 
 func event_finished():
 	$CardDisplay.load_cards()
-	$TopBar/ContinueButton.show()
 
 func is_walking():
 	return $AnimationPlayer.current_animation == "walk"
 
 func walk_to_next_node():
 	Globals.current_index += 1
-	node_queue.push_back(node_queue.pop_front())
-	var next_node = node_queue.front()
-	if next_node.rect_position.x < current_node.rect_position.x:
-		$Player.flip_h = false
-	else:
-		$Player.flip_h = true
 	$AnimationPlayer.play("walk")
 	var TWEEN_TIME = $Player.position.distance_to(next_node.rect_position + PLAYER_NODE_OFFSET) / 20.0
 	$Tween.interpolate_property($Player, "position", $Player.position, next_node.rect_position + PLAYER_NODE_OFFSET, TWEEN_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
@@ -72,6 +218,7 @@ func walk_to_next_node():
 	$AnimationPlayer.play("idle")
 	yield(get_tree().create_timer(.125), "timeout")
 	current_node = next_node
+	next_node = null
 	
 	if current_node.map_node.event != null:
 		spawn_event(current_node.map_node.event)
@@ -84,48 +231,11 @@ func spawn_event(event):
 	var next_event = event.instance()
 	$Events.add_child(next_event)
 
-func save_node_queue():
-	var saved_node_queue = []
-	var node_queue_positions = []
-	for map_node in node_queue:
-		saved_node_queue.push_back(map_node.map_node)
-		node_queue_positions.push_back(map_node.rect_position)
-	Globals.node_queue_positions = node_queue_positions
-	Globals.current_map = saved_node_queue
-
 func change_to_battle():
-	Globals.current_map_node = current_node.map_node
-	save_node_queue()
 	TransitionScreen.transition_to(Globals.Battle)
 
-func generate_map(spawn_map_nodes = true):
-	var points = $Path.points
-	for i in range(0, len(points)):
-		points[i] += $Path.position
-	if spawn_map_nodes:
-		for point in points:
-			var next_map_node = MapNode.instance()
-			$MapNodes.add_child(next_map_node)
-			next_map_node.rect_position = point + Vector2(-5, -5)
-			next_map_node.set_map_node(EmptyNode)
-	points.push_back(points[0])
-
-func setup_node_queue():
-	var furthest_west_node = $MapNodes.get_child(0)
-	for map_node in $MapNodes.get_children():
-		if map_node.rect_position.x < furthest_west_node.rect_position.x:
-			furthest_west_node = map_node
-	var west_node_child_index = 0
-	for i in range(0, $MapNodes.get_child_count()):
-		if $MapNodes.get_child(i) == furthest_west_node:
-			west_node_child_index = i
-	node_queue.push_back($MapNodes.get_child(west_node_child_index))
-	for i in range(west_node_child_index + 1, $MapNodes.get_child_count()):
-		node_queue.push_back($MapNodes.get_child(i))
-	for i in range(0, west_node_child_index):
-		node_queue.push_back($MapNodes.get_child(i))
-
 func _on_ContinueButton_pressed():
+	return
 	$Continue.play()
 	$TopBar/ContinueButton.hide()
 	get_tree().call_group("Terminal", "clear_terminal_text")

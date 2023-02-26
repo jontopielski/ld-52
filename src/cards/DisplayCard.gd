@@ -40,7 +40,7 @@ func set_unclickable():
 	disabled = true
 	mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-func _on_MapCard_mouse_entered():
+func _on_DisplayCard_mouse_entered():
 	if !spawned_in:
 		return
 	$Tween.stop_all()
@@ -48,14 +48,14 @@ func _on_MapCard_mouse_entered():
 	$Tween.start()
 	get_tree().call_group("CardDisplay", "show_child_at_index", child_index)
 
-func _on_MapCard_mouse_exited():
+func _on_DisplayCard_mouse_exited():
 	if !spawned_in:
 		return
 	$Tween.stop_all()
 	$Tween.interpolate_property($BaseCard, "rect_position", $BaseCard.rect_position, resting_position, tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
 
-func _on_MapCard_pressed():
+func _on_DisplayCard_pressed():
 	get_tree().call_group("map_card_listeners", "card_selected", self)
 
 func _on_Tween_tween_completed(object, key):

@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Blood Draw"
-run/main_scene="res://src/battle/Battle.tscn"
+run/main_scene="res://src/map/Map.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -28,6 +28,7 @@ AudioManager="*res://audio/AudioManager.tscn"
 Sort="*res://src/utils/Sort.gd"
 EnemyGeneration="*res://src/utils/EnemyGeneration.gd"
 CardGeneration="*res://src/utils/CardGeneration.gd"
+MapGeneration="*res://src/utils/MapGeneration.gd"
 
 [display]
 

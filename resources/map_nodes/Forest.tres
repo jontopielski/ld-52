@@ -10,7 +10,7 @@
 [ext_resource path="res://resources/cards/fragile/Bow.tres" type="Resource" id=8]
 [ext_resource path="res://resources/cards/shop/Longbow.tres" type="Resource" id=10]
 [ext_resource path="res://resources/icons/Location.tres" type="Resource" id=11]
-[ext_resource path="res://resources/map_icons/Multi.tres" type="Resource" id=12]
+[ext_resource path="res://resources/unused/old_map_icons/Multi.tres" type="Resource" id=12]
 
 [resource]
 script = ExtResource( 1 )

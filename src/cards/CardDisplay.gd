@@ -1,6 +1,6 @@
 extends Control
 
-const MapCard = preload("res://src/cards/MapCard.tscn")
+const DisplayCard = preload("res://src/cards/DisplayCard.tscn")
 const CARD_WIDTH = 35.0
 
 export(bool) var load_every_card = false
@@ -52,7 +52,7 @@ func load_cards():
 	Sort.sort_cards_by_weight(deck_sorted)
 	for i in range(0, len(deck_sorted)):
 		var card = deck_sorted[i]
-		var next_card = MapCard.instance()
+		var next_card = DisplayCard.instance()
 		$Cards.add_child(next_card)
 		next_card.child_index = i
 		if len(deck_sorted) <= 4:

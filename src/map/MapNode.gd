@@ -1,45 +1,52 @@
-extends Control
+extends Button
 
-export(Resource) var map_node = null setget set_map_node
+export(Enums.MapNodeType) var map_node_type = Enums.MapNodeType.HOME setget set_map_node_type
+export(Array, Resource) var icons = []
 
-func _ready():
-	$StackedShadows.hide()
-	$StackedSprite.hide()
+func set_map_node_type(_map_node_type):
+	map_node_type = _map_node_type
+	$Icon.set_icon(icons[map_node_type])
 
-func set_map_node(_map_node):
-	map_node = _map_node
-	if map_node:
-		self_modulate.a = 0.0
-		$StackedSprite.set_texture(map_node.texture)
-		$StackedSprite.show()
-		for shadow in $StackedShadows.get_children():
-			shadow.set_texture(map_node.texture)
-		$StackedShadows.show()
+func set_past(visited = false):
+	$AnimationPlayer.stop()
+	disabled = true
+	$Icon.inverted = visited
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-func set_sprites_random_rotation():
-	randomize()
-	var possible_angles = [-60, -30, -15, 15, 30, 60]
-	var random_angle = possible_angles[randi() % len(possible_angles)]
-	$StackedSprite.set_sprite_rotation(random_angle)
-	$StackedSprite.rotation_sum = random_angle
-	for shadow in $StackedShadows.get_children():
-		shadow.set_sprite_rotation(random_angle)
-		shadow.rotation_sum = random_angle
+func set_current():
+	$AnimationPlayer.stop()
+	disabled = true
+	$Icon.inverted = true
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-func start_spinning():
-	$StackedSprite.rotate_sprites = true
-	for shadow in $StackedShadows.get_children():
-		shadow.rotate_sprites = true
+func set_next(index=0):
+	if index % 2 == 0:
+		$AnimationPlayer.play("clickable")
+	else:
+		$AnimationPlayer.play("clickable_opposite")
+	$Icon.flip_h = false
+	disabled = false
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
-func stop_spinning():
-	$StackedSprite.rotate_sprites = false
-	for shadow in $StackedShadows.get_children():
-		shadow.rotate_sprites = false
+func set_unreachable():
+	$AnimationPlayer.stop()
+	$Icon.flip_h = false
+	disabled = true
+	$Icon.inverted = false
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+func invert_if_not_hovering(set_inverted):
+	if !get_global_rect().encloses(Rect2(get_global_mouse_position(), Vector2.ZERO)):
+		$Icon.inverted = set_inverted
 
 func _on_MapNode_mouse_entered():
-	start_spinning()
-	get_tree().call_group("Terminal", "set_terminal_text", "%s: %s" % [map_node.name, map_node.description], map_node.icon)
+	if !disabled:
+		$Icon.inverted = true
 
 func _on_MapNode_mouse_exited():
-	stop_spinning()
-	get_tree().call_group("Terminal", "clear_terminal_text")
+	if !disabled:
+		$Icon.inverted = false
+
+func _on_MapNode_pressed():
+	set_current()
+	get_tree().call_group("Map", "map_node_pressed", self)

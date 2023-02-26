@@ -7,16 +7,18 @@ const BlackScreen = preload("res://src/ui/BlackScreen.tscn")
 
 export(bool) var show_debug_values = false
 export(Array, Resource) var starting_deck = []
-export(Array, Resource) var deck = []
+export(Array, Resource) var deck = [].duplicate()
 export(Array, Resource) var rewards = []
-export(Array, Resource) var relics = []
+export(Array, Resource) var relics = [].duplicate()
 export(bool) var show_basic_hints = true
 
 var current_map = []
-var current_map_node = null
+var current_map_node = Enums.MapNodeType.HOME
 
 var current_floor = 0
 var current_index = 0
+var current_map_node_position = Enums.MapNodePosition.MIDDLE
+var visited_map_node_positions = [Enums.MapNodePosition.MIDDLE]
 
 export(int) var max_health = 8
 export(int) var current_health = 8
@@ -33,19 +35,17 @@ onready var starting_queues = {
 	"negative_effects": get_all_negative_effects(),
 }
 
-onready var current_queues = {
-	"enemy_effects": [],
-	"enemy_counts": [],
-	"2_enemy_weights": [],
-	"3_enemy_weights": [],
-	"card_effect_type": [],
-	"positive_effects": [],
-	"negative_effects": [],
-}
+onready var current_queues = get_initial_current_queues()
 
 func _ready():
 	initialize_queues()
 	initialize_starting_deck()
+
+func get_initial_current_queues():
+	var queues = {}
+	for starting_key in starting_queues.keys():
+		queues[starting_key] = []
+	return queues
 
 func has_reward(reward_name):
 	for reward in rewards:
@@ -71,10 +71,7 @@ func initialize_reward_to_cooldown_map():
 	return map
 
 func is_facing_boss():
-	if !current_map_node:
-		return false
-	else:
-		return "Boss" in current_map_node.name
+	return current_map_node == Enums.MapNodeType.BOSS
 
 func has_relic(relic_name):
 	for relic in relics:
@@ -83,11 +80,11 @@ func has_relic(relic_name):
 	return false
 
 func initialize_starting_deck():
-	Globals.deck.clear()
+	deck.clear()
 	if !starting_deck.empty():
 		for starting_card in starting_deck:
-			Globals.deck.push_back(starting_card.duplicate())
-		Globals.deck.back().effects.push_back(get_next_positive_effect())
+			deck.push_back(starting_card.duplicate())
+		deck.back().effects.push_back(get_next_positive_effect())
 		return
 	var starting_card_weight = 1.1
 	var card_weight_increment = 0.1
@@ -96,8 +93,8 @@ func initialize_starting_deck():
 		var card_weight = starting_card_weight + (i * card_weight_increment)
 		var next_card = CardGeneration.generate_card(card_weight, true)
 		total_hand_weight += Sort.get_card_weight(next_card)
-		Globals.deck.push_back(next_card)
-	if total_hand_weight > 10.0 or get_total_cards_with_shield(Globals.deck) < 2 or get_total_cards_with_damage(Globals.deck) < 2:
+		deck.push_back(next_card)
+	if total_hand_weight > 10.0 or get_total_cards_with_shield(deck) < 2 or get_total_cards_with_damage(Globals.deck) < 2:
 		print("Starting hand weight of %.2f was too high!" % [total_hand_weight])
 		initialize_starting_deck()
 
@@ -126,7 +123,6 @@ func reset_all_state():
 	initialize_starting_deck()
 	current_map_node = null
 	current_map = []
-	node_queue_positions = []
 	current_floor = 0
 	current_index = 0
 	max_health = 8
@@ -176,7 +172,7 @@ func get_next_enemy_effect(enemy_count):
 		return get_next_enemy_effect(enemy_count)
 	elif effect_to_return.is_solo_only and enemy_count > 1:
 		return get_next_enemy_effect(enemy_count)
-	elif effect_to_return.minimum_index > Globals.current_index:
+	elif effect_to_return.minimum_index > current_index:
 		return get_next_enemy_effect(enemy_count)
 	else:
 		return effect_to_return
@@ -212,18 +208,6 @@ func remove_card(_card):
 		if card == _card:
 			deck.erase(card)
 			break
-
-func get_card_symbol():
-	return "`"
-
-func get_map_node_symbol():
-	return "}"
-
-func get_reroll_symbol():
-	return "|"
-
-func get_relic_symbol():
-	return "~"
 
 func get_resources_at_path(path, load_them=true):
 	var resources = []

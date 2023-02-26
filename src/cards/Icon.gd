@@ -1,4 +1,3 @@
-tool
 extends TextureRect
 
 export(Resource) var icon = null setget set_icon
@@ -9,8 +8,7 @@ var is_manual_hovering = false
 
 func set_icon(_icon):
 	icon = _icon
-	if Engine.editor_hint:
-		render_current_icon()
+	render_current_icon()
 
 func set_is_using_manual_mouse_entered(_is_using_manual_mouse_entered):
 	is_using_manual_mouse_entered = _is_using_manual_mouse_entered
@@ -20,9 +18,6 @@ func set_is_using_manual_mouse_entered(_is_using_manual_mouse_entered):
 func set_inverted(_inverted):
 	inverted = _inverted
 	material.set_shader_param("inverted", inverted)
-
-func _ready():
-	render_current_icon()
 
 func _process(delta):
 	if is_using_manual_mouse_entered:

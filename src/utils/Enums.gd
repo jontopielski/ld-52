@@ -9,10 +9,30 @@ enum ItemType {
 	REWARD,
 }
 
-enum EnemyAttackType {
+enum MapNodePosition {
+	TOP,
+	MIDDLE,
+	BOTTOM
+}
+
+enum MapNodeType {
+	# Nodes:
 	NONE,
-	SMALL_SHIELD,
-	BIG_SHIELD,
-	SMALL_ATTACK,
-	BIG_ATTACK,
+	HOME,
+	ENEMY,
+	ELITE,
+	BOSS,
+	RANDOM,
+	BONUS,
+	RELIC,
+	REMOVE,
+	FUSION,
+	UPGRADE,
+	IMBUE,
+	# Edges:
+	DASH,
+	EQUALS,
+	LESS_THAN,
+	CROSS,
+	GREATER_THAN
 }

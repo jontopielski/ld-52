@@ -53,7 +53,6 @@ func spawn_enemies():
 		enemy_weights[i] = enemy_weights[i] * enemy_spend
 	$TopBar/Spend.text = "%.2f" % float(enemy_spend)
 	var enemy_resources = []
-	print(enemy_weights)
 	for i in range(0, enemy_count):
 		var next_enemy = EnemyGeneration.generate_enemy(enemy_weights[i], enemy_count, test_enemy_effect)
 		enemy_resources.push_back(next_enemy)

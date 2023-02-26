@@ -434,7 +434,7 @@ position = Vector2( 17.5, 22 )
 shape = SubResource( 1 )
 
 [node name="Slash" type="AnimatedSprite" parent="."]
-position = Vector2( 17, 22 )
+position = Vector2( 18, 22 )
 frames = SubResource( 6 )
 
 [node name="SpawnStartYPosition" type="Position2D" parent="."]

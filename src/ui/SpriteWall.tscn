@@ -6,7 +6,8 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-sprite_paths = [ "res://sprites/symbols/", "res://sprites/relics/" ]
+sprite_paths = [ "res://sprites/symbols/", "res://sprites/relics/", "res://sprites/rewards/", "res://sprites/spells/" ]
+inverted_sprite_paths = [ "res://sprites/map/nodes/" ]
 
 [node name="Center" type="CenterContainer" parent="."]
 anchor_right = 1.0

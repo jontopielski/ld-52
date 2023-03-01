@@ -1,6 +1,9 @@
 extends Control
 
+const Inverted = preload("res://src/shaders/Inverted.tres")
+
 export(Array, String) var sprite_paths = []
+export(Array, String) var inverted_sprite_paths = []
 export(Array, Texture) var additional_sprites = []
 
 func _ready():
@@ -9,11 +12,21 @@ func _ready():
 		var next_sprites = get_sprites_at_path(sprite_path)
 		for next_sprite in next_sprites:
 			sprites.push_back(next_sprite)
+	var inverted_sprites = []
+	for sprite_path in inverted_sprite_paths:
+		var next_sprites = get_sprites_at_path(sprite_path)
+		for next_sprite in next_sprites:
+			inverted_sprites.push_back(next_sprite)
 	$Center/Grid.columns = int(sqrt(len(sprites))) + 1
 	for sprite in sprites:
 		var next_texture = TextureRect.new()
 		next_texture.texture = sprite
 		$Center/Grid.add_child(next_texture)
+	for sprite in inverted_sprites:
+		var next_texture = TextureRect.new()
+		next_texture.texture = sprite
+		$Center/Grid.add_child(next_texture)
+		next_texture.material = Inverted
 	for sprite in additional_sprites:
 		var next_texture = TextureRect.new()
 		next_texture.texture = sprite

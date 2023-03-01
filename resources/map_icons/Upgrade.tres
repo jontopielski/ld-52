@@ -7,4 +7,4 @@
 script = ExtResource( 1 )
 name = "Upgrade"
 texture = ExtResource( 2 )
-description = "Upgrade a card here"
+description = "Upgrade a card"

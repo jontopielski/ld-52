@@ -1,0 +1,113 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://src/map/RandomOption.gd" type="Script" id=1]
+[ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/icons/Gold.tres" type="Resource" id=3]
+[ext_resource path="res://resources/icons/Clock.tres" type="Resource" id=4]
+[ext_resource path="res://sprites/unused_symbols/Gold.png" type="Texture" id=5]
+[ext_resource path="res://sprites/symbols/Clock.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="DynamicFontData" id=13]
+antialiased = false
+font_path = "res://fonts/Font3x7.ttf"
+
+[sub_resource type="DynamicFont" id=14]
+extra_spacing_top = -4
+extra_spacing_space = -2
+font_data = SubResource( 13 )
+
+[sub_resource type="Shader" id=15]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=16]
+resource_local_to_scene = true
+shader = SubResource( 15 )
+shader_param/inverted = false
+
+[node name="RandomOption" type="Button"]
+margin_right = 122.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 122, 9 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+enabled_focus_mode = 0
+script = ExtResource( 1 )
+description = "Option Text"
+icons = [ ExtResource( 4 ), ExtResource( 3 ) ]
+
+[node name="Label" type="Label" parent="."]
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_right = 53.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 14 )
+text = "Option Text"
+valign = 1
+uppercase = true
+
+[node name="Symbols" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1.0
+custom_constants/separation = 1
+alignment = 2
+
+[node name="Icon_0" parent="Symbols" instance=ExtResource( 2 )]
+material = SubResource( 16 )
+margin_left = 106.0
+margin_right = 113.0
+margin_bottom = 9.0
+texture = ExtResource( 6 )
+icon = ExtResource( 4 )
+
+[node name="Icon_1" parent="Symbols" instance=ExtResource( 2 )]
+material = SubResource( 16 )
+margin_left = 114.0
+margin_right = 121.0
+margin_bottom = 9.0
+texture = ExtResource( 5 )
+icon = ExtResource( 3 )
+
+[node name="Icon_2" parent="Symbols" instance=ExtResource( 2 )]
+visible = false
+material = SubResource( 16 )
+margin_left = 98.0
+margin_right = 105.0
+margin_bottom = 9.0
+
+[node name="Icon_3" parent="Symbols" instance=ExtResource( 2 )]
+visible = false
+material = SubResource( 16 )
+margin_left = 106.0
+margin_right = 113.0
+margin_bottom = 9.0
+
+[node name="Icon_4" parent="Symbols" instance=ExtResource( 2 )]
+visible = false
+material = SubResource( 16 )
+margin_left = 114.0
+margin_right = 121.0
+margin_bottom = 9.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_RandomOption_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_RandomOption_mouse_exited"]

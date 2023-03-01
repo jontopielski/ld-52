@@ -7,7 +7,7 @@
 script = ExtResource( 1 )
 name = "Regen"
 texture = ExtResource( 2 )
-description = "Heals +1 HP"
+description = "Heals +2 HP"
 multiplier = 1.0
 is_starting_effect = false
 is_solo_only = false

@@ -7,4 +7,4 @@
 script = ExtResource( 1 )
 name = "Fusion"
 texture = ExtResource( 2 )
-description = "Fuse 2 cards together"
+description = "Fuse two cards"

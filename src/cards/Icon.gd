@@ -1,3 +1,4 @@
+tool
 extends TextureRect
 
 export(Resource) var icon = null setget set_icon

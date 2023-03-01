@@ -12,9 +12,9 @@
 [ext_resource path="res://sprites/menu/QuitButtonNormal.png" type="Texture" id=10]
 [ext_resource path="res://sprites/menu/QuitButtonHover.png" type="Texture" id=11]
 [ext_resource path="res://sprites/menu/QuitButtonPressed.png" type="Texture" id=12]
-[ext_resource path="res://sprites/menu/AboutButtonNormal.png" type="Texture" id=13]
-[ext_resource path="res://sprites/menu/AboutButtonHover.png" type="Texture" id=14]
-[ext_resource path="res://sprites/menu/AboutButtonPressed.png" type="Texture" id=15]
+[ext_resource path="res://sprites/menu/CreditsButtonNormal.png" type="Texture" id=13]
+[ext_resource path="res://sprites/menu/CreditsButtonHover.png" type="Texture" id=14]
+[ext_resource path="res://sprites/menu/CreditsButtonPressed.png" type="Texture" id=15]
 [ext_resource path="res://audio/sfx/settings/close_settings.wav" type="AudioStream" id=16]
 [ext_resource path="res://sprites/ui/WindowTemplate.png" type="Texture" id=17]
 [ext_resource path="res://fonts/3x5.tres" type="DynamicFont" id=18]
@@ -170,10 +170,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -74.0
-margin_top = -52.0
-margin_right = 73.0
-margin_bottom = 60.0
+margin_left = -62.0
+margin_top = -38.0
+margin_right = 62.0
+margin_bottom = 34.0
 custom_styles/panel = SubResource( 9 )
 
 [node name="Border" type="ColorRect" parent="About/Window"]
@@ -194,7 +194,7 @@ margin_top = -6.0
 margin_right = 20.0
 margin_bottom = -1.0
 custom_fonts/font = ExtResource( 18 )
-text = "About"
+text = "Credits"
 align = 1
 valign = 1
 uppercase = true
@@ -217,29 +217,25 @@ stretch_mode = 3
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 6.0
 margin_right = -3.0
-margin_bottom = -4.0
+margin_bottom = -6.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_constants/line_spacing = 1
 custom_fonts/font = SubResource( 11 )
-text = "Hey! This game was originally meant for Ludum Dare 52, but I couldn't finish it in time.. :i
-
-I decided to keep working on it because I thought it had some potential.
-
-Anyways, hope you enjoy!
-
-+Design, Code, Art, sfx, Music
+text = "+Design, Code, Art, audio
 Jon Topielski
 
-+Art consultant
-Alphons6
++tools
+godot engine, aseprite,
+furnace, pico-8
 
 +Special Thanks
-Mom and Abeoji"
+Mom and Abeoji, Alphons6"
 align = 1
+valign = 1
 autowrap = true
 clip_text = true
 uppercase = true

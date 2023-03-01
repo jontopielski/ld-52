@@ -45,7 +45,7 @@ func spawn_enemies():
 	enemy_count = Globals.get_next_enemy_count()
 	while enemy_count == 3 and Globals.current_index <= 1:
 		enemy_count = Globals.get_next_enemy_count()
-	var enemy_spend = base_enemy_spend + (Globals.current_index * 1.4)
+	var enemy_spend = base_enemy_spend + (Globals.current_index * 1.33)
 	if Globals.is_facing_boss():
 		enemy_spend *= 1.65
 	var enemy_weights = get_enemy_weights_array(enemy_count)

@@ -4,6 +4,7 @@ const Phoenix = preload("res://resources/enemies/Phoenix.tres")
 const Reborn = preload("res://resources/enemy_effects/Reborn.tres")
 const Ashes = preload("res://resources/enemies/Ashes.tres")
 const Regen_1 = preload("res://resources/enemy_effects/Regen_1.tres")
+const Regen_2 = preload("res://resources/enemy_effects/Regen_2.tres")
 const Dodge_1 = preload("res://resources/enemy_effects/Dodge_1.tres")
 const Dodge_2 = preload("res://resources/enemy_effects/Dodge_2.tres")
 const Poisoned = preload("res://resources/enemy_effects/Poisoned.tres")
@@ -87,10 +88,14 @@ func enemy_turn_ended():
 		remove_effect("Decalcify")
 	if has_effect("Regen") and health > 0:
 		var regen_effect = get_effect("Regen")
-		if "2" in regen_effect.description:
-			health += 2
+		if "3" in regen_effect.description:
+			health += 3
 			remove_effect("Regen")
 			add_effect(Regen_1)
+		elif "2" in regen_effect.description:
+			health += 2
+			remove_effect("Regen")
+			add_effect(Regen_2)
 		else:
 			health += 1
 			remove_effect("Regen")
@@ -175,42 +180,53 @@ func spawn_item_on_death():
 	next_card.set_card(next_card_rsc)
 	next_card.rect_position = rect_position
 
-func take_damage(amount, is_poison=false):
+func handle_animation(damage_amount, is_poison):
+	if damage_amount == 0:
+		return
 	if is_poison:
 		$Slash.animation = "poison"
 	else:
 		$Slash.animation = "default"
-	if has_effect("Blunt"):
-		amount -= 1
+
+func get_dodge_amount(amount):
+	randomize()
+	var dodge_effect = get_effect("Dodge")
+	if dodge_effect.description.begins_with("50"):
+		if randi() % 2 == 0:
+			$Dodge.play()
+			amount = 0
+			downgrade_dodge()
+	elif dodge_effect.description.begins_with("25"):
+		if randi() % 4 == 0:
+			$Dodge.play()
+			amount = 0
+			downgrade_dodge()
+	return amount
+
+func take_damage(amount, is_poison=false):
 	if has_effect("Block"):
+		$Dodge.play()
 		amount = 0
 		remove_effect("Block")
-	if has_effect("Dodge") and amount > 0:
-		randomize()
-		var dodge_effect = get_effect("Dodge")
-		if dodge_effect.description.begins_with("50"):
-			if randi() % 2 == 0:
-				$Dodge.play()
-				amount = 0
-				downgrade_dodge()
-		elif dodge_effect.description.begins_with("25"):
-			if randi() % 4 == 0:
-				$Dodge.play()
-				amount = 0
-				downgrade_dodge()
+	elif has_effect("Dodge") and amount > 0:
+		amount = get_dodge_amount(amount)
+	handle_animation(amount, is_poison)
 	health -= amount
 	health = max(0, health)
 	if health == 0:
 		die()
 	elif amount > 0:
-		if is_poison:
-			$Poison.play()
-		else:
-			$TakeDamage.play()
+		handle_damage_sounds(amount, is_poison)
 		$AnimationPlayer.play("take_damage")
 	if health > 0 and has_effect("Rage"):
 		damage += 1
 	render_current_enemy()
+
+func handle_damage_sounds(amount, is_poison):
+	if is_poison:
+		$Poison.play()
+	else:
+		$TakeDamage.play()
 
 func downgrade_dodge():
 	if has_effect("Dodge"):

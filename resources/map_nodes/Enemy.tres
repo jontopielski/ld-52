@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/map_nodes/BaseMapNode.gd" type="Script" id=1]
 [ext_resource path="res://sprites/stacked/Trees.png" type="Texture" id=2]
-[ext_resource path="res://sprites/map/icons/Enemy.png" type="Texture" id=3]
+[ext_resource path="res://sprites/map/unused_icons/Enemy.png" type="Texture" id=3]
 
 [resource]
 script = ExtResource( 1 )

@@ -40,11 +40,16 @@ func set_card_count():
 
 func is_generated_cards_balanced(cards, closeness_percent):
 	Sort.sort_cards_by_weight(cards)
+	if is_one_card_objectively_worse(cards):
+		return false
 	var percent_difference = 1.0 - (Sort.get_card_weight(cards.front()) / Sort.get_card_weight(cards.back()))
 	if percent_difference > closeness_percent:
 		return false
 	else:
 		return true
+
+func is_one_card_objectively_worse(cards):
+	pass
 
 func get_generated_cards(card_weight):
 	var cards = []

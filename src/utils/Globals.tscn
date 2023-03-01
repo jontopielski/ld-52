@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/utils/Globals.gd" type="Script" id=1]
 [ext_resource path="res://resources/cards/BaseCard.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://resources/rewards/Heal.tres" type="Resource" id=4]
 [ext_resource path="res://resources/rewards/Refill.tres" type="Resource" id=5]
 [ext_resource path="res://resources/rewards/Boost.tres" type="Resource" id=6]
+[ext_resource path="res://resources/relics/Regen.tres" type="Resource" id=7]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
@@ -52,6 +53,7 @@ pause_mode = 2
 script = ExtResource( 1 )
 starting_deck = [ SubResource( 1 ), SubResource( 2 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ]
 rewards = [ ExtResource( 3 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 5 ) ]
+relics = [ ExtResource( 7 ) ]
 show_basic_hints = false
 
 [node name="BaseLayer" type="CanvasLayer" parent="."]

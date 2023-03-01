@@ -28,6 +28,7 @@ func _ready():
 	update_map_nodes()
 
 func map_node_pressed(selected_map_node):
+	$Continue.play()
 	Globals.current_index += 1
 	var map_nodes = map_node_objs[Globals.current_index]
 	for i in range(0, len(map_nodes)):

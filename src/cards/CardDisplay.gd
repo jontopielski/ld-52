@@ -43,6 +43,16 @@ func show_child_at_index(index):
 		else:
 			$Cards.get_child(i).show_behind_parent = false
 
+func align_cards():
+	var edge_space = get_edge_space()
+	var card_offset_x = (get_viewport_rect().size.x - (edge_space * 2) - CARD_WIDTH) / max(1, (len(Globals.deck) - 1))
+	var tween_time = .5
+	for i in range(0, len($Cards.get_children())):
+		var card = $Cards.get_child(i)
+		var x_position = edge_space + (card_offset_x * i)
+		$Tween.interpolate_property(card, "rect_global_position", card.rect_global_position, Vector2(x_position, $Cards.rect_position.y), tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	$Tween.start()
+
 func load_cards():
 	clear_cards()
 	yield(get_tree().create_timer(0.1), "timeout")

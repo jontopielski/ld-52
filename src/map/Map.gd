@@ -7,9 +7,6 @@ const Home = preload("res://resources/map_nodes/Home.tres")
 const MapNode = preload("res://src/map/MapNode.tscn")
 const PLAYER_NODE_OFFSET = Vector2(3, 3)
 
-export(Array, Resource) var test_map_nodes = []
-export(Array, Resource) var random_events = []
-
 var current_node = null
 var next_node = null
 var current_map = []
@@ -42,16 +39,28 @@ func map_node_pressed(selected_map_node):
 			elif i == 1 and len(map_nodes) >= 2:
 				map_nodes[i-1].set_unreachable()
 	walk_to_next_map_node(selected_map_node)
+	Globals.current_map_node_rect_position = selected_map_node.rect_global_position
 	yield(self, "finished_walking")
 	handle_next_node()
-	yield(get_tree().create_timer(0.5), "timeout")
-	update_map_nodes()
 
 func handle_next_node():
 	Globals.current_map_node = get_current_map_node_type()
 	match Globals.current_map_node:
 		Enums.MapNodeType.ENEMY:
 			change_to_battle()
+		Enums.MapNodeType.RANDOM:
+			var next_random_event = Globals.get_next_random_event().instance()
+			$Events.add_child(next_random_event)
+
+func event_finished():
+	for event in $Events.get_children():
+		if "Modify" in event.name:
+			event.spawn_out()
+		else:
+			event.queue_free()
+	update_map_nodes()
+	yield(get_tree().create_timer(0.5), "timeout")
+	get_tree().call_group("CardDisplay", "align_cards")
 
 func walk_to_next_map_node(selected_node):
 	$AnimationPlayer.play("walk")
@@ -202,31 +211,8 @@ func _process(delta):
 func update_ui():
 	$TopBar/Health/Count.text = "%02d/%02d" % [Globals.current_health, Globals.max_health]
 
-func event_finished():
-	$CardDisplay.load_cards()
-
 func is_walking():
 	return $AnimationPlayer.current_animation == "walk"
-
-func walk_to_next_node():
-	Globals.current_index += 1
-	$AnimationPlayer.play("walk")
-	var TWEEN_TIME = $Player.position.distance_to(next_node.rect_position + PLAYER_NODE_OFFSET) / 20.0
-	$Tween.interpolate_property($Player, "position", $Player.position, next_node.rect_position + PLAYER_NODE_OFFSET, TWEEN_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$Tween.start()
-	yield($Tween, "tween_all_completed")
-	yield(get_tree().create_timer(.125), "timeout")
-	$AnimationPlayer.play("idle")
-	yield(get_tree().create_timer(.125), "timeout")
-	current_node = next_node
-	next_node = null
-	
-	if current_node.map_node.event != null:
-		spawn_event(current_node.map_node.event)
-	elif "Enemy" in current_node.map_node.name or "Boss" in current_node.map_node.name:
-		change_to_battle()
-	else:
-		$TopBar/ContinueButton.show()
 
 func spawn_event(event):
 	var next_event = event.instance()
@@ -235,18 +221,8 @@ func spawn_event(event):
 func change_to_battle():
 	TransitionScreen.transition_to(Globals.Battle)
 
-func _on_ContinueButton_pressed():
-	return
-	$Continue.play()
-	$TopBar/ContinueButton.hide()
-	get_tree().call_group("Terminal", "clear_terminal_text")
-	walk_to_next_node()
-
 func _on_Sort_mouse_exited():
 	get_tree().call_group("Terminal", "clear_terminal_text")
-
-func _on_ContinueButton_mouse_entered():
-	get_tree().call_group("Terminal", "set_terminal_text", "Travel to the next point")
 
 func _on_Health_mouse_entered():
 	get_tree().call_group("Terminal", "set_terminal_text", "HP: current health", HeartTexture)

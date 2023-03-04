@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Remove.png-e7a51c3dcc74b4a704e77c175769902b.stex"
+path="res://.import/CloseNormal.png-b438161dc2b62ca2f2cc62ba0c5df84e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/map/unused_icons/Remove.png"
-dest_files=[ "res://.import/Remove.png-e7a51c3dcc74b4a704e77c175769902b.stex" ]
+source_file="res://sprites/events/CloseNormal.png"
+dest_files=[ "res://.import/CloseNormal.png-b438161dc2b62ca2f2cc62ba0c5df84e.stex" ]
 
 [params]
 

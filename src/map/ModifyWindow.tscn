@@ -1,0 +1,305 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://src/map/ModifyWindow.gd" type="Script" id=1]
+[ext_resource path="res://fonts/Fat4x5.tres" type="DynamicFont" id=2]
+[ext_resource path="res://src/battle/RewardWindowPre.tres" type="StyleBox" id=3]
+[ext_resource path="res://sprites/cards/CardOutline.png" type="Texture" id=4]
+[ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/map/RandomOption.tscn" type="PackedScene" id=6]
+[ext_resource path="res://sprites/symbols/Direction.png" type="Texture" id=7]
+[ext_resource path="res://resources/icons/Direction.tres" type="Resource" id=8]
+[ext_resource path="res://resources/icons/Undo.tres" type="Resource" id=9]
+[ext_resource path="res://resources/icons/Confirm.tres" type="Resource" id=10]
+[ext_resource path="res://sprites/symbols/After.png" type="Texture" id=11]
+[ext_resource path="res://resources/icons/After.tres" type="Resource" id=12]
+[ext_resource path="res://sprites/symbols/Before.png" type="Texture" id=13]
+[ext_resource path="res://resources/icons/Before.tres" type="Resource" id=14]
+[ext_resource path="res://sprites/events/UndoNormal.png" type="Texture" id=15]
+[ext_resource path="res://sprites/symbols/Confirm.png" type="Texture" id=16]
+[ext_resource path="res://sprites/events/UndoPressed.png" type="Texture" id=17]
+[ext_resource path="res://sprites/events/ConfirmPressed.png" type="Texture" id=18]
+[ext_resource path="res://sprites/events/ConfirmNormal.png" type="Texture" id=19]
+[ext_resource path="res://sprites/symbols/Undo.png" type="Texture" id=20]
+[ext_resource path="res://src/cards/DisplayCard.tscn" type="PackedScene" id=21]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 1 )
+border_width_top = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Shader" id=15]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=17]
+resource_local_to_scene = true
+shader = SubResource( 15 )
+shader_param/inverted = false
+
+[sub_resource type="ShaderMaterial" id=16]
+resource_local_to_scene = true
+shader = SubResource( 15 )
+shader_param/inverted = false
+
+[sub_resource type="ShaderMaterial" id=18]
+resource_local_to_scene = true
+shader = SubResource( 15 )
+shader_param/inverted = false
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[node name="ModifyWindow" type="PanelContainer" groups=["map_card_listeners"]]
+margin_left = 25.0
+margin_top = 13.0
+margin_right = 151.0
+margin_bottom = 81.0
+rect_min_size = Vector2( 0, 67 )
+rect_pivot_offset = Vector2( 63, 35 )
+custom_styles/panel = ExtResource( 3 )
+script = ExtResource( 1 )
+modify_type = 4
+
+[node name="Content" type="VBoxContainer" parent="."]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+custom_constants/separation = 0
+
+[node name="Title" type="Label" parent="Content"]
+margin_right = 122.0
+margin_bottom = 9.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 2 )
+custom_styles/normal = SubResource( 1 )
+text = "Modify Event"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Cards" type="PanelContainer" parent="Content"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 4 )
+
+[node name="HBox" type="HBoxContainer" parent="Content/Cards"]
+margin_top = 2.0
+margin_right = 122.0
+margin_bottom = 54.0
+custom_constants/separation = 4
+alignment = 1
+
+[node name="LeftCard" type="TextureRect" parent="Content/Cards/HBox"]
+margin_left = 18.0
+margin_top = 4.0
+margin_right = 53.0
+margin_bottom = 48.0
+size_flags_vertical = 4
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Icon" parent="Content/Cards/HBox/LeftCard" instance=ExtResource( 5 )]
+material = SubResource( 17 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -3.5
+margin_top = -3.5
+margin_right = 3.5
+margin_bottom = 3.5
+texture = ExtResource( 13 )
+icon = ExtResource( 14 )
+
+[node name="RelationIcon" parent="Content/Cards/HBox" instance=ExtResource( 5 )]
+material = SubResource( 16 )
+margin_left = 57.0
+margin_top = 22.0
+margin_right = 64.0
+margin_bottom = 29.0
+size_flags_vertical = 4
+texture = ExtResource( 7 )
+icon = ExtResource( 8 )
+
+[node name="RightCard" type="TextureRect" parent="Content/Cards/HBox"]
+margin_left = 68.0
+margin_top = 4.0
+margin_right = 103.0
+margin_bottom = 48.0
+size_flags_vertical = 4
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Icon" parent="Content/Cards/HBox/RightCard" instance=ExtResource( 5 )]
+material = SubResource( 17 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -3.5
+margin_top = -3.5
+margin_right = 3.5
+margin_bottom = 3.5
+texture = ExtResource( 11 )
+icon = ExtResource( 12 )
+
+[node name="PreviewCard" parent="Content/Cards/HBox/RightCard" instance=ExtResource( 21 )]
+visible = false
+mouse_filter = 2
+is_preview_card = true
+
+[node name="Fill" type="ColorRect" parent="Content"]
+visible = false
+margin_top = 53.0
+margin_right = 122.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Divider" type="ColorRect" parent="Content"]
+visible = false
+margin_top = 57.0
+margin_right = 122.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0, 0, 0, 1 )
+
+[node name="Items" type="HBoxContainer" parent="Content"]
+visible = false
+margin_top = 58.0
+margin_right = 122.0
+margin_bottom = 67.0
+size_flags_vertical = 8
+custom_constants/separation = 1
+alignment = 2
+
+[node name="Cancel" parent="Content/Items" instance=ExtResource( 6 )]
+margin_right = 60.0
+rect_min_size = Vector2( 0, 9 )
+size_flags_horizontal = 3
+description = "Cancel"
+icons = [ ExtResource( 9 ) ]
+
+[node name="Confirm" parent="Content/Items" instance=ExtResource( 6 )]
+margin_left = 61.0
+rect_min_size = Vector2( 0, 9 )
+size_flags_horizontal = 3
+description = "Confirm"
+icons = [ ExtResource( 10 ) ]
+
+[node name="Cover" type="MarginContainer" parent="."]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+rect_pivot_offset = Vector2( 58, 33 )
+custom_constants/margin_top = 9
+
+[node name="White" type="ColorRect" parent="Cover"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 65.0
+
+[node name="UndoMargin" type="MarginContainer" parent="."]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+mouse_filter = 2
+custom_constants/margin_left = -1
+custom_constants/margin_bottom = -1
+
+[node name="Undo" type="TextureButton" parent="UndoMargin"]
+visible = false
+margin_left = -1.0
+margin_top = 57.0
+margin_right = 8.0
+margin_bottom = 66.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+enabled_focus_mode = 0
+texture_normal = ExtResource( 15 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+
+[node name="Icon" parent="UndoMargin/Undo" instance=ExtResource( 5 )]
+show_behind_parent = true
+material = SubResource( 18 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 4
+texture = ExtResource( 20 )
+icon = ExtResource( 9 )
+
+[node name="ConfirmMargin" type="MarginContainer" parent="."]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+mouse_filter = 2
+custom_constants/margin_right = -1
+custom_constants/margin_bottom = -1
+
+[node name="Confirm" type="TextureButton" parent="ConfirmMargin"]
+visible = false
+margin_left = 114.0
+margin_top = 57.0
+margin_right = 123.0
+margin_bottom = 66.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 10
+size_flags_vertical = 10
+enabled_focus_mode = 0
+texture_normal = ExtResource( 19 )
+texture_pressed = ExtResource( 18 )
+texture_hover = ExtResource( 18 )
+
+[node name="Icon" parent="ConfirmMargin/Confirm" instance=ExtResource( 5 )]
+show_behind_parent = true
+material = SubResource( 18 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 4
+texture = ExtResource( 16 )
+icon = ExtResource( 10 )
+
+[node name="MouseBlock" type="Button" parent="."]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+focus_mode = 0
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = SubResource( 2 )
+custom_styles/normal = SubResource( 2 )
+enabled_focus_mode = 0
+flat = true
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="pressed" from="UndoMargin/Undo" to="." method="_on_Undo_pressed"]
+[connection signal="pressed" from="ConfirmMargin/Confirm" to="." method="_on_Confirm_pressed"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

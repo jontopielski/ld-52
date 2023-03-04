@@ -49,6 +49,7 @@ func spawn_enemies():
 	if Globals.is_facing_boss():
 		enemy_spend *= 1.65
 	var enemy_weights = get_enemy_weights_array(enemy_count)
+	print(enemy_weights)
 	for i in range(0, len(enemy_weights)):
 		enemy_weights[i] = enemy_weights[i] * enemy_spend
 	$TopBar/Spend.text = "%.2f" % float(enemy_spend)

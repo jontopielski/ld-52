@@ -31,7 +31,7 @@ func _process(delta):
 			is_manual_hovering = false
 
 func render_current_icon():
-	if !icon:
+	if !icon or !icon is Resource:
 		return
 	texture = icon.texture
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://audio/AudioManager.gd" type="Script" id=1]
 [ext_resource path="res://audio/sfx/ui/start.wav" type="AudioStream" id=2]
@@ -10,6 +10,12 @@
 [ext_resource path="res://audio/sfx/map/card_fused.wav" type="AudioStream" id=8]
 [ext_resource path="res://audio/sfx/map/card_fusing.wav" type="AudioStream" id=9]
 [ext_resource path="res://audio/sfx/settings/abandon.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/sfx/events/window_opened.wav" type="AudioStream" id=11]
+[ext_resource path="res://audio/sfx/events/random_event_success.wav" type="AudioStream" id=12]
+[ext_resource path="res://audio/sfx/events/random_event_failure.wav" type="AudioStream" id=13]
+[ext_resource path="res://audio/sfx/events/random_event_ignore.wav" type="AudioStream" id=14]
+[ext_resource path="res://audio/sfx/battle/player_take_damage.wav" type="AudioStream" id=15]
+[ext_resource path="res://audio/sfx/events/random_event_closed.wav" type="AudioStream" id=16]
 
 [node name="AudioManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -50,4 +56,32 @@ bus = "SFX"
 
 [node name="ReturnToMenu" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 10 )
+bus = "SFX"
+
+[node name="RandomEventOpened" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 11 )
+bus = "SFX"
+
+[node name="RandomEventClosed" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 16 )
+bus = "SFX"
+
+[node name="RandomEventSuccess" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 12 )
+bus = "SFX"
+
+[node name="RandomEventFailure" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 13 )
+bus = "SFX"
+
+[node name="RandomEventIgnore" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 14 )
+bus = "SFX"
+
+[node name="RandomEventContinue" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 14 )
+bus = "SFX"
+
+[node name="PlayerTakeDamage" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 15 )
 bus = "SFX"

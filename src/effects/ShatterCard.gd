@@ -1,5 +1,10 @@
 extends Sprite
 
+const BackShatter = preload("res://sprites/effects/ShatterCardBack.png")
+
+func set_back_shatter():
+	texture = BackShatter
+
 func _ready():
 	$Break.play()
 

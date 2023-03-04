@@ -1,0 +1,10 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[sub_resource type="DynamicFontData" id=10]
+antialiased = false
+font_path = "res://fonts/BloodDrawFat.ttf"
+
+[resource]
+size = 7
+extra_spacing_bottom = -1
+font_data = SubResource( 10 )

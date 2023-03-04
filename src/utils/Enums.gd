@@ -15,6 +15,15 @@ enum MapNodePosition {
 	BOTTOM
 }
 
+enum ModifyType {
+	NONE,
+	REMOVE,
+	UPGRADE,
+	IMBUE,
+	FUSION,
+	SWAP,
+}
+
 enum MapNodeType {
 	# Nodes:
 	NONE,

@@ -14,6 +14,7 @@ export(bool) var show_basic_hints = true
 
 var current_map = []
 var current_map_node = Enums.MapNodeType.HOME
+var current_map_node_rect_position = Vector2.ZERO
 
 var current_floor = 0
 var current_index = 0
@@ -33,6 +34,8 @@ onready var starting_queues = {
 	"card_effect_type": [00, 00, 00, -10, -11, 01, 01, 01, 01], # xy = (negative, positive)
 	"positive_effects": get_all_positive_effects(),
 	"negative_effects": get_all_negative_effects(),
+	"relics": get_all_relics(),
+	"random_events": get_all_random_events()
 }
 
 onready var current_queues = get_initial_current_queues()
@@ -98,6 +101,12 @@ func initialize_starting_deck():
 		print("Starting hand weight of %.2f was too high!" % [total_hand_weight])
 		initialize_starting_deck()
 
+func get_all_random_events():
+	return get_all_scenes_at_path("res://src/random_events")
+
+func get_all_relics():
+	return get_resources_at_path("res://resources/relics")
+
 func get_total_cards_with_shield(hand):
 	var shield_count = 0
 	for card in hand:
@@ -135,11 +144,20 @@ func get_next_positive_effect():
 func get_next_negative_effect():
 	return pop_queue("negative_effects")
 
+func get_next_relic():
+	var next_relic = pop_queue("relics")
+	while next_relic in relics:
+		next_relic = pop_queue("relics")
+	return next_relic
+
 func get_next_card_effect_type():
 	return pop_queue("card_effect_type")
 
 func get_next_enemy_count():
 	return pop_queue("enemy_counts")
+
+func get_next_random_event():
+	return pop_queue("random_events")
 
 func pop_queue(queue_name):
 	if current_queues[queue_name].empty():
@@ -166,6 +184,10 @@ func add_health(health):
 	current_health = min(max_health, current_health + health)
 	get_tree().call_group("ui", "update_ui")
 
+func remove_health(health):
+	current_health = max(0, current_health - health)
+	get_tree().call_group("ui", "update_ui")
+
 func get_next_enemy_effect(enemy_count):
 	var effect_to_return = pop_queue("enemy_effects")
 	if effect_to_return.is_multi_only and enemy_count == 1:
@@ -189,6 +211,10 @@ func get_all_enemy_effects():
 	return effects
 
 func _process(delta):
+	if OS.is_debug_build() and Input.is_action_just_pressed("ui_respin_map") and get_tree().current_scene.name == "Map":
+		reset_all_state()
+		var current_scene_path = get_tree().current_scene.filename
+		get_tree().change_scene(current_scene_path)
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_reset"):
 		if get_tree().current_scene.name == "Battle" or get_tree().current_scene.name == "Map":
 			CardGeneration.generated_cards.clear()
@@ -208,6 +234,20 @@ func remove_card(_card):
 		if card == _card:
 			deck.erase(card)
 			break
+
+func get_all_scenes_at_path(path):
+	var scenes = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while file_name != "":
+		if file_name != "." and file_name != ".." and file_name.ends_with(".tscn"):
+			scenes.push_back(load(path + "/" + file_name))
+		file_name = dir.get_next()
+	
+	return scenes
 
 func get_resources_at_path(path, load_them=true):
 	var resources = []

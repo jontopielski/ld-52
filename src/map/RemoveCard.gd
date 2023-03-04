@@ -5,6 +5,7 @@ var card_to_remove = null
 func _ready():
 	if get_tree().current_scene.name == name:
 		add_child(load("res://src/cards/CardDisplay.tscn").instance())
+		yield(get_tree().create_timer(0.05), "timeout")
 	$Window/Actions.hide()
 	$Window/Instructions.show()
 	get_tree().call_group("map_cards", "set_clickable")

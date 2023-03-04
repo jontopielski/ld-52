@@ -5,6 +5,9 @@ const Icon = preload("res://src/cards/Icon.tscn")
 func _ready():
 	update_relics()
 
+func update_ui():
+	update_relics()
+
 func update_relics():
 	var current_relics = []
 	for i in range(0, get_child_count()):

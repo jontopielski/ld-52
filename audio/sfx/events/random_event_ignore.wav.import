@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/random_event_ignore.wav-eb1c1c54cc40eaa439bef6ee6e5bf445.sample"
+
+[deps]
+
+source_file="res://audio/sfx/events/random_event_ignore.wav"
+dest_files=[ "res://.import/random_event_ignore.wav-eb1c1c54cc40eaa439bef6ee6e5bf445.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

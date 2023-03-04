@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://src/map/RandomWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/icons/Ignore.tres" type="Resource" id=2]
+[ext_resource path="res://resources/icons/Modify.tres" type="Resource" id=3]
+[ext_resource path="res://src/battle/RewardWindowPost.tres" type="StyleBox" id=4]
+[ext_resource path="res://resources/icons/Continue.tres" type="Resource" id=5]
+[ext_resource path="res://src/random_events/SwapStatsEvent.gd" type="Script" id=6]
+
+[node name="SwapStatsEvent" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 6 )
+
+[node name="IntroWindow" parent="." instance=ExtResource( 1 )]
+title = "The Swapper"
+description = "You come across a strange gypsy who claims they could perform a 'swapping' ritual."
+option_names = [ "Offer a card", "Ignore the ritual" ]
+option_icons = [ [ ExtResource( 3 ) ], [ ExtResource( 2 ) ] ]
+
+[node name="IgnoreWindow" parent="." instance=ExtResource( 1 )]
+visible = false
+custom_styles/panel = ExtResource( 4 )
+title = "Ignore"
+description = "You move on and the sparkle slowly fades into the darkness."
+option_names = [ "Continue" ]
+option_icons = [ [ ExtResource( 5 ) ] ]
+
+[connection signal="option_1_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_1_pressed"]

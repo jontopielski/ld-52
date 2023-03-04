@@ -27,3 +27,5 @@ stream = ExtResource( 2 )
 
 [node name="ShuffleGold" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]

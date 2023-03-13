@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/window_closed.wav-7fdffb20131733eda74f289b271c7edd.sample"
+
+[deps]
+
+source_file="res://audio/sfx/events/window_closed.wav"
+dest_files=[ "res://.import/window_closed.wav-7fdffb20131733eda74f289b271c7edd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

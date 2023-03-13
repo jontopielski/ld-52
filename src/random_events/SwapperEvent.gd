@@ -11,5 +11,13 @@ func show_window(window_name):
 			window.hide()
 
 func _on_IntroWindow_option_1_pressed():
-	AudioManager.play_sound("RandomEventIgnore")
 	show_window("Ignore")
+
+func _on_IntroWindow_option_0_pressed():
+	AudioManager.play_sound("RandomEventNext")
+	show_window("Swap")
+	$SwapWindow.spawn_in()
+
+func _on_SwapWindow_modification_finished():
+	$SwapWindow.queue_free()
+	show_window("End")

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://resources/rewards/BaseReward.gd" type="Script" id=1]
-[ext_resource path="res://resources/icons/Heal.tres" type="Resource" id=2]
+[ext_resource path="res://resources/icons/Half.tres" type="Resource" id=2]
 
 [resource]
 script = ExtResource( 1 )

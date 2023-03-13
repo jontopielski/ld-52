@@ -52,8 +52,8 @@ antialiased = false
 font_path = "res://fonts/Font3x5.ttf"
 
 [sub_resource type="DynamicFont" id=11]
-extra_spacing_top = -6
-extra_spacing_space = -2
+size = 6
+extra_spacing_space = -1
 font_data = SubResource( 10 )
 
 [node name="MainMenu" type="Control"]
@@ -225,20 +225,11 @@ size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_constants/line_spacing = 1
 custom_fonts/font = SubResource( 11 )
-text = "+Design, Code, Art, audio
-Jon Topielski
-
-+tools
-godot engine, aseprite,
-furnace, pico-8
-
-+Special Thanks
-Mom and Abeoji, Alphons6"
+text = "HELLO THERE! :)"
 align = 1
 valign = 1
 autowrap = true
 clip_text = true
-uppercase = true
 
 [node name="Heart" type="Label" parent="About/Window"]
 visible = false

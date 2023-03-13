@@ -52,3 +52,12 @@ func _on_RandomOption_mouse_entered():
 func _on_RandomOption_mouse_exited():
 	if !disabled:
 		set_everything_black()
+
+func is_relic_window():
+	if get_tree().current_scene.name == "Map":
+		return get_tree().current_scene.is_relic_window_open()
+	return false
+
+func _on_RandomOption_pressed():
+	if is_relic_window():
+		$AnimationPlayer.play("flash")

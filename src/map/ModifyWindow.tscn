@@ -1,19 +1,19 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://src/map/ModifyWindow.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Fat4x5.tres" type="DynamicFont" id=2]
-[ext_resource path="res://src/battle/RewardWindowPre.tres" type="StyleBox" id=3]
+[ext_resource path="res://src/battle/RewardWindowPost.tres" type="StyleBox" id=3]
 [ext_resource path="res://sprites/cards/CardOutline.png" type="Texture" id=4]
 [ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/map/RandomOption.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sprites/symbols/Direction.png" type="Texture" id=7]
-[ext_resource path="res://resources/icons/Direction.tres" type="Resource" id=8]
+[ext_resource path="res://sprites/symbols/After.png" type="Texture" id=8]
 [ext_resource path="res://resources/icons/Undo.tres" type="Resource" id=9]
 [ext_resource path="res://resources/icons/Confirm.tres" type="Resource" id=10]
-[ext_resource path="res://sprites/symbols/After.png" type="Texture" id=11]
-[ext_resource path="res://resources/icons/After.tres" type="Resource" id=12]
-[ext_resource path="res://sprites/symbols/Before.png" type="Texture" id=13]
-[ext_resource path="res://resources/icons/Before.tres" type="Resource" id=14]
+[ext_resource path="res://sprites/symbols/Before.png" type="Texture" id=11]
+[ext_resource path="res://resources/icons/Before.tres" type="Resource" id=12]
+[ext_resource path="res://resources/icons/Sacrifice.tres" type="Resource" id=13]
+[ext_resource path="res://sprites/events/Sacrifice.png" type="Texture" id=14]
 [ext_resource path="res://sprites/events/UndoNormal.png" type="Texture" id=15]
 [ext_resource path="res://sprites/symbols/Confirm.png" type="Texture" id=16]
 [ext_resource path="res://sprites/events/UndoPressed.png" type="Texture" id=17]
@@ -21,6 +21,8 @@
 [ext_resource path="res://sprites/events/ConfirmNormal.png" type="Texture" id=19]
 [ext_resource path="res://sprites/symbols/Undo.png" type="Texture" id=20]
 [ext_resource path="res://src/cards/DisplayCard.tscn" type="PackedScene" id=21]
+[ext_resource path="res://resources/icons/Direction.tres" type="Resource" id=22]
+[ext_resource path="res://resources/icons/After.tres" type="Resource" id=23]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_top = 2.0
@@ -59,6 +61,21 @@ resource_local_to_scene = true
 shader = SubResource( 15 )
 shader_param/inverted = false
 
+[sub_resource type="Shader" id=19]
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = mix(COLOR.rgb, abs(COLOR.rgb - vec3(1.0)), float(int(inverted)));
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+resource_local_to_scene = true
+shader = SubResource( 19 )
+shader_param/inverted = false
+
 [sub_resource type="StyleBoxEmpty" id=2]
 
 [node name="ModifyWindow" type="PanelContainer" groups=["map_card_listeners"]]
@@ -70,7 +87,6 @@ rect_min_size = Vector2( 0, 67 )
 rect_pivot_offset = Vector2( 63, 35 )
 custom_styles/panel = ExtResource( 3 )
 script = ExtResource( 1 )
-modify_type = 4
 
 [node name="Content" type="VBoxContainer" parent="."]
 margin_left = 2.0
@@ -94,6 +110,7 @@ uppercase = true
 margin_top = 9.0
 margin_right = 122.0
 margin_bottom = 65.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
@@ -124,8 +141,8 @@ margin_left = -3.5
 margin_top = -3.5
 margin_right = 3.5
 margin_bottom = 3.5
-texture = ExtResource( 13 )
-icon = ExtResource( 14 )
+texture = ExtResource( 11 )
+icon = ExtResource( 12 )
 
 [node name="RelationIcon" parent="Content/Cards/HBox" instance=ExtResource( 5 )]
 material = SubResource( 16 )
@@ -135,7 +152,7 @@ margin_right = 64.0
 margin_bottom = 29.0
 size_flags_vertical = 4
 texture = ExtResource( 7 )
-icon = ExtResource( 8 )
+icon = ExtResource( 22 )
 
 [node name="RightCard" type="TextureRect" parent="Content/Cards/HBox"]
 margin_left = 68.0
@@ -156,8 +173,8 @@ margin_left = -3.5
 margin_top = -3.5
 margin_right = 3.5
 margin_bottom = 3.5
-texture = ExtResource( 11 )
-icon = ExtResource( 12 )
+texture = ExtResource( 8 )
+icon = ExtResource( 23 )
 
 [node name="PreviewCard" parent="Content/Cards/HBox/RightCard" instance=ExtResource( 21 )]
 visible = false
@@ -203,20 +220,6 @@ size_flags_horizontal = 3
 description = "Confirm"
 icons = [ ExtResource( 10 ) ]
 
-[node name="Cover" type="MarginContainer" parent="."]
-visible = false
-margin_left = 2.0
-margin_top = 1.0
-margin_right = 124.0
-margin_bottom = 66.0
-rect_pivot_offset = Vector2( 58, 33 )
-custom_constants/margin_top = 9
-
-[node name="White" type="ColorRect" parent="Cover"]
-margin_top = 9.0
-margin_right = 122.0
-margin_bottom = 65.0
-
 [node name="UndoMargin" type="MarginContainer" parent="."]
 margin_left = 2.0
 margin_top = 1.0
@@ -227,7 +230,6 @@ custom_constants/margin_left = -1
 custom_constants/margin_bottom = -1
 
 [node name="Undo" type="TextureButton" parent="UndoMargin"]
-visible = false
 margin_left = -1.0
 margin_top = 57.0
 margin_right = 8.0
@@ -260,7 +262,6 @@ custom_constants/margin_right = -1
 custom_constants/margin_bottom = -1
 
 [node name="Confirm" type="TextureButton" parent="ConfirmMargin"]
-visible = false
 margin_left = 114.0
 margin_top = 57.0
 margin_right = 123.0
@@ -283,6 +284,41 @@ size_flags_vertical = 4
 texture = ExtResource( 16 )
 icon = ExtResource( 10 )
 
+[node name="Extra" type="MarginContainer" parent="."]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+mouse_filter = 2
+custom_constants/margin_right = 1
+custom_constants/margin_bottom = 8
+
+[node name="Icon" parent="Extra" instance=ExtResource( 5 )]
+material = SubResource( 20 )
+margin_left = 57.0
+margin_top = 25.0
+margin_right = 64.0
+margin_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 14 )
+icon = ExtResource( 13 )
+
+[node name="Cover" type="MarginContainer" parent="."]
+visible = false
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 124.0
+margin_bottom = 66.0
+rect_pivot_offset = Vector2( 58, 33 )
+custom_constants/margin_top = 9
+
+[node name="White" type="ColorRect" parent="Cover"]
+margin_top = 9.0
+margin_right = 122.0
+margin_bottom = 65.0
+
 [node name="MouseBlock" type="Button" parent="."]
 visible = false
 margin_left = 2.0
@@ -302,4 +338,3 @@ flat = true
 
 [connection signal="pressed" from="UndoMargin/Undo" to="." method="_on_Undo_pressed"]
 [connection signal="pressed" from="ConfirmMargin/Confirm" to="." method="_on_Confirm_pressed"]
-[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

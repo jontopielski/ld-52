@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://src/map/RandomOption.gd" type="Script" id=1]
 [ext_resource path="res://src/cards/Icon.tscn" type="PackedScene" id=2]
@@ -20,7 +20,7 @@ antialiased = false
 font_path = "res://fonts/Font3x7.ttf"
 
 [sub_resource type="DynamicFont" id=14]
-extra_spacing_top = -4
+size = 7
 extra_spacing_space = -2
 font_data = SubResource( 13 )
 
@@ -38,6 +38,82 @@ void fragment() {
 resource_local_to_scene = true
 shader = SubResource( 15 )
 shader_param/inverted = false
+
+[sub_resource type="Animation" id=17]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "flash"
+length = 0.5
+step = 0.05
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "set_everything_white"
+}, {
+"args": [  ],
+"method": "set_everything_black"
+}, {
+"args": [  ],
+"method": "set_everything_white"
+}, {
+"args": [  ],
+"method": "set_everything_black"
+}, {
+"args": [  ],
+"method": "set_everything_white"
+}, {
+"args": [  ],
+"method": "set_everything_black"
+}, {
+"args": [  ],
+"method": "set_everything_white"
+}, {
+"args": [  ],
+"method": "set_everything_black"
+}, {
+"args": [  ],
+"method": "set_everything_white"
+}, {
+"args": [  ],
+"method": "set_everything_black"
+}, {
+"args": [  ],
+"method": "set_everything_white"
+} ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true, false, true, false, true, false, true ]
+}
 
 [node name="RandomOption" type="Button"]
 margin_right = 122.0
@@ -109,5 +185,10 @@ margin_left = 114.0
 margin_right = 121.0
 margin_bottom = 9.0
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 17 )
+anims/flash = SubResource( 18 )
+
 [connection signal="mouse_entered" from="." to="." method="_on_RandomOption_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_RandomOption_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_RandomOption_pressed"]

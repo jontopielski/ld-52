@@ -166,14 +166,15 @@ grow_vertical = 2
 custom_constants/separation = 0
 
 [node name="Names" type="VBoxContainer" parent="Menu/Window/Options"]
-margin_right = 47.0
+margin_right = 30.0
 margin_bottom = 73.0
 custom_constants/separation = 4
 alignment = 1
 
 [node name="Fullscreen" type="Label" parent="Menu/Window/Options/Names"]
-margin_right = 47.0
-margin_bottom = 7.0
+margin_top = 18.0
+margin_right = 30.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Full screen:"
@@ -181,9 +182,9 @@ valign = 1
 uppercase = true
 
 [node name="Music" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 11.0
-margin_right = 47.0
-margin_bottom = 18.0
+margin_top = 23.0
+margin_right = 30.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Music level:"
@@ -191,8 +192,8 @@ valign = 1
 uppercase = true
 
 [node name="SFX" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 22.0
-margin_right = 47.0
+margin_top = 28.0
+margin_right = 30.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -202,15 +203,16 @@ uppercase = true
 
 [node name="Palette" type="HBoxContainer" parent="Menu/Window/Options/Names"]
 margin_top = 33.0
-margin_right = 47.0
+margin_right = 30.0
 margin_bottom = 40.0
 size_flags_horizontal = 0
 custom_constants/separation = 0
 alignment = 2
 
 [node name="Palette" type="Label" parent="Menu/Window/Options/Names/Palette"]
-margin_right = 32.0
-margin_bottom = 7.0
+margin_top = 3.0
+margin_right = 16.0
+margin_bottom = 4.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Palettes"
 align = 2
@@ -218,21 +220,22 @@ valign = 1
 uppercase = true
 
 [node name="Slash" type="TextureRect" parent="Menu/Window/Options/Names/Palette"]
-margin_left = 32.0
-margin_right = 38.0
+margin_left = 16.0
+margin_right = 22.0
 margin_bottom = 7.0
 texture = ExtResource( 30 )
 
 [node name="Mouse" type="TextureRect" parent="Menu/Window/Options/Names/Palette"]
-margin_left = 38.0
-margin_right = 45.0
+margin_left = 22.0
+margin_right = 29.0
 margin_bottom = 7.0
 texture = ExtResource( 19 )
 
 [node name="Text" type="Label" parent="Menu/Window/Options/Names/Palette"]
-margin_left = 45.0
-margin_right = 47.0
-margin_bottom = 7.0
+margin_left = 29.0
+margin_top = 3.0
+margin_right = 30.0
+margin_bottom = 4.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = ":"
 valign = 1
@@ -240,8 +243,8 @@ uppercase = true
 
 [node name="CRT" type="Label" parent="Menu/Window/Options/Names"]
 margin_top = 44.0
-margin_right = 47.0
-margin_bottom = 51.0
+margin_right = 30.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "CRT MONITOR:"
@@ -249,22 +252,22 @@ valign = 1
 uppercase = true
 
 [node name="BasicHint" type="HBoxContainer" parent="Menu/Window/Options/Names"]
-margin_top = 55.0
-margin_right = 47.0
-margin_bottom = 62.0
+margin_top = 49.0
+margin_right = 30.0
+margin_bottom = 50.0
 
 [node name="Hint" type="Label" parent="Menu/Window/Options/Names/BasicHint"]
-margin_right = 47.0
-margin_bottom = 7.0
+margin_right = 23.0
+margin_bottom = 1.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Basic Hints:"
 valign = 1
 uppercase = true
 
 [node name="Abandon" type="Label" parent="Menu/Window/Options/Names"]
-margin_top = 66.0
-margin_right = 47.0
-margin_bottom = 73.0
+margin_top = 54.0
+margin_right = 30.0
+margin_bottom = 55.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Abandon run:"

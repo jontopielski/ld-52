@@ -7,4 +7,4 @@
 script = ExtResource( 1 )
 name = "Recipient"
 texture = ExtResource( 2 )
-description = "Receives the sacrifice"
+description = "Stays alive"

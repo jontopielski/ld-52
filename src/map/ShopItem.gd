@@ -145,10 +145,10 @@ func _on_ShopItem_pressed():
 					get_tree().call_group("RewardShop", "card_selected")
 					get_tree().call_group("Battle", "spawn_card_rewards")
 				"Heal":
-					$Healed.play()
+					AudioManager.play_sound("PlayerHealed")
 					Globals.add_health(int(ceil(Globals.max_health / 2)))
 				"Boost":
-					$Healed.play()
+					AudioManager.play_sound("PlayerGainedMaxHp")
 					Globals.max_health += 1
 					Globals.add_health(1)
 				"Refill":

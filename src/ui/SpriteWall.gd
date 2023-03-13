@@ -17,7 +17,7 @@ func _ready():
 		var next_sprites = get_sprites_at_path(sprite_path)
 		for next_sprite in next_sprites:
 			inverted_sprites.push_back(next_sprite)
-	$Center/Grid.columns = int(sqrt(len(sprites))) + 1
+	$Center/Grid.columns = int(sqrt(len(sprites))) + 2
 	for sprite in sprites:
 		var next_texture = TextureRect.new()
 		next_texture.texture = sprite

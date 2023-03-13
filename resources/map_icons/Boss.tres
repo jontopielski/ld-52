@@ -7,4 +7,4 @@
 script = ExtResource( 1 )
 name = "Boss"
 texture = ExtResource( 2 )
-description = "Writes your paycheck"
+description = "Face a boss"

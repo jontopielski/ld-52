@@ -93,7 +93,7 @@ tracks/0/keys = {
 } ]
 }
 
-[node name="MapNode" type="Button"]
+[node name="MapNode" type="Button" groups=["map_nodes"]]
 margin_right = 9.0
 margin_bottom = 9.0
 rect_min_size = Vector2( 9, 9 )

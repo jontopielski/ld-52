@@ -14,7 +14,7 @@ export(bool) var show_basic_hints = true
 
 var current_map = []
 var current_map_node = Enums.MapNodeType.HOME
-var current_map_node_rect_position = Vector2.ZERO
+var current_map_node_rect_position = Vector2(18, 40)
 
 var current_floor = 0
 var current_index = 0
@@ -66,6 +66,10 @@ func add_reward(reward):
 		rewards.push_front(reward)
 	else:
 		rewards.push_back(reward)
+
+func add_relic(relic):
+	relics.push_back(relic)
+	get_tree().call_group("ui", "update_ui")
 
 func initialize_reward_to_cooldown_map():
 	var map = {}
@@ -136,6 +140,8 @@ func reset_all_state():
 	current_index = 0
 	max_health = 8
 	current_health = 8
+	current_map_node_position = Enums.MapNodePosition.MIDDLE
+	visited_map_node_positions = [Enums.MapNodePosition.MIDDLE]
 	CardGeneration.generated_cards.clear()
 
 func get_next_positive_effect():
@@ -188,6 +194,16 @@ func remove_health(health):
 	current_health = max(0, current_health - health)
 	get_tree().call_group("ui", "update_ui")
 
+func add_max_health(health):
+	max_health += health
+	current_health += health
+	get_tree().call_group("ui", "update_ui")
+
+func remove_max_health(health):
+	max_health -= health
+	current_health = min(current_health, max_health)
+	get_tree().call_group("ui", "update_ui")
+
 func get_next_enemy_effect(enemy_count):
 	var effect_to_return = pop_queue("enemy_effects")
 	if effect_to_return.is_multi_only and enemy_count == 1:
@@ -209,6 +225,12 @@ func get_all_enemy_effects():
 		effects.erase(effect)
 	randomize(); effects.shuffle()
 	return effects
+
+func get_random_display_card():
+	randomize()
+	var display_cards = get_tree().get_nodes_in_group("map_cards")
+	display_cards.shuffle()
+	return display_cards.front()
 
 func _process(delta):
 	if OS.is_debug_build() and Input.is_action_just_pressed("ui_respin_map") and get_tree().current_scene.name == "Map":

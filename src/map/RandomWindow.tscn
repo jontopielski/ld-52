@@ -26,11 +26,12 @@ expand_margin_right = 4.0
 
 [node name="RandomWindow" type="PanelContainer"]
 margin_left = 25.0
-margin_top = 14.0
+margin_top = 26.5
 margin_right = 151.0
-margin_bottom = 81.0
-rect_min_size = Vector2( 0, 67 )
-rect_pivot_offset = Vector2( 61, 36 )
+margin_bottom = 70.5
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 60, 22 )
 custom_styles/panel = ExtResource( 2 )
 script = ExtResource( 8 )
 title = "Random"
@@ -42,7 +43,7 @@ option_icons = [ [ ExtResource( 4 ) ], [ ExtResource( 5 ) ] ]
 margin_left = 2.0
 margin_top = 1.0
 margin_right = 124.0
-margin_bottom = 65.0
+margin_bottom = 61.0
 custom_constants/separation = 0
 
 [node name="Title" type="Label" parent="Content"]
@@ -59,7 +60,7 @@ uppercase = true
 [node name="TextMargin" type="MarginContainer" parent="Content"]
 margin_top = 9.0
 margin_right = 122.0
-margin_bottom = 44.0
+margin_bottom = 40.0
 size_flags_vertical = 3
 custom_constants/margin_right = 4
 custom_constants/margin_left = 4
@@ -67,8 +68,8 @@ custom_constants/margin_left = 4
 [node name="Description" type="Label" parent="Content/TextMargin"]
 margin_left = 4.0
 margin_right = 118.0
-margin_bottom = 35.0
-rect_min_size = Vector2( 0, 35 )
+margin_bottom = 31.0
+rect_min_size = Vector2( 0, 31 )
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
@@ -88,16 +89,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Divider" type="ColorRect" parent="Content"]
-margin_top = 44.0
+margin_top = 40.0
 margin_right = 122.0
-margin_bottom = 45.0
+margin_bottom = 41.0
 rect_min_size = Vector2( 0, 1 )
 color = Color( 0, 0, 0, 1 )
 
 [node name="Items" type="VBoxContainer" parent="Content"]
-margin_top = 45.0
+margin_top = 41.0
 margin_right = 122.0
-margin_bottom = 64.0
+margin_bottom = 60.0
 size_flags_vertical = 8
 custom_constants/separation = 1
 alignment = 2
@@ -122,21 +123,21 @@ visible = false
 margin_left = 2.0
 margin_top = 1.0
 margin_right = 124.0
-margin_bottom = 65.0
+margin_bottom = 42.0
 rect_pivot_offset = Vector2( 58, 33 )
 custom_constants/margin_top = 9
 
 [node name="White" type="ColorRect" parent="Cover"]
 margin_top = 9.0
 margin_right = 122.0
-margin_bottom = 64.0
+margin_bottom = 41.0
 
 [node name="MouseBlock" type="Button" parent="."]
 visible = false
 margin_left = 2.0
 margin_top = 1.0
 margin_right = 124.0
-margin_bottom = 31.0
+margin_bottom = 61.0
 focus_mode = 0
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 2 )

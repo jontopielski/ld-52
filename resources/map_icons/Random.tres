@@ -7,4 +7,4 @@
 script = ExtResource( 1 )
 name = "Random"
 texture = ExtResource( 2 )
-description = "Unknown"
+description = "Random event"

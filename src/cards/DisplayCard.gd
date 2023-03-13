@@ -13,6 +13,7 @@ var preview_card = null
 var child_index = -1
 var spawned_in = false
 var can_hover = true
+var is_in_modify_position = false
 var hand_position = Vector2.ZERO
 var post_modification_card = null
 
@@ -34,6 +35,8 @@ func spawn_in_from_x_position(starting_x, index, total_cards):
 	rect_position = Vector2(starting_x, 48)
 	$Tween.interpolate_property(self, "rect_position", rect_position, Vector2(rect_position.x, 0), tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
+	yield($Tween, "tween_completed")
+	spawned_in = true
 
 func finish_modification(card_data):
 	post_modification_card = card_data
@@ -44,10 +47,19 @@ func finish_remove():
 	$AnimationPlayer.play("flip_shatter")
 
 func tween_to_hand_position():
+	is_in_modify_position = false
 	var tween_time = 0.3
 	$Tween.interpolate_property(self, "rect_global_position", rect_global_position, hand_position, tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
-	set_unclickable()
+	yield($Tween, "tween_completed")
+	can_hover = true
+
+func tween_to_position(glob_pos):
+	var tween_time = 0.3
+	$Tween.interpolate_property(self, "rect_global_position", rect_global_position, glob_pos, tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield($Tween, "tween_completed")
+	get_tree().call_group("map_card_listeners", "tween_to_modify_position_finished", self)
 
 func assign_card_with_next_card():
 	var current_card_index = Globals.deck.find(card)
@@ -62,6 +74,7 @@ func shatter_card():
 	next_shatter.set_back_shatter()
 	get_parent().get_parent().add_child(next_shatter)
 	next_shatter.global_position = rect_global_position - Vector2(8, 8)
+	AudioManager.play_sound("CardRemoved")
 	queue_free()
 
 func set_clickable():
@@ -75,18 +88,10 @@ func remove_card(map_card_ref):
 		queue_free()
 
 func set_modified():
-	hand_position = rect_global_position
 	hover_down()
-	set_unclickable()
+	is_in_modify_position = true
+	hand_position = rect_global_position
 	can_hover = false
-
-func set_unmodified():
-	$Tween.stop_all()
-	var cancel_tween_time = 0.3
-	$Tween.interpolate_property(self, "rect_global_position", rect_global_position, hand_position, cancel_tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-	$Tween.start()
-	yield($Tween, "tween_completed")
-	set_clickable()
 
 func set_unclickable():
 	disabled = true
@@ -99,25 +104,17 @@ func _on_DisplayCard_mouse_exited():
 	hover_down()
 
 func hover_up():
-	if !spawned_in or !can_hover:
+	if !spawned_in or !can_hover or is_in_modify_position:
 		return
-	$Tween.stop_all()
 	$Tween.interpolate_property($BaseCard, "rect_position", $BaseCard.rect_position, resting_position - move_offset, tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
 	get_tree().call_group("CardDisplay", "show_child_at_index", child_index)
 
 func hover_down():
-	if !spawned_in or !can_hover:
+	if !spawned_in or !can_hover or is_in_modify_position:
 		return
-	$Tween.stop_all()
 	$Tween.interpolate_property($BaseCard, "rect_position", $BaseCard.rect_position, resting_position, tween_time, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 	$Tween.start()
 
 func _on_DisplayCard_pressed():
 	get_tree().call_group("map_card_listeners", "card_selected", self)
-
-func _on_Tween_tween_completed(object, key):
-	if key == ":rect_position" and !spawned_in:
-		spawned_in = true
-	elif key == ":rect_global_position":
-		can_hover = true

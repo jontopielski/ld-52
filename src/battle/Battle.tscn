@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://src/ui/Terminal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/battle/Battle.gd" type="Script" id=2]
@@ -239,10 +239,17 @@ tracks/1/keys = {
 "values": [ ExtResource( 16 ) ]
 }
 
+[sub_resource type="StyleBoxFlat" id=31]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 1, 1, 1, 1 )
+
 [node name="Battle" type="Control" groups=["Battle", "ui"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
+base_enemy_spend = 8
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -485,17 +492,19 @@ anims/idle = SubResource( 20 )
 anims/walk = SubResource( 21 )
 
 [node name="GameOver" type="Label" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -18.0
-margin_top = -3.0
+margin_left = -19.0
+margin_top = -3.5
 margin_right = 19.0
-margin_bottom = 2.0
+margin_bottom = 3.5
+grow_horizontal = 2
+grow_vertical = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 7 )
+custom_styles/normal = SubResource( 31 )
 text = "Game Over"
 uppercase = true
 

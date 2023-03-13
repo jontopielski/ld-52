@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/map/RandomWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/icons/Gamble.tres" type="Resource" id=2]
+[ext_resource path="res://resources/icons/Hurt.tres" type="Resource" id=4]
+[ext_resource path="res://resources/icons/Heal.tres" type="Resource" id=5]
+[ext_resource path="res://src/random_events/DeerEvent.gd" type="Script" id=6]
+[ext_resource path="res://resources/icons/Continue.tres" type="Resource" id=7]
+[ext_resource path="res://resources/icons/Modify.tres" type="Resource" id=8]
+
+[node name="DeerEvent" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+
+[node name="IntroWindow" parent="." instance=ExtResource( 1 )]
+title = "Oh Deer"
+description = "You stumble upon a dying deer. It's bleeding out and won't survive without your help."
+option_names = [ "Provide some blood", "Finish it off" ]
+option_icons = [ [ ExtResource( 4 ), ExtResource( 2 ) ], [ ExtResource( 5 ) ] ]
+
+[node name="EatWindow" parent="." instance=ExtResource( 1 )]
+visible = false
+title = "Mercy"
+description = "You humanely end the beast's life, which takes some time. Dinner follows."
+option_names = [ "Continue" ]
+option_icons = [ [ ExtResource( 7 ) ] ]
+
+[node name="IgnoreWindow" parent="." instance=ExtResource( 1 )]
+visible = false
+title = "Ignore"
+description = "You walk away from the dying beast. Something will find it sooner or later."
+option_names = [ "Continue" ]
+option_icons = [ [ ExtResource( 7 ) ] ]
+
+[node name="BloodNothingWindow" parent="." instance=ExtResource( 1 )]
+visible = false
+title = "Escape"
+description = "The deer regains strength and immediately dashes away without hesitation."
+option_names = [ "Continue" ]
+option_icons = [ [ ExtResource( 7 ) ] ]
+
+[node name="BloodStrengthWindow" parent="." instance=ExtResource( 1 )]
+visible = false
+title = "Reward"
+description = "The deer accepts the blood and regains strength. It then offers you some in return."
+option_names = [ "+1 damage to random card" ]
+option_icons = [ [ ExtResource( 8 ), ExtResource( 7 ) ] ]
+
+[connection signal="option_0_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_0_pressed"]
+[connection signal="option_1_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_1_pressed"]
+[connection signal="option_2_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_2_pressed"]
+[connection signal="option_0_pressed" from="EatWindow" to="." method="_on_EatWindow_option_0_pressed"]
+[connection signal="option_0_pressed" from="BloodStrengthWindow" to="." method="_on_BloodStrengthWindow_option_0_pressed"]

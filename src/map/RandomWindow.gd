@@ -16,6 +16,7 @@ func _ready():
 	spawn_in()
 
 func spawn_in():
+	AudioManager.play_sound("WindowOpened")
 	rect_pivot_offset = Globals.current_map_node_rect_position - rect_position + Vector2(4, 4)
 	$Cover.show()
 	$Content.hide()
@@ -49,20 +50,50 @@ func set_title(_title):
 	title = _title
 	if has_node("Content/Title"):
 		$Content/Title.text = title
+		update_random_options()
+
+func show_mouse_block():
+	$MouseBlock.show()
 
 func set_description(_description):
 	description = _description
 	if has_node("Content/TextMargin/Description"):
 		$Content/TextMargin/Description.text = description
+		update_random_options()
+
+func play_sound_for_icons(icons):
+	if contains_icon_name(icons, "Continue") and len(icons) == 1:
+		AudioManager.play_sound("RandomEventClosed")
+	if contains_icon_name(icons, "Ignore"):
+		AudioManager.play_sound("RandomEventIgnore")
+
+func end_event():
+	get_tree().call_group("ui", "update_ui")
+	get_tree().call_group("Map", "event_finished")
+
+func contains_icon_name(icons, icon_name):
+	for icon in icons:
+		if icon.name == icon_name:
+			return true
+	return false
 
 func _on_RandomOption_0_pressed():
+	play_sound_for_icons(option_icons[0])
 	emit_signal("option_0_pressed")
+	if contains_icon_name(option_icons[0], "Continue"):
+		end_event()
 
 func _on_RandomOption_1_pressed():
+	play_sound_for_icons(option_icons[1])
 	emit_signal("option_1_pressed")
+	if contains_icon_name(option_icons[1], "Continue"):
+		end_event()
 
 func _on_RandomOption_2_pressed():
+	play_sound_for_icons(option_icons[2])
 	emit_signal("option_2_pressed")
+	if contains_icon_name(option_icons[2], "Continue"):
+		end_event()
 
 func _on_Tween_tween_all_completed():
 	add_stylebox_override("panel", RewardWindowPost)

@@ -5,5 +5,5 @@ antialiased = false
 font_path = "res://fonts/Font3x7.ttf"
 
 [resource]
-extra_spacing_top = -4
+size = 7
 font_data = SubResource( 13 )

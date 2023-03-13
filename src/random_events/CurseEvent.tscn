@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/map/RandomWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/icons/Modify.tres" type="Resource" id=2]
+[ext_resource path="res://resources/icons/Continue.tres" type="Resource" id=3]
+[ext_resource path="res://src/random_events/CurseEvent.gd" type="Script" id=4]
+
+[node name="CurseEvent" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="IntroWindow" parent="." instance=ExtResource( 1 )]
+title = "Cursed"
+description = "You walk into the wrong summoning circle. The hooded figures cast a curse on you."
+option_names = [ "A random card is cursed" ]
+option_icons = [ [ ExtResource( 2 ), ExtResource( 3 ) ] ]
+
+[connection signal="option_0_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_0_pressed"]

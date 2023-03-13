@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://audio/AudioManager.gd" type="Script" id=1]
 [ext_resource path="res://audio/sfx/ui/start.wav" type="AudioStream" id=2]
@@ -15,7 +15,12 @@
 [ext_resource path="res://audio/sfx/events/random_event_failure.wav" type="AudioStream" id=13]
 [ext_resource path="res://audio/sfx/events/random_event_ignore.wav" type="AudioStream" id=14]
 [ext_resource path="res://audio/sfx/battle/player_take_damage.wav" type="AudioStream" id=15]
-[ext_resource path="res://audio/sfx/events/random_event_closed.wav" type="AudioStream" id=16]
+[ext_resource path="res://audio/sfx/events/window_closed.wav" type="AudioStream" id=16]
+[ext_resource path="res://audio/sfx/events/cursed_card.wav" type="AudioStream" id=17]
+[ext_resource path="res://audio/sfx/events/next_window.wav" type="AudioStream" id=18]
+[ext_resource path="res://audio/sfx/ui/player_gained_max_hp.wav" type="AudioStream" id=19]
+[ext_resource path="res://audio/sfx/events/received_relic.wav" type="AudioStream" id=20]
+[ext_resource path="res://audio/sfx/ui/player_healed.wav" type="AudioStream" id=21]
 
 [node name="AudioManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -46,24 +51,54 @@ bus = "SFX"
 stream = ExtResource( 7 )
 bus = "SFX"
 
-[node name="CardFused" type="AudioStreamPlayer" parent="Sounds"]
+[node name="CardSwapped" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 8 )
 bus = "SFX"
 
-[node name="CardFusing" type="AudioStreamPlayer" parent="Sounds"]
+[node name="CardFused" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 9 )
+bus = "SFX"
+
+[node name="PlayerHealed" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 21 )
+bus = "SFX"
+
+[node name="PlayerGainedMaxHp" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 19 )
+volume_db = -3.0
+bus = "SFX"
+
+[node name="PlayerLostMaxHp" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 15 )
+bus = "SFX"
+
+[node name="ReceivedRelic" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 20 )
+bus = "SFX"
+
+[node name="PlayerTookDamage" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 15 )
 bus = "SFX"
 
 [node name="ReturnToMenu" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 10 )
 bus = "SFX"
 
-[node name="RandomEventOpened" type="AudioStreamPlayer" parent="Sounds"]
+[node name="WindowOpened" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 11 )
 bus = "SFX"
 
 [node name="RandomEventClosed" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 16 )
+bus = "SFX"
+
+[node name="RandomEventNext" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 18 )
+bus = "SFX"
+
+[node name="RandomEventCursed" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 17 )
+volume_db = -3.0
 bus = "SFX"
 
 [node name="RandomEventSuccess" type="AudioStreamPlayer" parent="Sounds"]
@@ -80,8 +115,4 @@ bus = "SFX"
 
 [node name="RandomEventContinue" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 14 )
-bus = "SFX"
-
-[node name="PlayerTakeDamage" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 15 )
 bus = "SFX"

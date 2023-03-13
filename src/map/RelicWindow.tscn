@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/map/RandomWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/icons/Continue.tres" type="Resource" id=2]
+[ext_resource path="res://src/map/RelicWindow.gd" type="Script" id=3]
+
+[node name="RelicWindow" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="IntroWindow" parent="." instance=ExtResource( 1 )]
+title = "Choose Relic"
+description = "You come across an ancient shrine that presents you with a choice of mystical relics."
+option_names = [ "Choose Relic", "Choose Relic" ]
+option_icons = [ [ ExtResource( 2 ) ], [ ExtResource( 2 ) ] ]
+
+[connection signal="option_0_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_0_pressed"]
+[connection signal="option_1_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_1_pressed"]
+[connection signal="option_2_pressed" from="IntroWindow" to="." method="_on_IntroWindow_option_2_pressed"]
